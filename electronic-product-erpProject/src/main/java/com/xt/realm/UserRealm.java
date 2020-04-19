@@ -34,12 +34,9 @@ public class UserRealm extends AuthorizingRealm{
 		String username = token.getPrincipal().toString();
 		//根据用户名获取用户对象信息(加密密码和盐值)
 		Users user = service.selectByName(username);
-		System.out.println("这个对象："+user);
 		if(user==null) {
 			throw new UnknownAccountException();//账号不正确的异常
 		}
-		System.out.println("颜值："+user.getSalt());
-		System.out.println("密码："+user.getU_password());
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getU_name(), user.getU_password(),
                 ByteSource.Util.bytes(user.getSalt()), getName());
 		return info;
