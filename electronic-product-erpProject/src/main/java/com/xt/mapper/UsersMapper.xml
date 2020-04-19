@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.xt.mapper.UsersMapper">
+  	<!--登陆验证 -->
+ 	<select id="selectByName" resultType="Users">
+ 		select * from users where u_name=#{u_name}
+ 	</select>
+ 	<!--拿到相应的权限 -->
+	<select id="selectPermissions" resultType="String">
+		select p.name from permissions p where id 
+		in (select pid from permission_role where rid 
+		in (select r_id from  user_role where u_id 
+		in (select u_id from users where u_name =#{u_name}))) and type= 1 
+	</select>
+	<!--拿到相应的父级菜单  -->
+	<select id="selectMenus" resultType="Permissions">
+		select * from permissions where id 
+		in (select pid from permission_role where rid 
+		in (select r_id from  user_role where u_id 
+		in (select u_id from users where u_id =#{u_id}))) and type= 0 and parentMenu =0
+	</select>
+	<!--拿到相应的子菜单  -->
+	<select id="selectSonMenus" resultType="Permissions">
+		select * from permissions where id 
+		in (select pid from permission_role where rid 
+		in (select r_id from  user_role where u_id 
+		in (select u_id from users where u_id =#{u_id}))) and type= 0 and parentMenu =#{menu_id}
+	</select>
+	<!--拿到用户的数量  -->
+	<select id="getUsersCount" resultType="int">
+		select count(1) from Users where 1=1
+		<if test="u.u_name!=null and u.u_name!=''">
+			and u_name like CONCAT('%',#{u.u_name},'%')
+		</if>
+	</select>
+	<!--查询所有用户(员工)  -->
+	<select id="getAllUserInfo" resultType="Users">
+		select * from users where 1=1
+		<if test="u.u_name!=null and u.u_name!=''">
+			and u_name like CONCAT('%',#{u.u_name},'%')
+		</if>
+		    limit #{page.startRow},#{page.pageSize}
+	</select>
+  </mapper>
