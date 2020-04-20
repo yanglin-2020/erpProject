@@ -1,4 +1,4 @@
-package com.xt.service;
+package com.xt.service.impl;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.xt.mapper.UsersMapper;
 import com.xt.pojo.Permissions;
 import com.xt.pojo.Users;
+import com.xt.service.UsersService;
 import com.xt.util.PageDemo;
 import com.xt.util.PageUtil;
 

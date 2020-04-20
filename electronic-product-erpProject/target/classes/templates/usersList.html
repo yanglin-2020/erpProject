@@ -48,7 +48,7 @@
                                     <tr>
                                         <th lay-data="{type:'checkbox'}">ID</th>
                                         <th lay-data="{field:'u_id', width:60, sort: true}">ID</th>
-                                        <th lay-data="{field:'u_name', width:80, sort: true}">用户名</th>
+                                        <th lay-data="{field:'u_name', width:100, sort: true}">用户名</th>
                                         <th lay-data="{field:'phone', width:120}">手机号</th>
                                         <th lay-data="{field:'sex', width:70}">性别</th>
                                         <th lay-data="{field:'u_status',width:100, minWidth: 100,templet: '#titleTpl'}">状态</th>
@@ -183,7 +183,7 @@
                 var checkStatus = table.checkStatus(obj.config.id);
                 switch (obj.event) {
                 case 'addData':
-                	 xadmin.open('添加用户','useradd.jsp',490,500);
+                	 xadmin.open('添加用户','useradd.html',490,500);
                     break;
                 case 'getCheckLength':
                     var data = checkStatus.data;

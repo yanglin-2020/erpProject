@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.xt.mapper.MenuMapper">
+ 	<!--查询权限和菜单的总数  -->
+ 	<select id="getMenuCount" resultType="int">
+ 		select count(1) from permissions where 1=1
+ 		<if test="p.name!=null and p.name!=''">
+			and name like CONCAT('%',#{p.name},'%')
+		</if>
+ 	</select>
+ 	<!--权限和菜单查询(分页)  -->
+ 	<select id="getAllMenusInfo" resultType="permissions">
+ 		select * from permissions where 1=1
+		<if test="p.name!=null and p.name!=''">
+			and name like CONCAT('%',#{p.name},'%')
+		</if>
+		    limit #{page.startRow},#{page.pageSize}
+ 	</select>
+ 	<!--加载菜单和权限  -->
+ 	<select id="loadMenu" resultType="permissions">
+ 		select * from permissions
+ 	</select>
+ 	<!--添加菜单或权限  -->
+ 	<insert id="addMenu">
+ 		insert into permissions(name,descn,linkUrl,type)
+ 		values(#{name},#{descn},#{linkUrl},#{type})
+ 	</insert>
+ 	<!--删除一个菜单或权限  -->
+ 	<delete id="deleteMenu">
+ 		delete from permissions where id=#{id}
+ 	</delete>
+ 	<!--修改菜单或权限  -->
+ 	<update id="updateMenu">
+ 		update permissions set name=#{name},descn=#{descn},
+ 		linkUrl=#{linkUrl},type=#{type}
+ 		where id=#{id}
+ 	</update>
+ </mapper>
