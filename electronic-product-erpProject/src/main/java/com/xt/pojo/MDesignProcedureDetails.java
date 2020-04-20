@@ -13,153 +13,160 @@ public class MDesignProcedureDetails implements Serializable {
     //序号
     private Integer id;
     //父级序号
-    private Integer parentId;
+    private Integer parent_Id;
     //工序序号
-    private Integer detailsNumber;
+    private Integer details_Number;
     //工序编号
-    private String procedureId;
+    private String procedure_Id;
     //工序名称
-    private String procedureName;
+    private String procedure_Name;
     //工时数
-    private Object labourHourAmount;
+    private Object labour_Hour_Amount;
     //工序描述
-    private String procedureDescribe;
+    private String procedure_Describe;
     //单位
-    private String amountUnit;
+    private String amount_Unit;
     //单位工时成本
-    private Object costPrice;
+    private Object cost_Price;
     //工时成本小计
     private Object subtotal;
     //物料成本小计
-    private Object moduleSubtotal;
+    private Object module_Subtotal;
     //登记人
     private String register;
     //登记时间
-    private Object registerTime;
+    private Object register_Time;
     //当前工序物料标志      D002-0: 未设计    D002-1: 已设计
-    private String designModuleTag;
+    private String design_Module_Tag;
     //当前工序物料变更标志    D003-0: 未变更     D003-0: 已变更
-    private String designModuleChangeTag;
+    private String design_Module_Change_Tag;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Integer getParent_Id() {
+		return parent_Id;
+	}
+	public void setParent_Id(Integer parent_Id) {
+		this.parent_Id = parent_Id;
+	}
+	public Integer getDetails_Number() {
+		return details_Number;
+	}
+	public void setDetails_Number(Integer details_Number) {
+		this.details_Number = details_Number;
+	}
+	public String getProcedure_Id() {
+		return procedure_Id;
+	}
+	public void setProcedure_Id(String procedure_Id) {
+		this.procedure_Id = procedure_Id;
+	}
+	public String getProcedure_Name() {
+		return procedure_Name;
+	}
+	public void setProcedure_Name(String procedure_Name) {
+		this.procedure_Name = procedure_Name;
+	}
+	public Object getLabour_Hour_Amount() {
+		return labour_Hour_Amount;
+	}
+	public void setLabour_Hour_Amount(Object labour_Hour_Amount) {
+		this.labour_Hour_Amount = labour_Hour_Amount;
+	}
+	public String getProcedure_Describe() {
+		return procedure_Describe;
+	}
+	public void setProcedure_Describe(String procedure_Describe) {
+		this.procedure_Describe = procedure_Describe;
+	}
+	public String getAmount_Unit() {
+		return amount_Unit;
+	}
+	public void setAmount_Unit(String amount_Unit) {
+		this.amount_Unit = amount_Unit;
+	}
+	public Object getCost_Price() {
+		return cost_Price;
+	}
+	public void setCost_Price(Object cost_Price) {
+		this.cost_Price = cost_Price;
+	}
+	public Object getSubtotal() {
+		return subtotal;
+	}
+	public void setSubtotal(Object subtotal) {
+		this.subtotal = subtotal;
+	}
+	public Object getModule_Subtotal() {
+		return module_Subtotal;
+	}
+	public void setModule_Subtotal(Object module_Subtotal) {
+		this.module_Subtotal = module_Subtotal;
+	}
+	public String getRegister() {
+		return register;
+	}
+	public void setRegister(String register) {
+		this.register = register;
+	}
+	public Object getRegister_Time() {
+		return register_Time;
+	}
+	public void setRegister_Time(Object register_Time) {
+		this.register_Time = register_Time;
+	}
+	public String getDesign_Module_Tag() {
+		return design_Module_Tag;
+	}
+	public void setDesign_Module_Tag(String design_Module_Tag) {
+		this.design_Module_Tag = design_Module_Tag;
+	}
+	public String getDesign_Module_Change_Tag() {
+		return design_Module_Change_Tag;
+	}
+	public void setDesign_Module_Change_Tag(String design_Module_Change_Tag) {
+		this.design_Module_Change_Tag = design_Module_Change_Tag;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	@Override
+	public String toString() {
+		return "MDesignProcedureDetails [id=" + id + ", parent_Id=" + parent_Id + ", details_Number=" + details_Number
+				+ ", procedure_Id=" + procedure_Id + ", procedure_Name=" + procedure_Name + ", labour_Hour_Amount="
+				+ labour_Hour_Amount + ", procedure_Describe=" + procedure_Describe + ", amount_Unit=" + amount_Unit
+				+ ", cost_Price=" + cost_Price + ", subtotal=" + subtotal + ", module_Subtotal=" + module_Subtotal
+				+ ", register=" + register + ", register_Time=" + register_Time + ", design_Module_Tag="
+				+ design_Module_Tag + ", design_Module_Change_Tag=" + design_Module_Change_Tag + "]";
+	}
+	public MDesignProcedureDetails(Integer id, Integer parent_Id, Integer details_Number, String procedure_Id,
+			String procedure_Name, Object labour_Hour_Amount, String procedure_Describe, String amount_Unit,
+			Object cost_Price, Object subtotal, Object module_Subtotal, String register, Object register_Time,
+			String design_Module_Tag, String design_Module_Change_Tag) {
+		super();
+		this.id = id;
+		this.parent_Id = parent_Id;
+		this.details_Number = details_Number;
+		this.procedure_Id = procedure_Id;
+		this.procedure_Name = procedure_Name;
+		this.labour_Hour_Amount = labour_Hour_Amount;
+		this.procedure_Describe = procedure_Describe;
+		this.amount_Unit = amount_Unit;
+		this.cost_Price = cost_Price;
+		this.subtotal = subtotal;
+		this.module_Subtotal = module_Subtotal;
+		this.register = register;
+		this.register_Time = register_Time;
+		this.design_Module_Tag = design_Module_Tag;
+		this.design_Module_Change_Tag = design_Module_Change_Tag;
+	}
+	public MDesignProcedureDetails() {
+		super();
+	}
 
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    public Integer getDetailsNumber() {
-        return detailsNumber;
-    }
-
-    public void setDetailsNumber(Integer detailsNumber) {
-        this.detailsNumber = detailsNumber;
-    }
-
-    public String getProcedureId() {
-        return procedureId;
-    }
-
-    public void setProcedureId(String procedureId) {
-        this.procedureId = procedureId;
-    }
-
-    public String getProcedureName() {
-        return procedureName;
-    }
-
-    public void setProcedureName(String procedureName) {
-        this.procedureName = procedureName;
-    }
-
-    public Object getLabourHourAmount() {
-        return labourHourAmount;
-    }
-
-    public void setLabourHourAmount(Object labourHourAmount) {
-        this.labourHourAmount = labourHourAmount;
-    }
-
-    public String getProcedureDescribe() {
-        return procedureDescribe;
-    }
-
-    public void setProcedureDescribe(String procedureDescribe) {
-        this.procedureDescribe = procedureDescribe;
-    }
-
-    public String getAmountUnit() {
-        return amountUnit;
-    }
-
-    public void setAmountUnit(String amountUnit) {
-        this.amountUnit = amountUnit;
-    }
-
-    public Object getCostPrice() {
-        return costPrice;
-    }
-
-    public void setCostPrice(Object costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public Object getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(Object subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public Object getModuleSubtotal() {
-        return moduleSubtotal;
-    }
-
-    public void setModuleSubtotal(Object moduleSubtotal) {
-        this.moduleSubtotal = moduleSubtotal;
-    }
-
-    public String getRegister() {
-        return register;
-    }
-
-    public void setRegister(String register) {
-        this.register = register;
-    }
-
-    public Object getRegisterTime() {
-        return registerTime;
-    }
-
-    public void setRegisterTime(Object registerTime) {
-        this.registerTime = registerTime;
-    }
-
-    public String getDesignModuleTag() {
-        return designModuleTag;
-    }
-
-    public void setDesignModuleTag(String designModuleTag) {
-        this.designModuleTag = designModuleTag;
-    }
-
-    public String getDesignModuleChangeTag() {
-        return designModuleChangeTag;
-    }
-
-    public void setDesignModuleChangeTag(String designModuleChangeTag) {
-        this.designModuleChangeTag = designModuleChangeTag;
-    }
 
 }

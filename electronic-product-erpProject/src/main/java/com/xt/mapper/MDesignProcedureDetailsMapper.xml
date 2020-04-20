@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.xt.mapper.MDesignProcedureDetailsMapper">
+ <!-- 产品设计详情 -->
+  	<select id="findList" resultType="MDesignProcedureDetails">
+  		select * from m_design_procedure_details 
+  		<where>
+  			<if test="parent_Id!=null and parent_Id !=''">
+			parent_Id = #{parent_Id}
+			</if>
+  		</where>
+		    limit #{page.startRow},#{page.pageSize}
+  	</select>
+  	<!--  查询详情数量 -->
+  	<select id="count" resultType="Integer">
+  		select count(1) from m_design_procedure_details
+  		 <where>
+  			<if test="parent_Id !=null and parent_Id !=''">
+			parent_Id = #{parent_Id}
+			</if>
+  		</where>
+  	</select>
+  	<!--  添加产品设计详情 -->
+  	<insert id="addmdesignDetails">
+  		insert into m_design_procedure_details values(null,#{parent_Id},#{details_Number},#{product_Id},
+  		#{product_Name},#{type},#{amount},#{product_Describe},#{amount_Unit},#{cost_Price},#{subtotal})
+  	</insert>
+  	<!-- 修改产品设计详情 -->
+  	<update id="updatemdesignDetails">
+  		update m_design_procedure_details
+  		<set>
+  			<if test=" md.details_Number != null and md.details_Number != ''">
+  				details_Number=#{md.details_Number},
+  			</if>
+  			<if test=" md.product_Id != null and md.product_Id != ''">
+  				product_Id=#{md.product_Id},
+  			</if>
+  			<if test=" md.product_Name != null and md.product_Name != ''">
+  				product_Name=#{md.product_Name},
+  			</if>
+  			<if test=" md.type != null and md.type != ''">
+  				type=#{md.type},
+  			</if>
+  			<if test=" md.amount != null and md.amount != ''">
+  				amount=#{md.amount},
+  			</if>
+  			<if test=" md.product_Describe != null and md.product_Describe != ''">
+  				product_Describe=#{md.product_Describe},
+  			</if>
+  			<if test=" md.amount_Unit != null and md.amount_Unit != ''">
+  				amount_Unit=#{md.amount_Unit},
+  			</if>
+  			<if test=" md.cost_Price != null and md.cost_Price != ''">
+  				cost_Price=#{md.cost_Price},
+  			</if>
+  			<if test=" md.subtotal != null and md.subtotal != '' ">
+  				subtotal =#{md.subtotal}
+  			</if>
+  		</set>
+  		where id = #{id}
+  	</update>
+ </mapper>
