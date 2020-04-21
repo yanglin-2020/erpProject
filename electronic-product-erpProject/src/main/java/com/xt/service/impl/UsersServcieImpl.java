@@ -50,4 +50,16 @@ public class UsersServcieImpl implements UsersService{
 		pd.setData(list);
 		return pd;
 	}
+	@Override
+	public int addUserInfo(Users u) {
+		return mapper.addUserInfo(u);
+	}
+	@Override
+	public int deleteUser(int id) {
+		return mapper.deleteUser(id);
+	}
+	@Override
+	public int updateUserInfo(Users u) {
+		return mapper.updateUserInfo(u);
+	}
 }

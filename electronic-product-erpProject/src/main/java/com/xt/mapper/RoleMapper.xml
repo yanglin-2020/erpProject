@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.xt.mapper.RoleMapper">
+ 	<!--获取角色的总数  -->
+ 	<select id="getRoleCount" resultType="int">
+ 		select count(1) from roles where 1=1
+ 		<if test="r.name!=null and r.name!=''">
+			and name like CONCAT('%',#{r.name},'%')
+		</if>
+ 	</select>
+ 	<!--角色查询(分页)  -->
+ 	<select id="getAllRolesInfo" resultType="Roles">
+ 		select * from roles where 1=1
+		<if test="r.name!=null and r.name!=''">
+			and name like CONCAT('%',#{r.name},'%')
+		</if>
+		    limit #{page.startRow},#{page.pageSize}
+ 	</select>
+ 	<!--添加一个角色  -->
+ 	<insert id="addRole">
+ 		insert into roles(name,descinfo) values(#{name},#{descinfo})
+ 	</insert>
+ 	<!--为角色赋予权限  -->
+ 	<insert id="addPermission_role">
+ 		insert into permission_role values(#{rid},#{pid});
+ 	</insert>
+ 	<!--拿到刚刚添加角色的id  -->
+ 	<select id="getRole_idByName" resultType="int">
+ 		select id from roles where name=#{name}
+ 	</select>
+ 	<!--更新角色信息  -->
+ 	<update id="updateRoleInfo">
+ 		update roles set name=#{name},descinfo=#{descinfo} where id=#{id}
+ 	</update>
+ 	<!--删除角色拥有的权限  -->
+ 	<delete id="deletePermission_role">
+ 		delete from permission_role where rid=#{rid}
+ 	</delete>
+ 	<!--删除一个角色信息  -->
+ 	<delete id="deleteRoleInfo">
+ 		delete from roles where id =#{id}
+ 	</delete>
+ 	<!--删除一个角色前看是否已经被 赋予用户  -->
+ 	<select id="getUser_Role" resultType="User_Role">
+ 		select * from user_role where r_id=#{r_id}
+ 	</select>
+ 	<!--查询单个角色下面的权限  -->
+ 	<select id="querymenuInfo" resultType="permissions">
+ 		select name,linkUrl from permissions where id in 
+ 		(select pid from permission_role where rid =#{rid})
+ 	</select>
+ 	<!--查询所有角色(不分页)  -->
+ 	<select id="getAllRoles" resultType="Roles">
+ 		select * from roles 
+ 	</select>
+ 	<!--把角色赋给用户  -->
+ 	<insert id="addUserRole">
+ 		insert into user_role values(#{u_id},#{r_id});
+ 	</insert>
+ 	<!--查询用户拥有的角色  -->
+ 	<select id="selectAllRoles" resultType="Roles">
+ 		select * from roles where id in 
+ 		(select r_id from user_role where u_id=#{u_id})
+ 	</select>
+ 	<!--删除用户拥有的角色  -->
+ 	<delete id="delUserRole">
+ 		delete from user_role where u_id=#{u_id}
+ 	</delete>
+ </mapper>

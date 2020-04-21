@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html class="x-admin-sm">
 <script type="text/javascript" src="js/jquery-1.12.4.js"></script>
@@ -6,7 +5,7 @@
 </script>
     <head>
         <meta charset="UTF-8">
-        <title>用户列表显示</title>
+        <title>菜单查询</title>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -14,7 +13,9 @@
         <link rel="stylesheet" href="./css/xadmin.css">
         <script src="./lib/layui/layui.js" charset="utf-8"></script>
         <script type="text/javascript" src="./js/xadmin.js"></script>
+      
     </head>
+    
     <body>
         <div class="x-nav">
             <span class="layui-breadcrumb">
@@ -34,7 +35,7 @@
                          <div class="layui-card-body ">
                             <form class="layui-form layui-col-space5">
                                <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="euUserName" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                                    <input type="text" name="euUserName" placeholder="请输入菜单(权限)名" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
                                     <a class="layui-btn search_btn" data-type="reload">
@@ -43,25 +44,24 @@
                             </form>
                         </div>
                         <div class="layui-card-body ">
-                            <table class="layui-table" lay-data="{url:'getAllUsersInfo',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
+                            <table class="layui-table" lay-data="{url:'getAllMenuInfo',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
                                         <th lay-data="{type:'checkbox'}">ID</th>
-                                        <th lay-data="{field:'u_id', width:60, sort: true}">ID</th>
-                                        <th lay-data="{field:'u_name', width:100, sort: true}">用户名</th>
-                                        <th lay-data="{field:'phone', width:120}">手机号</th>
-                                        <th lay-data="{field:'sex', width:70}">性别</th>
-                                        <th lay-data="{field:'u_status',width:100, minWidth: 100,templet: '#titleTpl'}">状态</th>
-                                        <th lay-data="{field:'u_create', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.u_create)}}">创建时间</th>
-                                        <th lay-data="{width:300, templet:'#oprListBar',fixed:'right'}">操作</th>
+                                        <th lay-data="{field:'id', width:60, sort: true}">ID</th>
+                                        <th lay-data="{field:'name', width:140}">菜单(权限)名称</th>
+                                        <th lay-data="{field:'descn', width:220}">功能描述</th>
+                                        <th lay-data="{field:'linkUrl', width:160}">链接地址</th>
+                                        <th lay-data="{field:'type', width:150,templet: '#titleTpl'}">类型</th>
+                                        <th lay-data="{width:200, templet:'#oprListBar',fixed:'right'}">操作</th>
                                         </tr>
                                 </thead>
                             </table>
-						<script type="text/html" id="titleTpl">
-  						{{#  if(d.u_status == 1){ }}
-    						 <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
-  						{{#  } else if(d.u_status == 0) { }}
-    						<span class="layui-btn layui-btn-normal layui-btn-mini">已禁用</span>
+                            <script type="text/html" id="titleTpl">
+  						{{#  if(d.type == 0){ }}
+    						 <span class="layui-btn layui-btn-normal layui-btn-mini">菜单</span>
+  						{{#  } else if(d.type == 1) { }}
+    						<span class="layui-btn layui-btn-normal layui-btn-mini">权限</span>
  						{{#  } else{ }}
 							
   						{{#  }  }}
@@ -74,14 +74,13 @@
     </body>
     <!--操作-->
 	<script type="text/html" id="oprListBar">
+		
  		<i class="layui-icon layui-btn layui-btn-warning" lay-event="edit">&#xe642;</i>
 		<i class="layui-icon layui-btn  layui-btn-danger" lay-event="del">&#xe640;</i>
-		<a class="layui-btn layui-btn-xs" lay-event="role">授予角色</a> 
-		<a class="layui-btn layui-btn-xs" lay-event="cancelRole">取消授予</a> 
 	</script>
     <script type="text/html" id="toolbarDemo">
         <div class = "layui-btn-container" > 
-            <button class = "layui-btn layui-btn-sm" lay-event = "addData" > 添加用户</button>
+            <button class = "layui-btn layui-btn-sm" lay-event = "addmenu" > 添加权限(菜单)</button>
         </div > 
     </script>
     <script>layui.use('laydate',
@@ -105,21 +104,22 @@
 
           //编辑操作
             function editUser(edit){
-        	    title = "编辑用户";
+        	    title = "编辑菜单";
                 var index = layui.layer.open({
                     title : title,
                     type : 2,
-                    content : "updateuser.html",
-                    area: ['490px', '400px'],
+                    content : "menuadd.html",
+                    area: ['590px', '490px'],
                    /*  maxmin: true, */
                     success : function(layero, index){
                     	//获取子窗体对象
                     	var body = layui.layer.getChildFrame('body', index);
                         if(edit){
-                        	body.find(".euUserId").val(edit.u_id);
-                        	body.find(".name").val(edit.u_name);
-                        	body.find(".phone").val(edit.phone);
-                        	body.find(".sex").val(edit.sex);
+                        	body.find("#id").val(edit.id);
+                        	body.find("#name").val(edit.name);
+                        	body.find("#miaoshu").val(edit.descn);
+                        	body.find("#url").val(edit.linkUrl);
+                        	body.find("#type").val(edit.type);
                         	body.find(".btn_add").text("修改");
                         	form.render();
                         }
@@ -133,56 +133,28 @@
                 if(layEvent === 'edit'){ //编辑
                 	editUser(data);
                 } else if(layEvent === 'del'){ //删除
-                    layer.confirm('确定删除用户？',{icon:3, title:'提示信息'},function(index){
-                         $.get("delUserInfo",{
-                        	 id : data.u_id  //将需要删除的newsId作为参数传入
+                    layer.confirm('确定删除该权限(菜单)？',{icon:3, title:'提示信息'},function(index){
+                         $.get("delMenuInfo",{
+                        	 id : data.id  //将需要删除的newsId作为参数传入
                          },function(data){
-                        	 if(data=="成功"){
-                        		 layer.msg("操作成功！");
-                               	 table.reload("test");
+                        	 if(data=="1"){
+                        		 layer.msg("删除成功！");
+                                table.reload("test");
                                  layer.close(index);
                         	 }else{
-                        		 layer.alert("太残忍了,自己都要删~ ");
+                        		 layer.alert("操作失败~ ");
                         	 }
                          });
                     });
-                } else if(layEvent === 'role'){ //预览
-                	$.post("getRole",{"id":data.u_id},function(result){
-                		 if(result=="1"){
-                			 xadmin.open('授予角色','getroles.html',600,400);
-                		 }
-                	});
-                }else if(layEvent === 'jinyong'){
-                	layer.confirm('确定进行该操作？',{icon:3, title:'提示信息'},function(index){
-                		 $.post("jinyong",{"id":data.id,"flag":data.flag},function(result){
-                			 if(result=="1"){
-       		        		  setTimeout(function(){
-       		        	            top.layer.msg("操作成功！");
-       		        	            layer.closeAll("iframe");
-       		        	            //刷新父页面
-       		        	         table.reload("test");
-       		        	      	layer.close(index);
-       		        	        },1000);
-       		        	  }else{
-       		        		 layer.alert("无法禁用正在使用的用户  ~ ");
-       		        	  } 
-                		 });
-                    });
-                }else if(layEvent === 'cancelRole'){//取消授予
-                	$.post("cancelRole",{"id":data.u_id},function(result){
-               		 if(result==0){
-               			 xadmin.open('取消授予','cancelrole.html',600,400);
-               		 }
-               	});
-                }
+                } 
             });
             //头工具栏事件
             table.on('toolbar(test)',
             function(obj) {
                 var checkStatus = table.checkStatus(obj.config.id);
                 switch (obj.event) {
-                case 'addData':
-                	 xadmin.open('添加用户','useradd.html',490,500);
+                case 'addmenu':
+                	 xadmin.open('添加权限(菜单)','menuadd.html',500,460);
                     break;
                 case 'getCheckLength':
                     var data = checkStatus.data;
@@ -193,7 +165,7 @@
                     break;
                 };
             });
-          	//条件查询
+          //条件查询
             $(".search_btn").on("click",function(){
                      table.reload("test",{
                          page: {
@@ -203,6 +175,7 @@
                         	 name: $("input[name=euUserName]").val()  //搜索的关键字
                          }
                      });
-             }); 
+    
+             });
         });</script>
 </html>

@@ -67,9 +67,15 @@ public class Users implements Serializable {
 	public void setU_create(String u_create) {
 		this.u_create = u_create;
 	}
-	@Override
-	public String toString() {
-		return "Users [u_id=" + u_id + ", u_name=" + u_name + ", sex=" + sex + ", u_password=" + u_password + ", salt="
-				+ salt + ", phone=" + phone + ", u_status=" + u_status + ", u_create=" + u_create + "]";
+	public Users(String u_name, String sex, String u_password, String salt, String phone) {
+		super();
+		this.u_name = u_name;
+		this.sex = sex;
+		this.u_password = u_password;
+		this.salt = salt;
+		this.phone = phone;
+	}
+	public Users() {
+		super();
 	}
 }

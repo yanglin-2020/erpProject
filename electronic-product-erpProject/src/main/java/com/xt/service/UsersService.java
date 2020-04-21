@@ -15,4 +15,10 @@ public interface UsersService {
 	List<Permissions> selectMenus(int u_id);
 	//分页查询所有用户信息
 	public PageDemo<Users> getAllUserInfo(int nowPage, int pageSize,Users u);
+	//添加一个用户信息
+	int addUserInfo(Users u);
+	//删除一个用户信息
+	int deleteUser(int id);
+	//修改用户信息
+	int updateUserInfo(Users u);
 }

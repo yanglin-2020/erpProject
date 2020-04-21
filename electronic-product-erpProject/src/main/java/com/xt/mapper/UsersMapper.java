@@ -21,4 +21,10 @@ public interface UsersMapper {
 	int getUsersCount(@Param("u") Users user);
 	//分页查询用户
 	public List<Users> getAllUserInfo(@Param("page") PageUtil page,@Param("u") Users u);
+	//添加一个用户
+	int addUserInfo(Users u);
+	//删除一个用户信息
+	int deleteUser(int id);
+	//修改用户信息
+	int updateUserInfo(Users u);
 }

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jQuery单选框跟复选框美化代码</title>
+
+<!--必要样式-->
+<link rel="stylesheet" href="css/jquery-labelauty.css" />
+
+<style type="text/css">
+ul {
+	list-style-type: none;
+}
+
+li {
+	display: inline-block;
+}
+
+li {
+	margin: 10px 0;
+}
+
+input.labelauty+label {
+	font: 12px "Microsoft Yahei";
+}
+
+#by {
+	background-image: url(images/im1.jpg);
+	background-repeat: no-repeat;
+}
+
+#btn {
+	background-color: skyblue;
+	width: 100px;
+	height: 30px;
+	font-size: larger;
+	position: absolute;
+	top: 240px;
+	left:260px;
+	
+}
+</style>
+
+</head>
+<body id="by">
+	<center>
+			<li  th:each="role:${session.RoleList}" class="dowebok" style="display: inline-block;">
+				<input class="ck" type="checkbox" name="checkbox" th:value="${role.id}"
+					th:data-labelauty="${role.name }">
+				<b><span th:text="${role.name }"></span></b>
+			</li>
+		<br />
+		<input type="button" id="btn" name="btn" value="提交" />
+	</center>
+	<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$(':input').labelauty();
+			$("[name=btn]").click(function() {
+				var id = new Array();//id
+				$(".ck").each(function() {
+					var obj = $(this);
+					if (this.checked == true) {
+						id.push(obj.val());
+					}
+				});
+				$.post("addUserRole", {
+					"id" : id
+				}, function(result) {
+					if (result == "1") {
+						alert("授予角色成功!");
+						window.close();
+					}
+				});
+			});
+		});
+	</script>
+	<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/jquery-labelauty.js"></script>
+</body>
+</html>

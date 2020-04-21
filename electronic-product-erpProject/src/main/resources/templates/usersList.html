@@ -109,7 +109,7 @@
                 var index = layui.layer.open({
                     title : title,
                     type : 2,
-                    content : "updateuser.jsp",
+                    content : "updateuser.html",
                     area: ['490px', '400px'],
                    /*  maxmin: true, */
                     success : function(layero, index){
@@ -137,20 +137,19 @@
                          $.get("delUserInfo",{
                         	 id : data.u_id  //将需要删除的newsId作为参数传入
                          },function(data){
-                        	 if(data=="1"){
+                        	 if(data=="成功"){
                         		 layer.msg("操作成功！");
                                	 table.reload("test");
                                  layer.close(index);
                         	 }else{
                         		 layer.alert("太残忍了,自己都要删~ ");
                         	 }
-                        	
                          });
                     });
                 } else if(layEvent === 'role'){ //预览
                 	$.post("getRole",{"id":data.u_id},function(result){
                 		 if(result=="1"){
-                			 xadmin.open('授予角色','getroles.jsp',600,400);
+                			 xadmin.open('授予角色','getroles.html',600,400);
                 		 }
                 	});
                 }else if(layEvent === 'jinyong'){
@@ -169,10 +168,10 @@
        		        	  } 
                 		 });
                     });
-                }else if(layEvent === 'cancelRole'){
+                }else if(layEvent === 'cancelRole'){//取消授予
                 	$.post("cancelRole",{"id":data.u_id},function(result){
                		 if(result==0){
-               			 xadmin.open('取消授予','cancelrole.jsp',600,400);
+               			 xadmin.open('取消授予','cancelrole.html',600,400);
                		 }
                	});
                 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.mapper.ProductFileMapper">
+	<insert id="addProductInfo">
+		insert into
+		d_file(product_id,product_name,factory_name,first_kind_id,product_nick,type,product_class,personal_unit,personal_value,
+		list_price,cost_price,warranty,lifecycle,product_describe,responsible_person,register)
+		values(#{product_id},#{product_name},
+		#{factory_name},#{first_kind_id},#{product_nick},#{type},#{product_class},#{personal_unit},#{personal_value},#{list_price},
+		#{cost_price},#{warranty},#{lifecycle},#{product_describe},#{responsible_person},#{register})
+	</insert>
+	<select id="getDanHao" resultType="String">
+		select (id+1) from d_file order by id desc limit 1
+	</select>
+</mapper>

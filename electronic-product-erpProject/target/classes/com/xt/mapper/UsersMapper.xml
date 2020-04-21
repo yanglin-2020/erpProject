@@ -43,4 +43,17 @@
 		</if>
 		    limit #{page.startRow},#{page.pageSize}
 	</select>
+	<!--添加用户  -->
+	<insert id="addUserInfo">
+		insert into users(u_name,sex,u_password,salt,phone) values
+		(#{u_name},#{sex},#{u_password},#{salt},#{phone})
+	</insert>
+	<!--删除一个用户  -->
+	<delete id="deleteUser">
+		delete from users where u_id=#{u_id}
+	</delete>
+	<!--修改用户  -->
+	<update id="updateUserInfo">
+		update users set u_name=#{u_name},sex=#{sex},phone=#{phone},u_create=default where u_id =#{u_id}
+	</update>
   </mapper>
