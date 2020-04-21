@@ -76,12 +76,10 @@
     </body>
     <!--操作-->
 	<script type="text/html" id="oprListBar">
- 	<i class="layui-icon" layui-btn layui-btn-warning" lay-event="find">&#xe63c;</i>
- 		
-	<i class="layui-icon layui-btn layui-btn-warning" lay-event="edit">&#xe642;</i>
+ 		<i class="layui-icon layui-btn layui-btn-warning" lay-event="edit">&#xe642;</i>
 		<i class="layui-icon layui-btn  layui-btn-danger" lay-event="del">&#xe640;</i>
 		<a class="layui-btn layui-btn-xs" lay-event="role">授予角色</a> 
-		<a class="layui-btn layui-btn-xs" lay-event="cancelRole">取消授予</a>
+		<a class="layui-btn layui-btn-xs" lay-event="cancelRole">取消授予</a> 
 	</script>
     <script type="text/html" id="toolbarDemo">
         <div class = "layui-btn-container" > 
@@ -106,14 +104,14 @@
     <script>layui.use('table',
         function() {
             var table = layui.table;
-			
+
           //编辑操作
             function editUser(edit){
         	    title = "编辑用户";
                 var index = layui.layer.open({
                     title : title,
                     type : 2,
-                    content : "updateuser.jsp",
+                    content : "updateuser.html",
                     area: ['490px', '400px'],
                    /*  maxmin: true, */
                     success : function(layero, index){
@@ -124,29 +122,6 @@
                         	body.find(".name").val(edit.u_name);
                         	body.find(".phone").val(edit.phone);
                         	body.find(".sex").val(edit.sex);
-                        	body.find(".btn_add").text("修改");
-                        	form.render();
-                        }
-                    }
-                });
-            }
-          //查看
-            function editUser(find){
-        	    title = "查看";
-                var index = layui.layer.open({
-                    title : title,
-                    type : 2,
-                    content : "mdesignProcedure-Details.html",
-                    area: ['490px', '400px'],
-                   /*  maxmin: true, */
-                    success : function(layero, index){
-                    	//获取子窗体对象
-                    	var body = layui.layer.getChildFrame('body', index);
-                        if(edit){
-                        	body.find(".euUserId").val(find.u_id);
-                        	body.find(".name").val(find.u_name);
-                        	body.find(".phone").val(find.phone);
-                        	body.find(".sex").val(find.sex);
                         	body.find(".btn_add").text("修改");
                         	form.render();
                         }
@@ -164,20 +139,19 @@
                          $.get("delUserInfo",{
                         	 id : data.u_id  //将需要删除的newsId作为参数传入
                          },function(data){
-                        	 if(data=="1"){
+                        	 if(data=="成功"){
                         		 layer.msg("操作成功！");
                                	 table.reload("test");
                                  layer.close(index);
                         	 }else{
                         		 layer.alert("太残忍了,自己都要删~ ");
                         	 }
-                        	
                          });
                     });
                 } else if(layEvent === 'role'){ //预览
                 	$.post("getRole",{"id":data.u_id},function(result){
                 		 if(result=="1"){
-                			 xadmin.open('授予角色','getroles.jsp',600,400);
+                			 xadmin.open('授予角色','getroles.html',600,400);
                 		 }
                 	});
                 }else if(layEvent === 'jinyong'){
@@ -196,14 +170,12 @@
        		        	  } 
                 		 });
                     });
-                }else if(layEvent === 'cancelRole'){
+                }else if(layEvent === 'cancelRole'){//取消授予
                 	$.post("cancelRole",{"id":data.u_id},function(result){
                		 if(result==0){
-               			 xadmin.open('取消授予','cancelrole.jsp',600,400);
+               			 xadmin.open('取消授予','cancelrole.html',600,400);
                		 }
                	});
-                }else if(layEvent == 'find'){
-                	editUser(data);
                 }
             });
             //头工具栏事件
@@ -212,7 +184,7 @@
                 var checkStatus = table.checkStatus(obj.config.id);
                 switch (obj.event) {
                 case 'addData':
-                	 xadmin.open('添加用户','useradd.jsp',490,500);
+                	 xadmin.open('添加用户','useradd.html',490,500);
                     break;
                 case 'getCheckLength':
                     var data = checkStatus.data;

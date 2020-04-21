@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xt.mapper.ProductFileMapper">
+	<!--添加产品档案信息 -->
 	<insert id="addProductInfo">
 		insert into
 		d_file(product_id,product_name,factory_name,first_kind_id,product_nick,type,product_class,personal_unit,personal_value,
@@ -11,7 +12,56 @@
 		#{factory_name},#{first_kind_id},#{product_nick},#{type},#{product_class},#{personal_unit},#{personal_value},#{list_price},
 		#{cost_price},#{warranty},#{lifecycle},#{product_describe},#{responsible_person},#{register})
 	</insert>
+	<!--产品单号要用的 -->
 	<select id="getDanHao" resultType="String">
-		select (id+1) from d_file order by id desc limit 1
+		select (id+1) from d_file
+		order by id desc limit 1
 	</select>
+	<!--拿到需要复核产品的数量 -->
+	<select id="getD_FileCount" resultType="int">
+		select count(1) from d_file where 1=1
+		<if test="df.product_name!=null and df.product_name!=''">
+			and product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
+	</select>
+	<!--查询需要复核产品的信息 -->
+	<select id="getD_fileFuHei" resultType="D_file">
+		select * from d_file where check_tag='等待审核' and delete_tag ='未删除'
+		<if test="df.product_name!=null and df.product_name!=''">
+			and product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!--复核前根据产品id查询信息 -->
+	<select id="getD_fileById" resultType="D_file">
+		select * from d_file where
+		product_id=#{product_id}
+	</select>
+	<!--复核产品档案信息 -->
+	<update id="updateD_fileFuHe">
+		update d_file set
+		checker=#{checker},check_time=#{check_time},check_tag=#{check_tag}
+		where product_id=#{product_id}
+	</update>
+	<select id="getD_fileInfo" resultType="D_file">
+		select * from d_file where check_tag='审核通过' and delete_tag ='未删除'
+		<if test="df.product_name!=null and df.product_name!=''">
+			and product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!--删除一个产品档案信息(并没有真正删除，只是修改状态) -->
+	<update id="updateDelProduct">
+		update d_file set delete_tag="已删除" where
+		product_id=#{product_id}
+	</update>
+	<!--更新产品档案信息 -->
+	<update id="updateProductInfo">
+		update d_file set
+		product_name=#{product_name},factory_name=#{factory_name},first_kind_id=#{first_kind_id},
+		product_nick=#{product_nick},type=#{type},product_class=#{product_class},personal_unit=#{personal_unit},personal_value=#{personal_value},
+		list_price=#{list_price},cost_price=#{cost_price},warranty=#{warranty},lifecycle=#{lifecycle},product_describe=#{product_describe},
+		responsible_person=#{responsible_person},register=#{register},file_change_amount=file_change_amount+1
+		where product_id=#{product_id}
+	</update>
 </mapper>
