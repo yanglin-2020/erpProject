@@ -13,7 +13,7 @@
 		<p>loading</p>
 		<h1>0%</h1>
 		<hr/>
-		<button type="button" class="btn btn-default" id="btn1">确定</button><button type="button" class="btn btn-default" id="btn2">返回</button>
+		<button type="button" class="btn btn-default" id="btn1" style="display:none">确定</button><button type="button" class="btn btn-default" id="btn2" style="display:none">返回</button>
 	</div>
 </div>
 
@@ -40,7 +40,12 @@ $(document).ready(function() {
 		$("#btn2").click(function(){
 			window.location.href="productfile.html";
 		});
-	})
+		  setTimeout("showbtn()",5000);
+	});
+	function showbtn(){
+        document.getElementById('btn1').style.display='inline';
+        document.getElementById('btn2').style.display='inline';
+    }
 </script>
 </body>
 </html>

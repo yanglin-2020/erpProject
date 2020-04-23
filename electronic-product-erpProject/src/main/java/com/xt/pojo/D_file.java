@@ -44,6 +44,13 @@ public class D_file {
 	private String design_module_tag;//物料组成标志W001-0: 未设计W001-1: 已设计
 	private String design_procedure_tag;//工序组成标志G001-0: 未设计  G001-1: 已设计
 	private String design_cell_tag;//库存分配标志K001-0: 未设计K001-1: 已设计
+	private String reason;//审核不通过的理由
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 	public int getId() {
 		return id;
 	}
@@ -284,14 +291,10 @@ public class D_file {
 	public void setDesign_cell_tag(String design_cell_tag) {
 		this.design_cell_tag = design_cell_tag;
 	}
-	public D_file() {
-		super();
-	}
 	public D_file(String product_id, String product_name, String factory_name, String first_kind_id,
 			String product_nick, String type, String product_class, String personal_unit, String personal_value,
 			String warranty, String lifecycle, double list_price, double cost_price, String product_describe,
 			String responsible_person, String register) {
-		super();
 		this.product_id = product_id;
 		this.product_name = product_name;
 		this.factory_name = factory_name;
@@ -313,7 +316,6 @@ public class D_file {
 			String product_nick, String type, String product_class, String personal_unit, String personal_value,
 			String warranty, String lifecycle, double list_price, double cost_price, String product_describe,
 			String responsible_person, String register,String changer,String change_time) {
-		super();
 		this.product_id = product_id;
 		this.product_name = product_name;
 		this.factory_name = factory_name;
@@ -332,6 +334,9 @@ public class D_file {
 		this.register = register;
 		this.changer = changer;
 		this.change_time = change_time;
+	}
+	public D_file() {
+		super();
 	}
 }
 

@@ -20,4 +20,15 @@ public interface ProductFileService {
 	int updateDelProduct(String product_id);
 	//更新产品档案信息
 	int updateProductInfo(D_file df);
+	//分页查询变更后的档案信息
+	public PageDemo<D_file> getUpdateD_fileInfo(int nowPage, int pageSize,D_file df);
+	//分页查询删除后的档案信息
+	public PageDemo<D_file> getDelD_fileInfo(int nowPage, int pageSize,D_file df);
+	//永久删除产品档案信息
+	int  delProductInfo(String product_id);
+	//恢复已经删除的档案信息
+	int RecoverDelProduct(String product_id);
+	
+	//商品的分页查询
+	public PageDemo<D_file> getProductInfo(int nowPage, int pageSize,D_file df);
 }

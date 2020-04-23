@@ -36,7 +36,7 @@ public class ProductFileController {
 	
 	//添加(修改)产品档案信息
 	@RequestMapping("/addProductFile")
-	public String addProductFile(HttpServletRequest request,HttpServletSession session) {
+	public String addProductFile(HttpServletRequest request,HttpSession session) {
 		String product_name = request.getParameter("product_name");// 产品名称
 		String factory_name = request.getParameter("factory_name");// 制造商
 		String first_kind_id = request.getParameter("first_kind_id");// 商品类型
@@ -55,7 +55,6 @@ public class ProductFileController {
 		String id = service.getDanHao();//生成产品单号要用的
 		String product_id = DanhaoUtil.getProductDanHao()+id;//产品单号
 		String product_id1 = request.getParameter("product_id");//传入id，为空添加操作，不为空修改操作
-		
 		if(product_id1!=""&&product_id1!=null&&!product_id1.equals("")) {
 			//更新操作
 			String username=(String)session.getAttribute("username");//变更人
@@ -120,11 +119,13 @@ public class ProductFileController {
 	@ResponseBody
 	public String nofuheProduct(HttpServletRequest request, HttpSession session) {
 		String product_id = request.getParameter("product_id");//产品id
+		String reason = request.getParameter("reason");//审核不通过的理由
 		D_file df = new D_file();
 		df.setProduct_id(product_id);
 		String checkerName = (String) session.getAttribute("username");//复核人姓名
 		df.setChecker(checkerName);
 		df.setCheck_tag("审核不通过");
+		df.setReason(reason);
 		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		df.setCheck_time(formate.format(new Date()));//复核的时间
 		service.updateD_fileFuHe(df);
@@ -136,9 +137,13 @@ public class ProductFileController {
 		response.setContentType("text/html;charset=utf-8");
 		String nowpage = request.getParameter("page");
 		String pageSize = request.getParameter("limit");
-		String product_name = request.getParameter("name");
+		String product_name = request.getParameter("name");//产品的名称
+		String type = request.getParameter("type");//用途类型
+		String product_id = request.getParameter("product_id");//产品的id
 		D_file df = new D_file();
 		df.setProduct_name(product_name);
+		df.setProduct_id(product_id);
+		df.setType(type);
 		PageDemo<D_file> pd = service.getD_fileInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), df);
 		PrintWriter out = response.getWriter();
 		String str = JSONArray.toJSONString(pd);
@@ -153,5 +158,81 @@ public class ProductFileController {
 		String product_id = request.getParameter("product_id");//产品id
 		int row = service.updateDelProduct(product_id);
 		return row>0?"成功":"失败";
+	}
+	@RequestMapping("/getUpdateD_fileInfo")
+	//分页查询变更后的档案信息
+	public void getUpdateD_fileInfo(HttpServletResponse response, HttpServletRequest request) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		String nowpage = request.getParameter("page");
+		String pageSize = request.getParameter("limit");
+		String product_name = request.getParameter("name");
+		D_file df = new D_file();
+		df.setProduct_name(product_name);
+		PageDemo<D_file> pd = service.getUpdateD_fileInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), df);
+		PrintWriter out = response.getWriter();
+		String str = JSONArray.toJSONString(pd);
+		out.print(str);
+		out.flush();
+		out.close();
+	}
+	//分页查询删除后的档案信息
+	@RequestMapping("/getDelD_fileInfo")
+	public void getDelD_fileInfo(HttpServletResponse response, HttpServletRequest request) throws Exception{
+		response.setContentType("text/html;charset=utf-8");
+		String nowpage = request.getParameter("page");
+		String pageSize = request.getParameter("limit");
+		String product_name = request.getParameter("name");
+		D_file df = new D_file();
+		df.setProduct_name(product_name);
+		PageDemo<D_file> pd = service.getDelD_fileInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), df);
+		PrintWriter out = response.getWriter();
+		String str = JSONArray.toJSONString(pd);
+		out.print(str);
+		out.flush();
+		out.close();
+	}
+	//永久删除产品档案信息
+	@RequestMapping("/DelProduct")
+	@ResponseBody
+	public String DelProduct(HttpServletRequest request) {
+		String product_id = request.getParameter("product_id");//产品id
+		int row = service.delProductInfo(product_id);
+		return row>0?"成功":"失败";
+	}
+	//恢复已经删除的产品档案信息
+	@RequestMapping("/RecoverDelProduct")
+	@ResponseBody
+	public String RecoverDelProduct(HttpServletRequest request) {
+		String product_id = request.getParameter("product_id");//产品id
+		int row =service.RecoverDelProduct(product_id);
+		return row>0?"成功":"失败";
+	}
+	//产品物料组成设计(开始)
+	//商品的分页查询
+	@RequestMapping("/getProductInfo")
+	public void getProductInfo(HttpServletResponse response, HttpServletRequest request) throws Exception{
+		response.setContentType("text/html;charset=utf-8");
+		String nowpage = request.getParameter("page");
+		String pageSize = request.getParameter("limit");
+		D_file df = new D_file();
+		PageDemo<D_file> pd = service.getProductInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), df);
+		PrintWriter out = response.getWriter();
+		String str = JSONArray.toJSONString(pd);
+		out.print(str);
+		out.flush();
+		out.close();
+	}
+	//打开物料设计单
+	@RequestMapping("/openMaterialDesign")
+	@ResponseBody
+	public String openMaterialDesign(HttpServletRequest request,HttpSession session) {
+		String product_id = request.getParameter("product_id");//产品id
+		String product_name = request.getParameter("product_name");//产品名字
+		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = formate.format(new Date());//登记的时间
+		session.setAttribute("product_id", product_id);
+		session.setAttribute("product_name", product_name);
+		session.setAttribute("time", time);
+		return "成功";
 	}
 }

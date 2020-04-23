@@ -33,8 +33,8 @@
                             <table class="layui-table" lay-data="{url:'getD_fileFuHe',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                        <th lay-data="{field:'product_id', width:100, sort: true}">产品编号</th>
-                                        <th lay-data="{field:'product_name', width:80}">产品名称</th>
+                                        <th lay-data="{field:'product_id', width:130, sort: true}">产品编号</th>
+                                        <th lay-data="{field:'product_name', width:100}">产品名称</th>
                                         <th lay-data="{field:'type', width:80}">用途类型</th>
                                         <th lay-data="{field:'first_kind_id', width:80}">分类</th>
                                         <th lay-data="{field:'factory_name', width:120}">制造商</th>
@@ -54,7 +54,7 @@
     <!--操作-->
 	<script type="text/html" id="oprListBar">
  		<i class="layui-icon layui-btn layui-btn-warning" lay-event="fuhe">复核</i>
-		<i class="layui-icon layui-btn layui-btn-warning" lay-event="nofuhe">审核不通过</i>
+		<i class="layui-icon layui-btn layui-btn-danger" lay-event="nofuhe">审核不通过</i>
 	</script>
     <script type="text/html" id="toolbarDemo">
         <div class = "layui-btn-container" > 
@@ -96,17 +96,31 @@
                         	 }
                          });
                 }else if(layEvent === 'nofuhe'){//审核不通过
-                	$.get("nofuheProduct",{
-                		product_id : data.product_id
-                    },function(data){
-                   	 if(data=="成功"){
-                   		 layer.msg("操作成功！");
-                          	table.reload("test");
-                            layer.close(index);
-                   	 }
-                    });
-                } 
+                	 layer.prompt({
+                  		 formType: 2,
+               		 value: '',
+               		 title: '请输入理由'
+               		}, function(value, index, elem){
+               		layer.close(index);
+                            $.get("nofuheProduct",{
+                            product_id  : data.product_id , "reason":value  //将需要删除的newsId作为参数传入
+                            },function(data){
+                           	 if(data=="成功"){
+                           		 layer.msg("操作成功！");
+                                  	 table.reload("test");
+                                    layer.close(index);
+                           	 }else{
+                           		 layer.alert("操作失败!");
+                           	 }
+                           	
+                            });
+                       });
+                }
             });
+          
+           
+          
+            
             //头工具栏事件
             table.on('toolbar(test)',
             function(obj) {

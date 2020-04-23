@@ -5,7 +5,7 @@
 </script>
     <head>
         <meta charset="UTF-8">
-        <title>产品档案复核查询</title>
+        <title>制定物料组成设计</title>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -29,58 +29,20 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                    <div class="layui-card-body ">
-                            <form class="layui-form layui-col-space5">
-                               <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="euUserName" placeholder="请输入产品的名称" autocomplete="off" class="layui-input">
-                                </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
-                                
-                                <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="product_id" placeholder="请输入产品的编号" autocomplete="off" class="layui-input">
-                                </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn2" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
-                                
-                                <div class="layui-inline layui-show-xs-block">
-									<div class="layui-input-inline">
-										<select name="type" id="type" lay-verify="tid">
-											<option value="" >请选择用途类型</option>
-											<option value="商品">商品</option>
-											<option value="物料">物料</option>
-										</select> 
-									</div>
-								</div>
-								<div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn1" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
-                            </form>
-                        </div>
                         <div class="layui-card-body ">
-                            <table class="layui-table" lay-data="{url:'getD_fileInfo',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
+                            <table class="layui-table" lay-data="{url:'getProductInfo',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                        <th lay-data="{field:'product_id', width:100, sort: true}">产品编号</th>
+                                        <th lay-data="{field:'product_id', width:120, sort: true}">产品编号</th>
                                         <th lay-data="{field:'product_name', width:105}">产品名称</th>
                                         <th lay-data="{field:'type', width:80}">用途类型</th>
                                         <th lay-data="{field:'first_kind_id', width:80}">分类</th>
-                                        <th lay-data="{field:'factory_name', width:120}">制造商</th>
                                          <th lay-data="{field:'personal_unit', width:80}">计量单位</th>
-                                         <th lay-data="{field:'personal_value', width:70}">计量值</th>
+                                         <th lay-data="{field:'personal_value', width:70}">数量</th>
                                          <th lay-data="{field:'warranty', width:70}">保修期</th>
-                                         <th lay-data="{field:'list_price', width:80}">市场单价</th>
-                                         <th lay-data="{field:'cost_price', width:80}">成本单价</th>
                                          <th lay-data="{field:'product_nick', width:80}">产品简称</th>
                                          <th lay-data="{field:'product_describe', width:150}">产品描述</th>
                                          <th lay-data="{field:'lifecycle', width:80}">生命周期</th>
-                                         <th lay-data="{field:'register', width:80}">登记人</th>
-                                         <th lay-data="{field:'responsible_person', width:80}">产品经理</th>
                                          <th lay-data="{field:'register_time', width:160,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.register_time)}}">登记时间</th>
                                         <th lay-data="{width:120, templet:'#oprListBar',fixed:'right'}">操作</th>
                                         </tr>
@@ -94,12 +56,11 @@
     </body>
     <!--操作-->
 	<script type="text/html" id="oprListBar">
- 		<i class="layui-icon layui-btn layui-btn-warning" lay-event="updateinfo">&#xe642;</i>
-		<i class="layui-icon layui-btn layui-btn-danger" lay-event="del">&#xe640;</i>
+ 		<i class="layui-icon layui-btn layui-btn-warning" lay-event="make">制定设计单</i>
 	</script>
     <script type="text/html" id="toolbarDemo">
         <div class = "layui-btn-container" > 
-            <button class = "layui-btn layui-btn-sm" lay-event = "" >产品档案信息如下</button>
+            <button class = "layui-btn layui-btn-sm" lay-event = "" >商品档案信息如下</button>
         </div > 
     </script>
     <script>layui.use('table',
@@ -108,12 +69,12 @@
 
           //编辑操作
             function editUser(edit){
-        	    title = "修改产品档案信息";
+        	    title = "物料组成设计单";
                 var index = layui.layer.open({
                     title : title,
                     type : 2,
-                    content : "productfile.html",
-                    area: ['1200px', '625px'],
+                    content : "materialdesign.html",
+                    area: ['1000px', '650px'],
                    /*  maxmin: true, */
                     success : function(layero, index){
                     	//获取子窗体对象
@@ -144,23 +105,19 @@
             table.on('tool(test)', function(obj){
                 var layEvent = obj.event,
                     data = obj.data;
-                if(layEvent === 'updateinfo'){ //修改产品档案信息
+                if(layEvent === ''){ //打开物料设计单
                 	editUser(data);
-                } else if(layEvent === 'del'){ //删除
-                    layer.confirm('确定删除该产品？',{icon:3, title:'提示信息'},function(index){
-                         $.get("updateDelProduct",{
-                        	 product_id : data.product_id 
-                         },function(data){
-                        	 if(data=="成功"){
-                        		 layer.msg("删除成功！");
-                                table.reload("test");
-                                 layer.close(index);
-                        	 }else{
-                        		 layer.alert("操作失败~ ");
-                        	 }
-                         });
+                }else if(layEvent === 'make'){
+                	$.get("openMaterialDesign",{//打开物料设计单
+                   	 product_id : data.product_id,product_name:data.product_name
+                    },function(data){
+                   	 if(data=="成功"){
+                   		 window.location.href='materialdesign.html';
+                   	 }else{
+                   		 layer.alert("操作失败~ ");
+                   	 }
                     });
-                } 
+                }
             });
             //头工具栏事件
             table.on('toolbar(test)',

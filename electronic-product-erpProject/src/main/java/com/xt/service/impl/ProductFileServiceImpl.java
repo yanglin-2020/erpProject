@@ -59,7 +59,7 @@ public class ProductFileServiceImpl implements ProductFileService{
 	public PageDemo<D_file> getD_fileInfo(int nowPage, int pageSize, D_file df) {
 		PageDemo<D_file> pd = new PageDemo<D_file>();
 		//(调用mapper的方法)
-		int rowCount = mapper.getD_FileCount(df);
+		int rowCount = mapper.getD_FileCount1(df);
 		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
 		List<D_file> list = mapper.getD_fileInfo(page, df);
 		pd.setCode(0);
@@ -77,5 +77,57 @@ public class ProductFileServiceImpl implements ProductFileService{
 	@Override
 	public int updateProductInfo(D_file df) {
 		return mapper.updateProductInfo(df);
+	}
+
+	@Override
+	public PageDemo<D_file> getUpdateD_fileInfo(int nowPage, int pageSize, D_file df) {
+		PageDemo<D_file> pd = new PageDemo<D_file>();
+		//(调用mapper的方法)
+		int rowCount = mapper.getD_FileCount2(df);
+		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+		List<D_file> list = mapper.getUpdateD_fileInfo(page, df);
+		pd.setCode(0);
+		pd.setCount(rowCount);
+		pd.setMsg("");
+		pd.setData(list);
+		return pd;
+	}
+
+	@Override
+	public PageDemo<D_file> getDelD_fileInfo(int nowPage, int pageSize, D_file df) {
+		PageDemo<D_file> pd = new PageDemo<D_file>();
+		//(调用mapper的方法)
+		int rowCount = mapper.getD_FileCount3(df);
+		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+		List<D_file> list = mapper.getDelD_fileInfo(page, df);
+		pd.setCode(0);
+		pd.setCount(rowCount);
+		pd.setMsg("");
+		pd.setData(list);
+		return pd;
+	}
+
+	@Override
+	public int delProductInfo(String product_id) {
+		return mapper.delProductInfo(product_id);
+	}
+
+	@Override
+	public int RecoverDelProduct(String product_id) {
+		return mapper.RecoverDelProduct(product_id);
+	}
+
+	@Override
+	public PageDemo<D_file> getProductInfo(int nowPage, int pageSize, D_file df) {
+		PageDemo<D_file> pd = new PageDemo<D_file>();
+		//(调用mapper的方法)
+		int rowCount = mapper.getProductCount(df);
+		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+		List<D_file> list = mapper.getProductInfo(page, df);
+		pd.setCode(0);
+		pd.setCount(rowCount);
+		pd.setMsg("");
+		pd.setData(list);
+		return pd;
 	}
 }
