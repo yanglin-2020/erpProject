@@ -1,5 +1,11 @@
 package com.xt.service;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.xt.pojo.DModule;
+import com.xt.pojo.DModuleDetails;
 import com.xt.pojo.D_file;
 import com.xt.util.PageDemo;
 
@@ -31,4 +37,20 @@ public interface ProductFileService {
 	
 	//商品的分页查询
 	public PageDemo<D_file> getProductInfo(int nowPage, int pageSize,D_file df);
+	//物料的分页查询
+	public PageDemo<D_file> getMaterialInfo(int nowPage, int pageSize,D_file df);
+	//为某个产品添加所需的物料
+	int addMaterial(DModuleDetails dd);
+	//添加成功后数量减少
+	int minusMaterialNum(@Param("num") int num,@Param("id") String id);
+	//查询需要的物料
+	List<DModuleDetails> queryMaterial(String id);
+	//删除一个商品需要的物料
+	int delMaterial(String id);
+	//删除后物料数量增加
+	int addMaterialNum(@Param("num") int num,@Param("id") String id);
+	//生成设计单号要用的
+	String getDesignDanHao();
+	//物料组成设计单完成进行保存
+	int saveMaterail(DModule dm);
 }

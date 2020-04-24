@@ -118,9 +118,60 @@
 	<!--商品的分页查询  -->
 	<select id="getProductCount" resultType="int">
 		select count(1) from d_file where type = '商品' and check_tag='审核通过'  and delete_tag ='未删除'
+		<if test="df.product_name!=null and df.product_name!=''">
+			and product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
 	</select>
 	<select id="getProductInfo" resultType="D_file">
 		select * from d_file where type = '商品' and check_tag='审核通过'  and delete_tag ='未删除'
+		<if test="df.product_name!=null and df.product_name!=''">
+			and product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
 		limit #{page.startRow},#{page.pageSize}
 	</select>
+	<!--物料的分页查询  -->
+	<select id="getMaterialCount" resultType="int">
+		select count(1) from d_file where type = '物料' and check_tag='审核通过'  and delete_tag ='未删除'
+		<if test="df.product_name!=null and df.product_name!=''">
+			and product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
+	</select>
+	<select id="getMaterialInfo" resultType="D_file">
+		select * from d_file where type = '物料' and check_tag='审核通过'  and delete_tag ='未删除'
+		<if test="df.product_name!=null and df.product_name!=''">
+			and product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!--为某个产品添加所需的物料  -->
+	<insert id="addMaterial">
+		insert into d_module_details(parent_id,product_id,product_name,type,product_describe,amount_unit,amount,cost_price,subtotal)
+		values(#{parent_id},#{product_id},#{product_name},#{type},#{product_describe},#{amount_unit},#{amount},#{cost_price},#{subtotal})
+	</insert>
+	<!--添加成功后数量减少  -->
+	<update id="minusMaterialNum">
+		update d_file set personal_value=personal_value-#{num} where product_id=#{id}
+	</update>
+	<!--查询需要的物料  -->
+	<select id="queryMaterial" resultType="DModuleDetails">
+		select * from d_module_details where parent_id=#{id}
+	</select>
+	<!--删除一个商品需要的物料  -->
+	<delete id="delMaterial">
+		delete from d_module_details where product_id=#{id}
+	</delete>
+	<!--删除后物料增加  -->
+	<update id="addMaterialNum">
+		update d_file set personal_value=personal_value+#{num} where product_id=#{id}
+	</update>
+	<!--生成设计单号要用的  -->
+	<select id="getDesignDanHao" resultType="String">
+		select (id+1) from d_module
+		order by id desc limit 1
+	</select>
+	<!--物料组成设计单完成进行保存  -->
+	<insert id="saveMaterail">
+	insert into d_module(design_id,product_id,product_name,designer,register,register_time,module_describe)
+	values(#{design_id},#{product_id},#{product_name},#{designer},#{register},#{register_time},#{module_describe})
+	</insert>
 </mapper>

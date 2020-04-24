@@ -237,6 +237,14 @@ td {
 	display: inline-block;
 	padding: 2px 3px;
 }
+.layoutitem-add button {
+	width: 70px;
+	height: 30px;
+	line-height: 24px;
+	margin: 12px 8px;
+	display: inline-block;
+	padding: 2px 3px;
+}
 
 .add {
 	background: #ff0303;
@@ -352,6 +360,7 @@ body {
                 <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
             </a>
         </div>
+   <form th:action="@{/saveMaterail}" method="post">
 	<table cellpadding="0" cellspacing="0" border="0" class="formborder"
 		style="z-index: 99; position: absolute; left: 200px; top: 100px; width: 880px; display: block;">
 		<tbody>
@@ -378,7 +387,7 @@ body {
 									<li>
 										<div class="item-input">
 											<label class="item-label"> 设计人:</label>&nbsp;&nbsp; <input
-												type="text" class="layoutitemcon" maxlength="50">
+												type="text" class="layoutitemcon" maxlength="50" name="designer">
 										</div>
 
 									</li>
@@ -396,20 +405,20 @@ body {
 														<td>单位</td>
 														<td>计划成本单价</td>
 														<td>小计</td>
-														<td>删除</td>
+														<td>操作</td>
 													</tr>
 												</thead>
 												<tbody>
-													<tr class="first">
-														<td>中国</td>
-														<td>NY</td>
-														<td>00501</td>
-														<td>40.8152</td>
-														<td>-73.0455</td>
-														<td>Suffolk</td>
-														<td>中国</td>
-														<td>中国</td>
-														<td>中国</td>
+													<tr class="first" th:each="m:${session.materialList}">
+														<td th:text="${m.product_id}"></td>
+														<td th:text="${m.product_name}"></td>
+														<td th:text="${m.type}"></td>
+														<td th:text="${m.product_describe}"></td>
+														<td th:text="${m.amount}"></td>
+														<td th:text="${m.amount_unit}"></td>
+														<td th:text="${m.cost_price}"></td>
+														<td th:text="${m.subtotal}"></td>
+														<td><a th:href="@{/delMaterial(id=${m.product_id},num=${m.amount})}">删除</a></td>
 													</tr>
 												</tbody>
 
@@ -437,14 +446,16 @@ body {
 
 					</div>
 					<div class="layoutitem-add">
-						<a href="#" class="add">添加物料</a> <a href="#" class="bc">保存</a> <a
-							href="makematerial.html" class="tc">返回</a>
+						<a href="materialdetail.html" class="add">添加物料</a> 
+						<a href="makematerial.html" class="tc">返回</a>
+						<button type="submit" class="bc">保存</button>
 					</div>
 					</div>
 				</td>
 			</tr>
 		</tbody>
 	</table>
+	</form>
 	<!--弹窗 仓库管理开始-->
 
 </body>

@@ -1,8 +1,10 @@
 package com.xt.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 产品档案
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
+import com.xt.pojo.DModule;
+import com.xt.pojo.DModuleDetails;
 import com.xt.pojo.D_file;
 import com.xt.pojo.Users;
 import com.xt.service.ProductFileService;
@@ -214,7 +218,9 @@ public class ProductFileController {
 		response.setContentType("text/html;charset=utf-8");
 		String nowpage = request.getParameter("page");
 		String pageSize = request.getParameter("limit");
+		String name = request.getParameter("name");//商品的名字
 		D_file df = new D_file();
+		df.setProduct_name(name);
 		PageDemo<D_file> pd = service.getProductInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), df);
 		PrintWriter out = response.getWriter();
 		String str = JSONArray.toJSONString(pd);
@@ -234,5 +240,72 @@ public class ProductFileController {
 		session.setAttribute("product_name", product_name);
 		session.setAttribute("time", time);
 		return "成功";
+	}
+	//物料的分页查询
+	@RequestMapping("/getMaterialInfo")
+	public void getMaterialInfo(HttpServletResponse response, HttpServletRequest request) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		String nowpage = request.getParameter("page");
+		String pageSize = request.getParameter("limit");
+		String name = request.getParameter("name");//物料的名字
+		D_file df = new D_file();
+		df.setProduct_name(name);
+		PageDemo<D_file> pd = service.getMaterialInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), df);
+		PrintWriter out = response.getWriter();
+		String str = JSONArray.toJSONString(pd);
+		out.print(str);
+		out.flush();
+		out.close();
+	}
+	//为某个产品添加所需的物料
+	@RequestMapping("/addmaterial")
+	@ResponseBody
+	public String addmaterial(HttpServletRequest request,HttpSession session) {
+		String product_id = request.getParameter("product_id");//物料编号
+		String product_name = request.getParameter("product_name");//物料名称
+		String type = request.getParameter("type");//代表物料
+		String product_describe = request.getParameter("product_describe");//物料的描述
+		String personal_unit = request.getParameter("personal_unit");//计量单位
+		String personal_value = request.getParameter("personal_value");//需要添加物料的数量
+		String cost_price = request.getParameter("cost_price");//物料的单价
+		String goods_id = (String) session.getAttribute("product_id");//商品的编号
+		double subtotal = Integer.parseInt(personal_value)*Double.parseDouble(cost_price);
+		DModuleDetails dd = new DModuleDetails(goods_id, product_id, product_name, type, product_describe, 
+				personal_unit, Integer.parseInt(personal_value), Double.parseDouble(cost_price), subtotal);
+		int row = service.addMaterial(dd);
+		//添加成功后,数量减少
+		service.minusMaterialNum(Integer.parseInt(personal_value), product_id);
+		//查询商品需要的物料
+		List<DModuleDetails> list = service.queryMaterial(goods_id);
+		session.setAttribute("materialList", list);
+		return row>0?"成功":"失败";
+	}
+	//删除一个商品需要的物料
+	@RequestMapping("/delMaterial")
+	public String delMaterial(String id,HttpSession session,String num) {
+		int row = service.delMaterial(id);
+		//删除过后，物料档案数量增加
+		service.addMaterialNum(Integer.parseInt(num), id);
+		session.removeAttribute("materialList");
+		//查询商品需要的物料
+		String goods_id = (String) session.getAttribute("product_id");//商品的编号
+		List<DModuleDetails> list = service.queryMaterial(goods_id);
+		session.setAttribute("materialList", list);
+		return row>0?"materialdesign":"失败";
+	}
+	//物料组成设计单完成进行保存
+	@RequestMapping("/saveMaterail")
+	public String saveMaterail(HttpServletRequest request,HttpSession session) {
+		String product_id = request.getParameter("product_id");//产品id
+		String product_name = request.getParameter("product_name");//产品名称
+		String designer = request.getParameter("designer");//设计人
+		String checkerName = (String) session.getAttribute("username");//登记人姓名
+		String time = (String) session.getAttribute("time");//登记时间
+		String module_describe = request.getParameter("module_describe");//设计时间
+		String designId = service.getDesignDanHao();
+		String design_id = DanhaoUtil.getDesignDanHao()+designId;//设计单号
+		DModule dm = new DModule(design_id, product_id, product_name, designer, module_describe, checkerName, time);
+		int row = service.saveMaterail(dm);
+		return row>0?"load2":"失败";
 	}
 }

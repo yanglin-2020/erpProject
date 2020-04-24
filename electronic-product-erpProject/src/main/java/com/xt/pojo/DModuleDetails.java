@@ -3,133 +3,109 @@ package com.xt.pojo;
 import java.io.Serializable;
 
 /**
- * 产品物理组成明细实体类
- *
- * @author makejava
- * @since 2020-04-17 10:35:17
+ * 产品物料组成明细实体类
+ * 
+ * @author yl
  */
 public class DModuleDetails implements Serializable {
-    private static final long serialVersionUID = -62915470413774120L;
-    //序号
-    private Integer id;
-    //父级序号
-    private Integer parentId;
-    //物料序号
-    private Integer detailsNumber;
-    //物料编号
-    private String productId;
-    //物料名称
-    private String productName;
-    //用途类型
-    private String type;
-    //描述
-    private String productDescribe;
-    //单位
-    private String amountUnit;
-    //数量
-    private Object amount;
-    //可用数量
-    private Object residualAmount;
-    //单价
-    private Object costPrice;
-    //小计
-    private Object subtotal;
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    public Integer getDetailsNumber() {
-        return detailsNumber;
-    }
-
-    public void setDetailsNumber(Integer detailsNumber) {
-        this.detailsNumber = detailsNumber;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getProductDescribe() {
-        return productDescribe;
-    }
-
-    public void setProductDescribe(String productDescribe) {
-        this.productDescribe = productDescribe;
-    }
-
-    public String getAmountUnit() {
-        return amountUnit;
-    }
-
-    public void setAmountUnit(String amountUnit) {
-        this.amountUnit = amountUnit;
-    }
-
-    public Object getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Object amount) {
-        this.amount = amount;
-    }
-
-    public Object getResidualAmount() {
-        return residualAmount;
-    }
-
-    public void setResidualAmount(Object residualAmount) {
-        this.residualAmount = residualAmount;
-    }
-
-    public Object getCostPrice() {
-        return costPrice;
-    }
-
-    public void setCostPrice(Object costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public Object getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(Object subtotal) {
-        this.subtotal = subtotal;
-    }
-
+	private int id;// 序号
+	private String parent_id;// 父级序号(产品单号，外键)
+	private String details_number;// 物料序号
+	private String product_id;// 物料编号
+	private String product_name;// 物料名称
+	private String type;// 用途类型
+	private String product_describe;// 描述
+	private String amount_unit;// 单位
+	private int amount;// 数量
+	private int residual_amount;// 可用数量
+	private double cost_price;// 单价
+	private double subtotal;// 小计
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getParent_id() {
+		return parent_id;
+	}
+	public void setParent_id(String parent_id) {
+		this.parent_id = parent_id;
+	}
+	public String getDetails_number() {
+		return details_number;
+	}
+	public void setDetails_number(String details_number) {
+		this.details_number = details_number;
+	}
+	public String getProduct_id() {
+		return product_id;
+	}
+	public void setProduct_id(String product_id) {
+		this.product_id = product_id;
+	}
+	public String getProduct_name() {
+		return product_name;
+	}
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getProduct_describe() {
+		return product_describe;
+	}
+	public void setProduct_describe(String product_describe) {
+		this.product_describe = product_describe;
+	}
+	public String getAmount_unit() {
+		return amount_unit;
+	}
+	public void setAmount_unit(String amount_unit) {
+		this.amount_unit = amount_unit;
+	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+	public int getResidual_amount() {
+		return residual_amount;
+	}
+	public void setResidual_amount(int residual_amount) {
+		this.residual_amount = residual_amount;
+	}
+	public double getCost_price() {
+		return cost_price;
+	}
+	public void setCost_price(double cost_price) {
+		this.cost_price = cost_price;
+	}
+	public double getSubtotal() {
+		return subtotal;
+	}
+	public void setSubtotal(double subtotal) {
+		this.subtotal = subtotal;
+	}
+	public DModuleDetails() {
+		super();
+	}
+	public DModuleDetails(String parent_id, String product_id, String product_name, String type,
+			String product_describe, String amount_unit, int amount, double cost_price, double subtotal) {
+		super();
+		this.parent_id = parent_id;
+		this.product_id = product_id;
+		this.product_name = product_name;
+		this.type = type;
+		this.product_describe = product_describe;
+		this.amount_unit = amount_unit;
+		this.amount = amount;
+		this.cost_price = cost_price;
+		this.subtotal = subtotal;
+	}
 }

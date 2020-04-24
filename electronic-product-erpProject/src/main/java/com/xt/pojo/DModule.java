@@ -3,223 +3,127 @@ package com.xt.pojo;
 import java.io.Serializable;
 
 /**
- * 产品物理组成实体类
- *
- * @author makejava
- * @since 2020-04-17 10:35:17
+ * 产品物料组成实体类
+ * @author yl
  */
 public class DModule implements Serializable {
-    private static final long serialVersionUID = -55640476932053956L;
-    //序号
-    private Integer id;
-    //设计编号
-    private String designId;
-    //产品编号
-    private String productId;
-    //产品名称
-    private String productName;
-    //产品I级分类编号
-    private String firstKindId;
-    //产品I级分类名称
-    private String firstKindName;
-    //产品II级分类编号
-    private String secondKindId;
-    //产品II级分类名称
-    private String secondKindName;
-    //产品III级分类编号
-    private String thirdKindId;
-    //产品III级分类名称
-    private String thirdKindName;
-    //设计人
-    private String designer;
-    //设计要求
-    private String moduleDescribe;
-    //物料总成本
-    private Object costPriceSum;
-    //登记人
-    private String register;
-    //登记时间
-    private Object registerTime;
-    //复核人
-    private String checker;
-    //复核时间
-    private Object checkTime;
-    //变更人
-    private String changer;
-    //变更时间
-    private Object changeTime;
-    //审核标志    S001-0: 等待审核   S001-1: 审核通过    S001-2: 审核不通过
-    private String checkTag;
-    //变更标志    B002-0: 未变更     B002-1: 已变更
-    private String changeTag;
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDesignId() {
-        return designId;
-    }
-
-    public void setDesignId(String designId) {
-        this.designId = designId;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getFirstKindId() {
-        return firstKindId;
-    }
-
-    public void setFirstKindId(String firstKindId) {
-        this.firstKindId = firstKindId;
-    }
-
-    public String getFirstKindName() {
-        return firstKindName;
-    }
-
-    public void setFirstKindName(String firstKindName) {
-        this.firstKindName = firstKindName;
-    }
-
-    public String getSecondKindId() {
-        return secondKindId;
-    }
-
-    public void setSecondKindId(String secondKindId) {
-        this.secondKindId = secondKindId;
-    }
-
-    public String getSecondKindName() {
-        return secondKindName;
-    }
-
-    public void setSecondKindName(String secondKindName) {
-        this.secondKindName = secondKindName;
-    }
-
-    public String getThirdKindId() {
-        return thirdKindId;
-    }
-
-    public void setThirdKindId(String thirdKindId) {
-        this.thirdKindId = thirdKindId;
-    }
-
-    public String getThirdKindName() {
-        return thirdKindName;
-    }
-
-    public void setThirdKindName(String thirdKindName) {
-        this.thirdKindName = thirdKindName;
-    }
-
-    public String getDesigner() {
-        return designer;
-    }
-
-    public void setDesigner(String designer) {
-        this.designer = designer;
-    }
-
-    public String getModuleDescribe() {
-        return moduleDescribe;
-    }
-
-    public void setModuleDescribe(String moduleDescribe) {
-        this.moduleDescribe = moduleDescribe;
-    }
-
-    public Object getCostPriceSum() {
-        return costPriceSum;
-    }
-
-    public void setCostPriceSum(Object costPriceSum) {
-        this.costPriceSum = costPriceSum;
-    }
-
-    public String getRegister() {
-        return register;
-    }
-
-    public void setRegister(String register) {
-        this.register = register;
-    }
-
-    public Object getRegisterTime() {
-        return registerTime;
-    }
-
-    public void setRegisterTime(Object registerTime) {
-        this.registerTime = registerTime;
-    }
-
-    public String getChecker() {
-        return checker;
-    }
-
-    public void setChecker(String checker) {
-        this.checker = checker;
-    }
-
-    public Object getCheckTime() {
-        return checkTime;
-    }
-
-    public void setCheckTime(Object checkTime) {
-        this.checkTime = checkTime;
-    }
-
-    public String getChanger() {
-        return changer;
-    }
-
-    public void setChanger(String changer) {
-        this.changer = changer;
-    }
-
-    public Object getChangeTime() {
-        return changeTime;
-    }
-
-    public void setChangeTime(Object changeTime) {
-        this.changeTime = changeTime;
-    }
-
-    public String getCheckTag() {
-        return checkTag;
-    }
-
-    public void setCheckTag(String checkTag) {
-        this.checkTag = checkTag;
-    }
-
-    public String getChangeTag() {
-        return changeTag;
-    }
-
-    public void setChangeTag(String changeTag) {
-        this.changeTag = changeTag;
-    }
-
+    private int id;//序号
+    private String design_id;//设计编号
+    private String product_id;//产品编号
+    private String product_name;//产品名称
+    private String designer;//设计人
+    private String module_describe;//设计要求
+    private double cost_price_sum;//物料总成本
+    private String register;//登记人
+    private String register_time;//登记时间
+    private String checker;//复核人
+    private String check_time;//复核时间
+    private String changer;//变更人
+    private String change_time;//变更时间
+    private String check_tag;//审核标志  
+    private String change_tag;//变更标志
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getDesign_id() {
+		return design_id;
+	}
+	public void setDesign_id(String design_id) {
+		this.design_id = design_id;
+	}
+	public String getProduct_id() {
+		return product_id;
+	}
+	public void setProduct_id(String product_id) {
+		this.product_id = product_id;
+	}
+	public String getProduct_name() {
+		return product_name;
+	}
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
+	public String getDesigner() {
+		return designer;
+	}
+	public void setDesigner(String designer) {
+		this.designer = designer;
+	}
+	public String getModule_describe() {
+		return module_describe;
+	}
+	public void setModule_describe(String module_describe) {
+		this.module_describe = module_describe;
+	}
+	public double getCost_price_sum() {
+		return cost_price_sum;
+	}
+	public void setCost_price_sum(double cost_price_sum) {
+		this.cost_price_sum = cost_price_sum;
+	}
+	public String getRegister() {
+		return register;
+	}
+	public void setRegister(String register) {
+		this.register = register;
+	}
+	public String getRegister_time() {
+		return register_time;
+	}
+	public void setRegister_time(String register_time) {
+		this.register_time = register_time;
+	}
+	public String getChecker() {
+		return checker;
+	}
+	public void setChecker(String checker) {
+		this.checker = checker;
+	}
+	public String getCheck_time() {
+		return check_time;
+	}
+	public void setCheck_time(String check_time) {
+		this.check_time = check_time;
+	}
+	public String getChanger() {
+		return changer;
+	}
+	public void setChanger(String changer) {
+		this.changer = changer;
+	}
+	public String getChange_time() {
+		return change_time;
+	}
+	public void setChange_time(String change_time) {
+		this.change_time = change_time;
+	}
+	public String getCheck_tag() {
+		return check_tag;
+	}
+	public void setCheck_tag(String check_tag) {
+		this.check_tag = check_tag;
+	}
+	public String getChange_tag() {
+		return change_tag;
+	}
+	public void setChange_tag(String change_tag) {
+		this.change_tag = change_tag;
+	}
+	public DModule() {
+		super();
+	}
+	public DModule(String design_id, String product_id, String product_name, String designer, String module_describe,
+			String register, String register_time) {
+		super();
+		this.design_id = design_id;
+		this.product_id = product_id;
+		this.product_name = product_name;
+		this.designer = designer;
+		this.module_describe = module_describe;
+		this.register = register;
+		this.register_time = register_time;
+	}
 }

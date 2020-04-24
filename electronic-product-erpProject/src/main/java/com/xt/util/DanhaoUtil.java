@@ -21,15 +21,12 @@ public class DanhaoUtil {
 		return danhao;
 	}
 
-	// 销售单号生成
-	public static String getXsDanHao() {
+	// 设计编号
+	public static String getDesignDanHao() {
 		// 获取电脑上的当前时间
 		Date d = new Date();
-		String danhao = "xs" + DanhaoUtil.formatDateToCommon(d);
+		String danhao = "d" + DanhaoUtil.formatDateToCommon(d);
 		return danhao;
 	}
-
-	public static void main(String[] args) {
-		System.out.println(getXsDanHao());
-	}
+	
 }

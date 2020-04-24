@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xt.mapper.ProductFileMapper;
+import com.xt.pojo.DModule;
+import com.xt.pojo.DModuleDetails;
 import com.xt.pojo.D_file;
 import com.xt.pojo.Users;
 import com.xt.service.ProductFileService;
@@ -129,5 +131,54 @@ public class ProductFileServiceImpl implements ProductFileService{
 		pd.setMsg("");
 		pd.setData(list);
 		return pd;
+	}
+
+	@Override
+	public PageDemo<D_file> getMaterialInfo(int nowPage, int pageSize, D_file df) {
+		PageDemo<D_file> pd = new PageDemo<D_file>();
+		//(调用mapper的方法)
+		int rowCount = mapper.getMaterialCount(df);
+		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+		List<D_file> list = mapper.getMaterialInfo(page, df);
+		pd.setCode(0);
+		pd.setCount(rowCount);
+		pd.setMsg("");
+		pd.setData(list);
+		return pd;
+	}
+
+	@Override
+	public int addMaterial(DModuleDetails dd) {
+		return mapper.addMaterial(dd);
+	}
+
+	@Override
+	public int minusMaterialNum(int num, String id) {
+		return mapper.minusMaterialNum(num, id);
+	}
+
+	@Override
+	public List<DModuleDetails> queryMaterial(String id) {
+		return mapper.queryMaterial(id);
+	}
+
+	@Override
+	public int delMaterial(String id) {
+		return mapper.delMaterial(id);
+	}
+
+	@Override
+	public int addMaterialNum(int num, String id) {
+		return mapper.addMaterialNum(num, id);
+	}
+
+	@Override
+	public String getDesignDanHao() {
+		return mapper.getDesignDanHao();
+	}
+
+	@Override
+	public int saveMaterail(DModule dm) {
+		return mapper.saveMaterail(dm);
 	}
 }
