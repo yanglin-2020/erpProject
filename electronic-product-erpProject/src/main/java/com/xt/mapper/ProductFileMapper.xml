@@ -145,8 +145,8 @@
 	</select>
 	<!--为某个产品添加所需的物料  -->
 	<insert id="addMaterial">
-		insert into d_module_details(parent_id,product_id,product_name,type,product_describe,amount_unit,amount,cost_price,subtotal)
-		values(#{parent_id},#{product_id},#{product_name},#{type},#{product_describe},#{amount_unit},#{amount},#{cost_price},#{subtotal})
+		insert into d_module_details(parent_id,product_id,product_name,type,product_describe,amount_unit,amount,cost_price,subtotal,residual_amount)
+		values(#{parent_id},#{product_id},#{product_name},#{type},#{product_describe},#{amount_unit},#{amount},#{cost_price},#{subtotal},#{amount})
 	</insert>
 	<!--添加成功后数量减少  -->
 	<update id="minusMaterialNum">
@@ -235,7 +235,7 @@
 	</select>
 	<!--修改产品需要的物料数量  -->
 	<update id="updateMaterialNum">
-		update d_module_details set amount=amount+#{num} 
+		update d_module_details set amount=amount+#{num},residual_amount=residual_amount+#{num} 
 		where product_id=#{product_id} and parent_id=#{parent_id}
 	</update>
 	<!--修改产品需要的物料信息  -->
