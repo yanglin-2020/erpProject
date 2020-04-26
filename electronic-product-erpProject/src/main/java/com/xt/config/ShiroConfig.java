@@ -22,7 +22,7 @@ public class ShiroConfig {
 		// 必须设置 SecurityManager,Shiro的核心安全接口
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
 		// 这里的/login是后台的接口名,非页面，如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-		shiroFilterFactoryBean.setLoginUrl("/login");
+		shiroFilterFactoryBean.setLoginUrl("/Userlogin");
 		// 这里的/index是后台的接口名,非页面,登录成功后要跳转的链接
 		//shiroFilterFactoryBean.setSuccessUrl("/index");
 		// 未授权界面,该配置无效，并不会进行页面跳转
