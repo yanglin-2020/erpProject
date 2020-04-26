@@ -12,7 +12,7 @@ public interface UsersService {
 	//根据用户的名称拿到相应的权限
 	List<String> selectPermissions(String username);
 	//根据用户的id拿到相应的菜单
-	List<Permissions> selectMenus(int u_id);
+	List<Permissions> selectMenus(String u_name);
 	//分页查询所有用户信息
 	public PageDemo<Users> getAllUserInfo(int nowPage, int pageSize,Users u);
 	//添加一个用户信息

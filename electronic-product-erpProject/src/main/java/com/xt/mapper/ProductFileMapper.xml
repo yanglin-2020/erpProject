@@ -171,8 +171,8 @@
 	</select>
 	<!--物料组成设计单完成进行保存  -->
 	<insert id="saveMaterail">
-	insert into d_module(design_id,product_id,product_name,designer,register,register_time,module_describe)
-	values(#{design_id},#{product_id},#{product_name},#{designer},#{register},#{register_time},#{module_describe})
+	insert into d_module(design_id,product_id,product_name,designer,register,register_time,module_describe,cost_price_sum)
+	values(#{design_id},#{product_id},#{product_name},#{designer},#{register},#{register_time},#{module_describe},#{cost_price_sum})
 	</insert>
 	<!--修改商品的设计状态(已设计)  -->
 	<update id="updateGoodsDesign">
@@ -235,7 +235,8 @@
 	</select>
 	<!--修改产品需要的物料数量  -->
 	<update id="updateMaterialNum">
-		update d_module_details set amount=amount+#{num},residual_amount=residual_amount+#{num} 
+		update d_module_details set amount=amount+#{num},residual_amount=residual_amount+#{num},
+		subtotal=subtotal+#{sumMoney} 
 		where product_id=#{product_id} and parent_id=#{parent_id}
 	</update>
 	<!--修改产品需要的物料信息  -->
@@ -264,4 +265,18 @@
 		</if>
 		limit #{page.startRow},#{page.pageSize}
 	</select>
+	<!--//后面加的方法(完善)
+	//物料删除后，物料总成本减少  -->
+	<select id="getMaterialMoney" resultType="Double">
+		select subtotal from d_module_details where parent_id=#{parent_id} and product_id=#{id}
+	</select>
+	<update id="updateMaterialSumMoney">
+		update d_module set cost_price_sum=cost_price_sum-#{money} where design_id=#{design_id}
+	</update>
+	<update id="updateMaterialSumMoneyadd">
+		update d_module set cost_price_sum=#{money} where design_id=#{design_id}
+	</update>
+	<delete id="delMaterialById">
+		delete from d_module_details where parent_id=#{product_id}
+	</delete>
 </mapper>

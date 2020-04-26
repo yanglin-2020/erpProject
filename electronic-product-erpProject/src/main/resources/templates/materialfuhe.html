@@ -103,7 +103,7 @@
                		}, function(value, index, elem){
                		layer.close(index);
                             $.get("nofuheMaterial",{
-                            	design_id  : data.design_id , "reason":value  //将需要删除的newsId作为参数传入
+                            	design_id  : data.design_id , "reason":value,product_id:data.product_id
                             },function(data){
                            	 if(data=="成功"){
                            		 layer.msg("操作成功！");

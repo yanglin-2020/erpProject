@@ -19,14 +19,14 @@
 		select * from permissions where id 
 		in (select pid from permission_role where rid 
 		in (select r_id from  user_role where u_id 
-		in (select u_id from users where u_id =#{u_id}))) and type= 0 and parentMenu =0
+		in (select u_id from users where u_name =#{u_name}))) and type= 0 and parentMenu =0
 	</select>
 	<!--拿到相应的子菜单  -->
 	<select id="selectSonMenus" resultType="Permissions">
 		select * from permissions where id 
 		in (select pid from permission_role where rid 
 		in (select r_id from  user_role where u_id 
-		in (select u_id from users where u_id =#{u_id}))) and type= 0 and parentMenu =#{menu_id}
+		in (select u_id from users where u_name =#{u_name}))) and type= 0 and parentMenu =#{menu_id}
 	</select>
 	<!--拿到用户的数量  -->
 	<select id="getUsersCount" resultType="int">

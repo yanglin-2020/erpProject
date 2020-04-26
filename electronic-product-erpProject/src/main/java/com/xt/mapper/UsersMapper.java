@@ -14,9 +14,9 @@ public interface UsersMapper {
 	//根据用户的名称拿到相应的权限
 	List<String> selectPermissions(String username);
 	//根据用户的id拿到相应的菜单
-	List<Permissions> selectMenus(int u_id);
+	List<Permissions> selectMenus(String u_name);
 	//拿到子菜单
-	List<Permissions> selectSonMenus(@Param("u_id") int u_id,@Param("menu_id")int menu_id);
+	List<Permissions> selectSonMenus(@Param("u_name") String u_name,@Param("menu_id")int menu_id);
 	//拿到用户的数量
 	int getUsersCount(@Param("u") Users user);
 	//分页查询用户

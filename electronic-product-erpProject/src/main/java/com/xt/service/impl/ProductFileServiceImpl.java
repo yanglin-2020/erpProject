@@ -241,8 +241,8 @@ public class ProductFileServiceImpl implements ProductFileService{
 	}
 
 	@Override
-	public int updateMaterialNum(String product_id, String parent_id, int num) {
-		return mapper.updateMaterialNum(product_id, parent_id, num);
+	public int updateMaterialNum(String product_id, String parent_id, int num,double sumMoney) {
+		return mapper.updateMaterialNum(product_id, parent_id, num,sumMoney);
 	}
 
 	@Override
@@ -262,5 +262,25 @@ public class ProductFileServiceImpl implements ProductFileService{
 		pd.setMsg("");
 		pd.setData(list);
 		return pd;
+	}
+
+	@Override
+	public double getMaterialMoney(String id, String parent_id) {
+		return mapper.getMaterialMoney(id, parent_id);
+	}
+
+	@Override
+	public int updateMaterialSumMoney(String design_id, double money) {
+		return mapper.updateMaterialSumMoney(design_id, money);
+	}
+
+	@Override
+	public int updateMaterialSumMoneyadd(String design_id, double money) {
+		return mapper.updateMaterialSumMoneyadd(design_id, money);
+	}
+
+	@Override
+	public int delMaterialById(String product_id) {
+		return mapper.delMaterialById(product_id);
 	}
 }

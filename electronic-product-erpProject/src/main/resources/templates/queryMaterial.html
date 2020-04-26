@@ -54,7 +54,7 @@
                                 <thead>
                                     <tr>
                                     	<th lay-data="{field:'design_id', width:100, sort: true}">设计单号</th>
-                                        <th lay-data="{field:'product_id', width:100, sort: true}">产品编号</th>
+                                        <th lay-data="{field:'product_id', width:106, sort: true}">产品编号</th>
                                         <th lay-data="{field:'product_name', width:90}">产品名称</th>
                                         <th lay-data="{field:'designer', width:80}">设计人</th>
                                         <th lay-data="{field:'module_describe', width:170}">设计要求</th>
@@ -93,7 +93,7 @@
                     data = obj.data;
                 if(layEvent === 'zhuangpei'){ //产品装配信息
                 	$.get("openmakematerialdetail",{
-                   	 product_id : data.product_id ,product_name: data.product_name
+                   	 product_id : data.product_id ,product_name: data.product_name,
                     },function(data){
                    	 if(data=="成功"){
                    		xadmin.open('物料装配详情','makematerialdetail.html',800,460);
@@ -103,8 +103,8 @@
                     });
                 } else if(layEvent === 'update'){ //修改
                          $.get("getMaterialById1",{
-                        	 product_id:data.product_id,product_name:data.product_name,
-                        	 design_id:data.design_id  
+                        	 product_id:data.product_id,product_name:data.product_name,design_id:data.design_id
+                        	 ,design_id:data.design_id  
                          },function(data){
                         	 if(data=="成功"){
                         		 window.location.href="materialupdatedetail.html";

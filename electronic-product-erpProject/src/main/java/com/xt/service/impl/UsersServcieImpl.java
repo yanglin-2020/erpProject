@@ -25,11 +25,11 @@ public class UsersServcieImpl implements UsersService{
 		return mapper.selectPermissions(username);
 	}
 	@Override
-	public List<Permissions> selectMenus(int u_id) {
-		List<Permissions> parentMenus = mapper.selectMenus(u_id);
+	public List<Permissions> selectMenus(String u_name) {
+		List<Permissions> parentMenus = mapper.selectMenus(u_name);
 		List<Permissions> sonMenus;//存放子菜单
 		for (Permissions p : parentMenus) {
-			sonMenus = mapper.selectSonMenus(u_id, p.getId());
+			sonMenus = mapper.selectSonMenus(u_name, p.getId());
 			//子菜单放入集合中储存
 			p.setSonMenus(sonMenus);
 		}

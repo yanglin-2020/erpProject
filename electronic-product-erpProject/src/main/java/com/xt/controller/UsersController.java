@@ -46,14 +46,14 @@ public class UsersController {
 
 	// 登录操作
 	@RequestMapping("/loginUser")
-	public String login(String u_name, String u_password, HttpSession session, Model model) {
+	public String login(String u_name, String u_password, HttpSession session, Model model,boolean rememberMe) {
 		// 实现登陆认证,由shiro框架完成身份认证
 		// 用户存起来
 		Users u = service.selectByName(u_name);
 		session.setAttribute("username", u_name);
 		session.setAttribute("u", u);
 		Subject subject = SecurityUtils.getSubject();
-		UsernamePasswordToken token = new UsernamePasswordToken(u_name, u_password);
+		UsernamePasswordToken token = new UsernamePasswordToken(u_name, u_password,rememberMe);
 		try {
 			subject.login(token);
 		} catch (AuthenticationException e) {
@@ -65,12 +65,13 @@ public class UsersController {
 		// 认证成功，index主页面
 		return "redirect:/selectMenus";
 	}
-
 	// 查询所有菜单
 	@RequestMapping("/selectMenus")
 	public String selectMenus(HttpSession session, Model model, String uName) {
-		Users u = (Users) session.getAttribute("u");
-		List<Permissions> Menuslist = service.selectMenus(u.getU_id());
+		Subject currentUser = SecurityUtils.getSubject();
+	    String username = (String) currentUser.getPrincipal().toString();
+	    session.setAttribute("username", username);
+		List<Permissions> Menuslist = service.selectMenus(username);
 		model.addAttribute("Menuslist", Menuslist);
 		return "index";
 	}

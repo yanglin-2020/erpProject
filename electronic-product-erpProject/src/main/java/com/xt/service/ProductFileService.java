@@ -70,9 +70,17 @@ public interface ProductFileService {
 	//查询物料详细表里的所有物料
 	public List<DModuleDetails> getAllDModuleDetails();
 	//修改产品需要的物料信息
-	public int updateMaterialNum(@Param("product_id") String product_id,@Param("parent_id") String parent_id,@Param("num") int num);
+	public int updateMaterialNum(@Param("product_id") String product_id,@Param("parent_id") String parent_id,
+			@Param("num") int num,@Param("sumMoney") double sumMoney );
 	//修改产品需要的物料信息
 	public int updateMaterialSuccess(DModule dm);
 	//分页查询物料的信息(通过)
 	public PageDemo<DModule> getMaterialupdateInfo(int nowPage, int pageSize,DModule dm);
+	
+	//后面加的方法(完善)
+	//物料删除后，物料总成本减少
+	double getMaterialMoney(@Param("id") String id,@Param("parent_id") String parent_id);
+	int updateMaterialSumMoney(@Param("design_id") String design_id,@Param("money") double money);
+	int updateMaterialSumMoneyadd(@Param("design_id") String design_id,@Param("money") double money);
+	int delMaterialById(String product_id);
 }
