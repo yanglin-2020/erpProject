@@ -15,13 +15,27 @@ public class DModule implements Serializable {
     private String module_describe;//设计要求
     private double cost_price_sum;//物料总成本
     private String register;//登记人
-    private String register_time;//登记时间
+	private String register_time;//登记时间
     private String checker;//复核人
     private String check_time;//复核时间
     private String changer;//变更人
     private String change_time;//变更时间
     private String check_tag;//审核标志  
     private String change_tag;//变更标志
+    private String reason;//审核不通过的理由
+    private String change_count;//修改的次数
+    public String getChange_count() {
+		return change_count;
+	}
+	public void setChange_count(String change_count) {
+		this.change_count = change_count;
+	}
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 	public int getId() {
 		return id;
 	}
@@ -116,7 +130,7 @@ public class DModule implements Serializable {
 		super();
 	}
 	public DModule(String design_id, String product_id, String product_name, String designer, String module_describe,
-			String register, String register_time) {
+			String register, String register_time,double cost_price_sum) {
 		super();
 		this.design_id = design_id;
 		this.product_id = product_id;
@@ -125,5 +139,6 @@ public class DModule implements Serializable {
 		this.module_describe = module_describe;
 		this.register = register;
 		this.register_time = register_time;
+		this.cost_price_sum = cost_price_sum;
 	}
 }

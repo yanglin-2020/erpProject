@@ -117,13 +117,13 @@
 	
 	<!--商品的分页查询  -->
 	<select id="getProductCount" resultType="int">
-		select count(1) from d_file where type = '商品' and check_tag='审核通过'  and delete_tag ='未删除'
+		select count(1) from d_file where type = '商品' and check_tag='审核通过'  and delete_tag ='未删除' and design_module_tag='未设计'
 		<if test="df.product_name!=null and df.product_name!=''">
 			and product_name like CONCAT('%',#{df.product_name},'%')
 		</if>
 	</select>
 	<select id="getProductInfo" resultType="D_file">
-		select * from d_file where type = '商品' and check_tag='审核通过'  and delete_tag ='未删除'
+		select * from d_file where type = '商品' and check_tag='审核通过'  and delete_tag ='未删除' and design_module_tag='未设计'
 		<if test="df.product_name!=null and df.product_name!=''">
 			and product_name like CONCAT('%',#{df.product_name},'%')
 		</if>
@@ -158,7 +158,7 @@
 	</select>
 	<!--删除一个商品需要的物料  -->
 	<delete id="delMaterial">
-		delete from d_module_details where product_id=#{id}
+		delete from d_module_details where product_id=#{id} and parent_id=#{parent_id}
 	</delete>
 	<!--删除后物料增加  -->
 	<update id="addMaterialNum">
@@ -174,4 +174,94 @@
 	insert into d_module(design_id,product_id,product_name,designer,register,register_time,module_describe)
 	values(#{design_id},#{product_id},#{product_name},#{designer},#{register},#{register_time},#{module_describe})
 	</insert>
+	<!--修改商品的设计状态(已设计)  -->
+	<update id="updateGoodsDesign">
+		update d_file set design_module_tag='已设计' where product_id=#{product_id}
+	</update>
+	<!--分页查询需要复核物料组成的信息  -->
+	<select id="getMaterialFuHeCount" resultType="int">
+		select count(1) from d_module where check_tag='等待审核' 
+		<if test="dm.product_name!=null and dm.product_name!=''">
+			and product_name like CONCAT('%',#{dm.product_name},'%')
+		</if>
+	</select>
+	<select id="getMaterialFuHeInfo" resultType="DModule">
+		select * from d_module where check_tag='等待审核' 
+		<if test="dm.product_name!=null and dm.product_name!=''">
+			and product_name like CONCAT('%',#{dm.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!--拿到需要物料的总成本  -->
+	<select id="getMaterialSumMoney" resultType="Double">
+		select sum(subtotal) from d_module_details where parent_id=#{product_id}
+	</select>
+	<!--物料组成设计单审核  -->
+	<update id="updateMaterialFuHeInfo">
+		update d_module set reason=#{reason},checker=#{checker},check_time=#{check_time},check_tag=#{check_tag}
+		where design_id=#{design_id}
+	</update>
+	<!--复核物料前根据id拿到产品所需物料的详细信息  -->
+	<select id="getMaterialDetail" resultType="DModuleDetails">
+		select * from d_module_details where parent_id=#{product_id}
+	</select>
+	<!--根据设计单号拿信息  -->
+	<select id="getMaterialsInfo" resultType="DModule">
+		select * from d_module where design_id=#{design_id}
+	</select>
+	<!--分页查询物料组成信息(通过)  -->
+	<select id="getModuleCount" resultType="int">
+		select count(1) from d_module where check_tag='审核通过' 
+		<if test="dm.product_name!=null and dm.product_name!=''">
+			and product_name like CONCAT('%',#{dm.product_name},'%')
+		</if>
+		<if test="dm.product_id!=null and dm.product_id!=''">
+			and product_id like CONCAT('%',#{dm.product_id},'%')
+		</if>
+	</select>
+	<select id="getAllModuleInfo" resultType="DModule">
+		select * from d_module where check_tag='审核通过' 
+		<if test="dm.product_name!=null and dm.product_name!=''">
+			and product_name like CONCAT('%',#{dm.product_name},'%')
+		</if>
+		<if test="dm.product_id!=null and dm.product_id!=''">
+			and product_id like CONCAT('%',#{dm.product_id},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!--查询物料详细表里的所有物料  -->
+	<select id="getAllDModuleDetails" resultType="DModuleDetails">
+		select * from d_module_details
+	</select>
+	<!--修改产品需要的物料数量  -->
+	<update id="updateMaterialNum">
+		update d_module_details set amount=amount+#{num} 
+		where product_id=#{product_id} and parent_id=#{parent_id}
+	</update>
+	<!--修改产品需要的物料信息  -->
+	<update id="updateMaterialSuccess">
+		update d_module set changer=#{changer},change_time=#{change_time},change_tag=#{change_tag},
+		designer=#{designer},module_describe=#{module_describe},change_count=change_count+1
+		where product_id=#{product_id}
+	</update>
+	<!--分页查询变更后的物料组成设计信息  -->
+	<select id="getMaterialupdateCount" resultType="int">
+		select count(1) from d_module where check_tag='审核通过'  and change_tag='已变更'
+		<if test="dm.product_name!=null and dm.product_name!=''">
+			and product_name like CONCAT('%',#{dm.product_name},'%')
+		</if>
+		<if test="dm.product_id!=null and dm.product_id!=''">
+			and product_id like CONCAT('%',#{dm.product_id},'%')
+		</if>
+	</select>
+	<select id="getMaterialupdateInfo" resultType="DModule">
+		select * from d_module where check_tag='审核通过' and change_tag='已变更'
+		<if test="dm.product_name!=null and dm.product_name!=''">
+			and product_name like CONCAT('%',#{dm.product_name},'%')
+		</if>
+		<if test="dm.product_id!=null and dm.product_id!=''">
+			and product_id like CONCAT('%',#{dm.product_id},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
 </mapper>

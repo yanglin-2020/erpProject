@@ -46,11 +46,33 @@ public interface ProductFileService {
 	//查询需要的物料
 	List<DModuleDetails> queryMaterial(String id);
 	//删除一个商品需要的物料
-	int delMaterial(String id);
+	int delMaterial(String id,String parent_id);
 	//删除后物料数量增加
 	int addMaterialNum(@Param("num") int num,@Param("id") String id);
 	//生成设计单号要用的
 	String getDesignDanHao();
 	//物料组成设计单完成进行保存
 	int saveMaterail(DModule dm);
+	//修改商品的设计状态(已设计)
+	int updateGoodsDesign(String product_id);
+	//分页查询需要复核物料组成的信息
+	public PageDemo<DModule> getMaterialFuHeInfo(int nowPage, int pageSize,DModule dm);
+	//拿到需要物料的总成本
+	double getMaterialSumMoney(String product_id);
+	//物料组成设计单审核不通过
+	int updateMaterialFuHeInfo(DModule dm);
+	//复核物料前根据id拿到产品所需物料的详细信息
+	List<DModuleDetails> getMaterialDetail(String product_id);
+	//根据设计单号拿信息
+	DModule getMaterialInfo(String design_id);
+	//分页查询物料的信息(通过)
+	public PageDemo<DModule> getAllModuleInfo(int nowPage, int pageSize,DModule dm);
+	//查询物料详细表里的所有物料
+	public List<DModuleDetails> getAllDModuleDetails();
+	//修改产品需要的物料信息
+	public int updateMaterialNum(@Param("product_id") String product_id,@Param("parent_id") String parent_id,@Param("num") int num);
+	//修改产品需要的物料信息
+	public int updateMaterialSuccess(DModule dm);
+	//分页查询物料的信息(通过)
+	public PageDemo<DModule> getMaterialupdateInfo(int nowPage, int pageSize,DModule dm);
 }

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>物料设计单——yl</title>
+<title>物料设计详细单复核</title>
 
 <style>
 html, body, div, span, ul, li, h1, h2, h3, h4, p, a, img, input, form {
@@ -353,16 +353,16 @@ body {
 
 <body>
 	<div class="formoverlay"></div>
-	<div class="x-nav">
+	 <div class="x-nav">
             <span class="layui-breadcrumb">
             </span>
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
                 <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
             </a>
         </div>
-   <form th:action="@{/saveMaterail}" method="post">
-	<table cellpadding="0" cellspacing="0" border="0px" class="formborder"
-		style="z-index: 99; position: absolute; left: 220px; top: 80px;  width: 880px; display: block;">
+   <form th:action="@{/fuheMaterialSuccess}" method="post">
+	<table cellpadding="0" cellspacing="0" border="0" class="formborder"
+		style="z-index: 99; position: absolute; left: 200px; top: 100px; width: 880px; display: block;">
 		<tbody>
 
 			<tr>
@@ -371,23 +371,23 @@ body {
 					<div class="formcontentsize" style="width: auto; height: auto;">
 						<div class="layoutitem">
 							<div class="layout-tit">
-								<h3 align="center">物料组成设计单</h3>
+								<h3 align="center">物料组成设计单复核</h3>
 							</div>
 							<div class="layout-xx">
 								<ul>
 									<li>
 										<div class="item-input">
-											<label class="item-label">产品名称:</label>&nbsp;&nbsp; <b>[[${session.product_name}]]</b>
+											<label class="item-label">产品名称:</label>&nbsp;&nbsp; <b>[[${session.product_name1}]]</b>
 										</div>
 										<div class="item-input">
-											<label class="item-label">产品编号:</label>&nbsp;&nbsp; <b>[[${session.product_id}]]</b>
+											<label class="item-label">产品编号:</label>&nbsp;&nbsp; <b>[[${session.product_id1}]]</b>
 										</div>
 									</li>
 
 									<li>
 										<div class="item-input">
 											<label class="item-label"> 设计人:</label>&nbsp;&nbsp; <input
-												type="text" class="layoutitemcon" maxlength="50" name="designer" required="required">
+												type="text" class="layoutitemcon" maxlength="50" name="designer" th:value="${session.materialinfo.designer}">
 										</div>
 
 									</li>
@@ -409,7 +409,7 @@ body {
 													</tr>
 												</thead>
 												<tbody>
-													<tr th:each="m:${session.materialList}">
+													<tr th:each="m:${session.materialDetail}">
 														<input type="hidden" th:value="${m.parent_id}">
 														<td th:text="${m.product_id}"></td>
 														<td th:text="${m.product_name}"></td>
@@ -432,13 +432,13 @@ body {
 											<label class="item-label">登记人:</label>&nbsp;&nbsp; <b>[[${session.username}]]</b>
 										</div>
 										<div class="item-input">
-											<label class="item-label">登记时间:</label>&nbsp;&nbsp; <b>[[${session.time}]]</b>
+											<label class="item-label">登记时间:</label>&nbsp;&nbsp; <b>[[${session.time1}]]</b>
 										</div>
 									</li>
 									<li>
 										<div class="item-input1">
 											<label class="item-label"> 设计要求:</label>&nbsp;&nbsp; <input
-												type="text" class="layout-bz" name="module_describe" required="required">
+												type="text" class="layout-bz" name="module_describe" th:value="${session.materialinfo.module_describe}">
 										</div>
 									</li>
 								</ul>
@@ -447,9 +447,8 @@ body {
 
 					</div>
 					<div class="layoutitem-add">
-						<a href="materialdetail.html" class="add">添加物料</a> 
-						<a th:href="makematerial.html" class="tc">返回</a>
-						<button type="submit" class="bc">保存</button>
+						<a href="materialfuhe.html" class="tc">返回</a>
+						<button type="submit" class="bc">通过</button>
 					</div>
 					</div>
 				</td>

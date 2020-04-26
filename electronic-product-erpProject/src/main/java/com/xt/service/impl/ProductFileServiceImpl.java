@@ -163,8 +163,8 @@ public class ProductFileServiceImpl implements ProductFileService{
 	}
 
 	@Override
-	public int delMaterial(String id) {
-		return mapper.delMaterial(id);
+	public int delMaterial(String id,String parent_id) {
+		return mapper.delMaterial(id,parent_id);
 	}
 
 	@Override
@@ -180,5 +180,87 @@ public class ProductFileServiceImpl implements ProductFileService{
 	@Override
 	public int saveMaterail(DModule dm) {
 		return mapper.saveMaterail(dm);
+	}
+
+	@Override
+	public int updateGoodsDesign(String product_id) {
+		return mapper.updateGoodsDesign(product_id);
+	}
+
+	@Override
+	public PageDemo<DModule> getMaterialFuHeInfo(int nowPage, int pageSize, DModule dm) {
+		PageDemo<DModule> pd = new PageDemo<DModule>();
+		//(调用mapper的方法)
+		int rowCount = mapper.getMaterialFuHeCount(dm);
+		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+		List<DModule> list = mapper.getMaterialFuHeInfo(page, dm);
+		pd.setCode(0);
+		pd.setCount(rowCount);
+		pd.setMsg("");
+		pd.setData(list);
+		return pd;
+	}
+
+	@Override
+	public double getMaterialSumMoney(String product_id) {
+		return mapper.getMaterialSumMoney(product_id);
+	}
+
+	@Override
+	public int updateMaterialFuHeInfo(DModule dm) {
+		return mapper.updateMaterialFuHeInfo(dm);
+	}
+
+	@Override
+	public List<DModuleDetails> getMaterialDetail(String product_id) {
+		return mapper.getMaterialDetail(product_id);
+	}
+
+	@Override
+	public DModule getMaterialInfo(String design_id) {
+		return mapper.getMaterialsInfo(design_id);
+	}
+
+	@Override
+	public PageDemo<DModule> getAllModuleInfo(int nowPage, int pageSize, DModule dm) {
+		PageDemo<DModule> pd = new PageDemo<DModule>();
+		//(调用mapper的方法)
+		int rowCount = mapper.getModuleCount(dm);
+		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+		List<DModule> list = mapper.getAllModuleInfo(page, dm);
+		pd.setCode(0);
+		pd.setCount(rowCount);
+		pd.setMsg("");
+		pd.setData(list);
+		return pd;
+	}
+
+	@Override
+	public List<DModuleDetails> getAllDModuleDetails() {
+		return mapper.getAllDModuleDetails();
+	}
+
+	@Override
+	public int updateMaterialNum(String product_id, String parent_id, int num) {
+		return mapper.updateMaterialNum(product_id, parent_id, num);
+	}
+
+	@Override
+	public int updateMaterialSuccess(DModule dm) {
+		return mapper.updateMaterialSuccess(dm);
+	}
+
+	@Override
+	public PageDemo<DModule> getMaterialupdateInfo(int nowPage, int pageSize, DModule dm) {
+		PageDemo<DModule> pd = new PageDemo<DModule>();
+		//(调用mapper的方法)
+		int rowCount = mapper.getMaterialupdateCount(dm);
+		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+		List<DModule> list = mapper.getMaterialupdateInfo(page, dm);
+		pd.setCode(0);
+		pd.setCount(rowCount);
+		pd.setMsg("");
+		pd.setData(list);
+		return pd;
 	}
 }
