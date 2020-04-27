@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<script type="text/javascript">
+	
+</script>
+<head>
+<meta charset="UTF-8">
+<title>安全库存配置单查询-long</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./css/xadmin.css">
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/xadmin.js"></script>
+</head>
+<body>
+	<div class="x-nav">
+		<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">演示</a>
+			<a> <cite>导航元素</cite></a>
+		</span> <a class="layui-btn layui-btn-small"
+			style="line-height: 1.6em; margin-top: 3px; float: right"
+			onclick="location.reload()" title="刷新"> <i
+			class="layui-icon layui-icon-refresh" style="line-height: 30px"></i>
+		</a>
+	</div>
+	<div class="layui-fluid">
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-body ">
+						<form class="layui-form layui-col-space5">
+							<div class="layui-inline layui-show-xs-block">
+								<input type="text" name="euUserName" placeholder="请输入产品名称"
+									autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-inline layui-show-xs-block">
+								<a class="layui-btn search_btn" data-type="reload"> <i
+									class="layui-icon">&#xe615;</i></a>
+							</div>
+						</form>
+					</div>
+					<div class="layui-card-body ">
+						<table class="layui-table"
+							lay-data="{url:'AllS_cell',page:true,toolbar: '#toolbarDemo',id:'test'}"
+							lay-filter="test">
+							<thead>
+								<tr>
+									<th lay-data="{field:'product_id', width:120, sort: true}">产品编号</th>
+									<th lay-data="{field:'product_name', width:100}">产品名称</th>
+									<th lay-data="{field:'min_amount', width:140}">库存报警下限数</th>
+									<th lay-data="{field:'max_amount', width:140}">库存报警上限数</th>
+									<th lay-data="{field:'max_capacity_amount', width:100}">最大存储量</th>
+									<th lay-data="{field:'amount', width:100}">当前存储量</th>
+									<th lay-data="{field:'register', width:100}">登记人</th>
+									<th lay-data="{field:'register_time', width:180,sort: true,templet: function(d){return layui.util.toDateString(d.register_time)}}">登记时间</th>
+									<th lay-data="{field:'check_tag', width:100}">审核标志</th>
+									<th lay-data="{width:100, templet:'#oprListBar',fixed:'right'}">修改</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<!--操作-->
+<script type="text/html" id="oprListBar">
+ 		<i class="layui-icon layui-btn layui-btn-warning" lay-event="edit">修改</i>
+	</script>
+<script>
+	layui.use('laydate', function() {
+		var laydate = layui.laydate;
+
+		//执行一个laydate实例
+		laydate.render({
+			elem : '#start' //指定元素
+		});
+
+		//执行一个laydate实例
+		laydate.render({
+			elem : '#end' //指定元素
+		});
+
+	});
+</script>
+<script>
+	layui.use('table', function() {
+		var table = layui.table;
+
+		//编辑操作
+		function editUser(edit) {
+			title = "修改安全配置单";
+			var index = layui.layer.open({
+				title : title,
+				type : 2,
+				content : "UpdateScellInfo?id="+edit.id,
+				area : [ '900px', '500px' ],
+				/*  maxmin: true, */
+				success : function(layero, index) {
+					//获取子窗体对象
+					var body = layui.layer.getChildFrame('body', index);
+					if (edit) {
+						//body.find("#product_id").val(edit.product_id);
+						//body.find("#product_name").val(edit.product_name);
+						//body.find("#register").val(edit.register);
+						//body.find("#register_time").val(edit.register_time);
+						//body.find(".layui-btn").text("提交");
+						//form.render();
+					}
+				}
+			});
+		}
+		//列表操作
+		table.on('tool(test)', function(obj) {
+			var layEvent = obj.event, data = obj.data;
+			if (layEvent === 'edit') { //编辑
+				editUser(data);
+			} else if (layEvent === 'del') { //删除
+				layer.confirm('确定删除用户？', {
+					icon : 3,
+					title : '提示信息'
+				}, function(index) {
+					$.get("delUserInfo", {
+						id : data.u_id
+					//将需要删除的newsId作为参数传入
+					}, function(data) {
+						if (data == "1") {
+							layer.msg("操作成功！");
+							table.reload("test");
+							layer.close(index);
+						} else {
+							layer.alert("太残忍了,自己都要删~ ");
+						}
+
+					});
+				});
+			} else if (layEvent === 'role') { //预览
+				$.post("getRole", {
+					"id" : data.u_id
+				}, function(result) {
+					if (result == "1") {
+						xadmin.open('授予角色', 'getroles.jsp', 600, 400);
+					}
+				});
+			} else if (layEvent === 'jinyong') {
+				layer.confirm('确定进行该操作？', {
+					icon : 3,
+					title : '提示信息'
+				}, function(index) {
+					$.post("jinyong", {
+						"id" : data.id,
+						"flag" : data.flag
+					}, function(result) {
+						if (result == "1") {
+							setTimeout(function() {
+								top.layer.msg("操作成功！");
+								layer.closeAll("iframe");
+								//刷新父页面
+								table.reload("test");
+								layer.close(index);
+							}, 1000);
+						} else {
+							layer.alert("无法禁用正在使用的用户  ~ ");
+						}
+					});
+				});
+			} else if (layEvent === 'cancelRole') {
+				$.post("cancelRole", {
+					"id" : data.u_id
+				}, function(result) {
+					if (result == 0) {
+						xadmin.open('取消授予', 'cancelrole.jsp', 600, 400);
+					}
+				});
+			}
+		});
+		//头工具栏事件
+		table.on('toolbar(test)', function(obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			switch (obj.event) {
+			case 'addData':
+				xadmin.open('添加用户', 'useradd.jsp', 490, 500);
+				break;
+			case 'getCheckLength':
+				var data = checkStatus.data;
+				layer.msg('选中了：' + data.length + ' 个');
+				break;
+			case 'isAll':
+				layer.msg(checkStatus.isAll ? '全选' : '未全选');
+				break;
+			}
+			;
+		});
+		//条件查询
+		$(".search_btn").on("click", function() {
+			table.reload("test", {
+				page : {
+					curr : 1 //重新从第 1 页开始
+				},
+				where : {
+					euUserName : $("input[name=euUserName]").val() //搜索的关键字
+				}
+			});
+		});
+	});
+</script>
+</html>

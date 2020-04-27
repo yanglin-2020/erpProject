@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.xt.pojo.MDesignProcedureDetails;
 import com.xt.pojo.Permissions;
 import com.xt.pojo.Users;
 import com.xt.service.UsersService;
@@ -46,14 +48,14 @@ public class UsersController {
 
 	// 登录操作
 	@RequestMapping("/loginUser")
-	public String login(String u_name, String u_password, HttpSession session, Model model,boolean rememberMe) {
+	public String login(String u_name, String u_password, HttpSession session, Model model, boolean rememberMe) {
 		// 实现登陆认证,由shiro框架完成身份认证
 		// 用户存起来
 		Users u = service.selectByName(u_name);
 		session.setAttribute("username", u_name);
 		session.setAttribute("u", u);
 		Subject subject = SecurityUtils.getSubject();
-		UsernamePasswordToken token = new UsernamePasswordToken(u_name, u_password,rememberMe);
+		UsernamePasswordToken token = new UsernamePasswordToken(u_name, u_password, rememberMe);
 		try {
 			subject.login(token);
 		} catch (AuthenticationException e) {
@@ -65,12 +67,13 @@ public class UsersController {
 		// 认证成功，index主页面
 		return "redirect:/selectMenus";
 	}
+
 	// 查询所有菜单
 	@RequestMapping("/selectMenus")
 	public String selectMenus(HttpSession session, Model model, String uName) {
 		Subject currentUser = SecurityUtils.getSubject();
-	    String username = (String) currentUser.getPrincipal().toString();
-	    session.setAttribute("username", username);
+		String username = (String) currentUser.getPrincipal().toString();
+		session.setAttribute("username", username);
 		List<Permissions> Menuslist = service.selectMenus(username);
 		model.addAttribute("Menuslist", Menuslist);
 		return "index";
@@ -125,6 +128,7 @@ public class UsersController {
 			return "成功";
 		}
 	}
+
 	// 修改用户
 	@RequestMapping("/updateUserInfo")
 	@ResponseBody

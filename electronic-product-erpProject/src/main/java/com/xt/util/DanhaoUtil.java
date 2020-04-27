@@ -28,5 +28,14 @@ public class DanhaoUtil {
 		String danhao = "d" + DanhaoUtil.formatDateToCommon(d);
 		return danhao;
 	}
-	
+	/**
+	 * 生成库存编号
+	 * @return
+	 */
+	public static String getKcBianhao() {
+		SimpleDateFormat formate = new SimpleDateFormat("yyyyMMddhhmmss");
+		Date date = new Date();
+		String danhao = "kc"+formate.format(date);
+		return danhao;
+	}
 }

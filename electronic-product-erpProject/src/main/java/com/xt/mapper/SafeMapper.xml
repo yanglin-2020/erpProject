@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.mapper.SafeMapper">
+	<!--查询产品总条数 -->
+	<select id="getDFileCount" resultType="int">
+		select count(1) from d_file where design_cell_tag = '未设计'
+		<if test="d.product_name!=null and d.product_name!=''">
+			and product_name like CONCAT('%',#{d.product_name},'%')
+		</if>
+	</select>
+
+	<!--分页查询产品信息 -->
+	<select id="getAllDFileInfo" resultType="D_file">
+		select * from d_file where design_cell_tag = '未设计'
+		<if test="d.product_name!=null and d.product_name!=''">
+			and product_name like CONCAT('%',#{d.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!--  -->
+	<update id="updateD_filedesign_cell_tag">
+		update d_file set design_cell_tag='已设计' where product_id=#{product_id}
+	</update>
+	<!-- 添加安全配置单 -->
+	<insert id="addSaveSCell">
+		insert into
+		s_cell(store_id,product_id,product_name,min_amount,max_amount,max_capacity_amount,config,register,register_time)
+		values(#{store_id},#{product_id},#{product_name},#{min_amount},#{max_amount},#{max_capacity_amount},#{config},#{register},#{register_time})
+	</insert>
+
+	<!--查询未复核的库存单元总条数 -->
+	<select id="getNofuheDFileCount" resultType="int">
+		select count(1) from
+		s_cell where check_tag is null or check_tag="" or check_tag="未审核"
+	</select>
+
+	<!--分页查询未复核的库存单元信息 -->
+	<select id="getNofuheDFileInfo" resultType="SCell">
+		select * from s_cell
+		where check_tag is null or check_tag="" or check_tag="未审核"
+		limit
+		#{page.startRow},#{page.pageSize}
+	</select>
+
+	<!--根据序号id查询单个库存信息 -->
+	<select id="getScellByid" resultType="SCell">
+		select * from s_cell where id=#{id}
+	</select>
+
+	<!--审核安全配置单 -->
+	<update id="fuheSCell">
+		update s_cell set checker=#{s.checker},check_time=#{s.check_time},check_tag=#{check_tag} where
+		product_id=#{s.product_id}
+	</update>
+
+	<!--查询库存单元总条数 -->
+	<select id="getS_cellCount" resultType="int">
+		select count(1) from s_cell
+	</select>
+
+	<!--分页查询库存单元信息 -->
+	<select id="getS_cellInfo" resultType="SCell">
+		select * from s_cell where check_tag="审核通过"
+		<if test="s.product_name!=null and s.product_name!=''">
+			and product_name like CONCAT('%',#{s.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+
+	<!--修改安全配置单 -->
+	<update id="updateSCell">
+		update s_cell set
+		product_name=#{product_name},min_amount=#{min_amount},max_amount=#{max_amount},amount=#{amount},max_capacity_amount=#{max_capacity_amount},config=#{config},register=#{register},register_time=#{register_time}
+		where product_id=#{product_id}
+	</update>
+</mapper>

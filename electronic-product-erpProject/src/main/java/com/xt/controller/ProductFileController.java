@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.xt.pojo.DModule;
 import com.xt.pojo.DModuleDetails;
@@ -170,9 +171,8 @@ public class ProductFileController {
 		int row = service.updateDelProduct(product_id);
 		return row > 0 ? "成功" : "失败";
 	}
-
-	@RequestMapping("/getUpdateD_fileInfo")
 	// 分页查询变更后的档案信息
+	@RequestMapping("/getUpdateD_fileInfo")
 	public void getUpdateD_fileInfo(HttpServletResponse response, HttpServletRequest request) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		String nowpage = request.getParameter("page");
@@ -295,7 +295,7 @@ public class ProductFileController {
 		for (DModuleDetails dm : dmList) {
 			if (product_id.equals(dm.getProduct_id()) && goods_id.equals(dm.getParent_id())) {
 				service.updateMaterialNum(product_id, goods_id, Integer.parseInt(personal_value),
-						Double.parseDouble(cost_price)*Integer.parseInt(personal_value));
+						Double.parseDouble(cost_price) * Integer.parseInt(personal_value));
 				// 添加成功后,数量减少
 				service.minusMaterialNum(Integer.parseInt(personal_value), product_id);
 				List<DModuleDetails> list = service.queryMaterial(goods_id);
@@ -323,7 +323,7 @@ public class ProductFileController {
 			throws Exception {
 		PrintWriter out = response.getWriter();
 		response.setContentType("text/html;charset=utf-8");
-		String design_id = (String)session.getAttribute("design_id");//设计单号
+		String design_id = (String) session.getAttribute("design_id");// 设计单号
 		String product_id = request.getParameter("product_id");// 物料编号
 		String product_name = request.getParameter("product_name");// 物料名称
 		String type = request.getParameter("type");// 代表物料
@@ -340,10 +340,10 @@ public class ProductFileController {
 		for (DModuleDetails dm : dmList) {
 			if (product_id.equals(dm.getProduct_id()) && goods_id1.equals(dm.getParent_id())) {
 				service.updateMaterialNum(product_id, goods_id1, Integer.parseInt(personal_value),
-						Double.parseDouble(cost_price)*Integer.parseInt(personal_value));
+						Double.parseDouble(cost_price) * Integer.parseInt(personal_value));
 				// 添加成功后,数量减少
 				service.minusMaterialNum(Integer.parseInt(personal_value), product_id);
-				//修改好后，物料总成本增加
+				// 修改好后，物料总成本增加
 				// 拿到需要物料的总成本
 				double money = service.getMaterialSumMoney(goods_id1);
 				service.updateMaterialSumMoneyadd(design_id, money);
@@ -428,7 +428,7 @@ public class ProductFileController {
 	@ResponseBody
 	public String nofuheMaterial(HttpServletRequest request, HttpSession session) {
 		String design_id = request.getParameter("design_id");// 设计单号
-		String product_id = request.getParameter("product_id");//产品单号
+		String product_id = request.getParameter("product_id");// 产品单号
 		String reason = request.getParameter("reason");// 审核不通过的理由
 		String checker = (String) session.getAttribute("username");// 复核人姓名
 		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 复核时间
@@ -439,7 +439,7 @@ public class ProductFileController {
 		dm.setCheck_time(formate.format(new Date()));
 		dm.setCheck_tag("审核不通过");
 		int row = service.updateMaterialFuHeInfo(dm);
-		//审核不通过，删除所需的物料
+		// 审核不通过，删除所需的物料
 		service.delMaterialById(product_id);
 		return row > 0 ? "成功" : "失败";
 	}
@@ -488,14 +488,14 @@ public class ProductFileController {
 
 	@RequestMapping("/delMaterial1")
 	public String delMaterial1(String id, HttpSession session, String num, String parent_id) {
-		
-		String design_id = (String)session.getAttribute("design_id");
+
+		String design_id = (String) session.getAttribute("design_id");
 		double money = service.getMaterialMoney(id, parent_id);
 		int row = service.delMaterial(id, parent_id);
 		// 删除过后，物料档案数量增加
 		service.addMaterialNum(Integer.parseInt(num), id);
 		session.removeAttribute("materialDetail1");
-		//删除后，总物料成本减少
+		// 删除后，总物料成本减少
 		service.updateMaterialSumMoney(design_id, money);
 		// 查询商品需要的物料
 		String goods_id = (String) session.getAttribute("product_id2");// 商品的编号
@@ -545,21 +545,22 @@ public class ProductFileController {
 	public String openmakematerialdetail(HttpServletRequest request, HttpSession session) {
 		String product_id = request.getParameter("product_id");// 产品编号
 		String product_name = request.getParameter("product_name");// 产品编号
-		String design_id =request.getParameter("design_id");//设计单号
+		String design_id = request.getParameter("design_id");// 设计单号
 		List<DModuleDetails> list = service.getMaterialDetail(product_id);
 		session.setAttribute("materialdetail", list);
 		session.setAttribute("goods_name", product_name);
 		session.setAttribute("design_id", design_id);
 		return "成功";
 	}
-	//修改产品需要的物料
+
+	// 修改产品需要的物料
 	@RequestMapping("/updateMaterialSuccess")
-	public String updateMaterialSuccess(HttpServletRequest request,HttpSession session) {
+	public String updateMaterialSuccess(HttpServletRequest request, HttpSession session) {
 		String product_id = request.getParameter("product_id");
-		String designer = request.getParameter("designer");//设计人
-		String module_describe = request.getParameter("module_describe");//设计要求
+		String designer = request.getParameter("designer");// 设计人
+		String module_describe = request.getParameter("module_describe");// 设计要求
 		String checker = (String) session.getAttribute("username");// 变更人姓名
-		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//变更时间
+		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 变更时间
 		DModule dm = new DModule();
 		dm.setChanger(checker);
 		dm.setChange_time(formate.format(new Date()));
@@ -570,7 +571,8 @@ public class ProductFileController {
 		service.updateMaterialSuccess(dm);
 		return "load4";
 	}
-	//分页查询变更后的物料组成设计信息
+
+	// 分页查询变更后的物料组成设计信息
 	@RequestMapping("/getMaterialupdateInfo")
 	public void getMaterialupdateInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html;charset=utf-8");
@@ -587,5 +589,29 @@ public class ProductFileController {
 		out.print(str);
 		out.flush();
 		out.close();
+	}
+
+	// 批量删除产品信息
+	@RequestMapping("/batchdelteproduct")
+	@ResponseBody
+	public String batchdelteproduct(HttpServletRequest request) {
+		String idlist = request.getParameter("idlist");
+		List<D_file> list = JSON.parseArray(idlist, D_file.class);
+		for (D_file df : list) {
+			service.updateDelProduct(df.getProduct_id());
+		}
+		return "成功";
+	}
+
+	// 批量恢复产品信息
+	@RequestMapping("/batchhuifuproduct")
+	@ResponseBody
+	public String batchhuifuproduct(HttpServletRequest request) {
+		String idlist = request.getParameter("idlist");
+		List<D_file> list = JSON.parseArray(idlist, D_file.class);
+		for (D_file df : list) {
+			service.RecoverDelProduct(df.getProduct_id());
+		}
+		return "成功";
 	}
 }

@@ -44,7 +44,8 @@
                             <table class="layui-table" lay-data="{url:'getDelD_fileInfo',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                        <th lay-data="{field:'product_id', width:100, sort: true}">产品编号</th>
+                                   		<th lay-data="{type:'checkbox'}">ID</th>
+                                        <th lay-data="{field:'product_id', width:105, sort: true}">产品编号</th>
                                         <th lay-data="{field:'product_name', width:80}">产品名称</th>
                                         <th lay-data="{field:'type', width:80}">用途类型</th>
                                         <th lay-data="{field:'first_kind_id', width:80}">分类</th>
@@ -77,6 +78,7 @@
 	</script>
     <script type="text/html" id="toolbarDemo">
         <div class = "layui-btn-container" > 
+			 <button class = "layui-btn layui-btn-sm layui-btn-danger" lay-event = "batchhuifu" > 批量恢复</button>
             <button class = "layui-btn layui-btn-sm" lay-event = "" >产品档案回收站</button>
         </div > 
     </script>
@@ -144,9 +146,25 @@
                 case 'addmenu':
                 	 xadmin.open('添加权限(菜单)','menuadd.html',500,460);
                     break;
-                case 'getCheckLength':
+                case 'batchhuifu':
                     var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
+                    if(data.length==0){
+                    	layer.msg("至少选择一个产品");
+                    	return;
+                    }
+                        $.post("batchhuifuproduct",{"idlist":JSON.stringify(data)},function(result){
+                  			 if(result=="成功"){
+         		        		  setTimeout(function(){
+         		        	            top.layer.msg("操作成功！");
+         		        	            layer.closeAll("iframe");
+         		        	            //刷新父页面
+         		        	         table.reload("test");
+         		        	      	layer.close(index);
+         		        	        },1000);
+         		        	  }else{
+         		        		 layer.alert("恢复失败 ~ ");
+         		        	  } 
+                  		 });
                     break;
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');

@@ -66,6 +66,7 @@
                             <table class="layui-table" lay-data="{url:'getD_fileInfo',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
+                                    	<th lay-data="{type:'checkbox'}">ID</th>
                                         <th lay-data="{field:'product_id', width:110, sort: true}">产品编号</th>
                                         <th lay-data="{field:'product_name', width:105}">产品名称</th>
                                         <th lay-data="{field:'type', width:80}">用途类型</th>
@@ -101,6 +102,7 @@
 	</script>
     <script type="text/html" id="toolbarDemo">
         <div class = "layui-btn-container" > 
+ 			<button class = "layui-btn layui-btn-sm layui-btn-danger" lay-event = "batchdelete" > 批量删除</button>
             <button class = "layui-btn layui-btn-sm" lay-event = "" >产品档案信息如下</button>
         </div > 
     </script>
@@ -172,9 +174,27 @@
                 case 'addmenu':
                 	 xadmin.open('添加权限(菜单)','menuadd.html',500,460);
                     break;
-                case 'getCheckLength':
+                case 'batchdelete':
                     var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
+                    if(data.length==0){
+                    	layer.msg("至少选择一个产品");
+                    	return;
+                    }
+                    layer.confirm('确定删除这些该产品？',{icon:3, title:'提示信息'},function(index){
+                    $.post("batchdelteproduct",{"idlist":JSON.stringify(data)},function(result){
+              			 if(result=="成功"){
+     		        		  setTimeout(function(){
+     		        	            top.layer.msg("操作成功！");
+     		        	            layer.closeAll("iframe");
+     		        	            //刷新父页面
+     		        	         table.reload("test");
+     		        	      	layer.close(index);
+     		        	        },1000);
+     		        	  }else{
+     		        		 layer.alert(" 删除失败 ~ ");
+     		        	  } 
+              		 });
+                    });
                     break;
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');

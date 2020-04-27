@@ -46,7 +46,6 @@
                             <table class="layui-table" lay-data="{url:'getAllUsersInfo',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                        <th lay-data="{type:'checkbox'}">ID</th>
                                         <th lay-data="{field:'u_id', width:60, sort: true}">ID</th>
                                         <th lay-data="{field:'u_name', width:100, sort: true}">用户名</th>
                                         <th lay-data="{field:'phone', width:120}">手机号</th>
@@ -103,7 +102,6 @@
     <script>layui.use('table',
         function() {
             var table = layui.table;
-
           //编辑操作
             function editUser(edit){
         	    title = "编辑用户";
@@ -127,6 +125,7 @@
                     }
                 });
             }
+            
           //列表操作
             table.on('tool(test)', function(obj){
                 var layEvent = obj.event,
@@ -187,13 +186,13 @@
                     break;
                 case 'getCheckLength':
                     var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
                     break;
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');
                     break;
                 };
             });
+            
           	//条件查询
             $(".search_btn").on("click",function(){
                      table.reload("test",{
