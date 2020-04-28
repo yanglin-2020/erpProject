@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品设计详情-lwt</title>
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<script src="js/vue-2.4.0.js"></script>
+<script src="js/axios.min.js"></script>
+<script src="js/qs.min.js"></script>
+<script src="js/jquery-1.12.4.js"></script>
+ <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+</head>
+<style>
+	.ss th tr{
+	margin:5px
+	}
+</style>
+<body>
+	
+<div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form" action="">
+                <input type="hidden" id="design_Id" name="design_Id">
+  <div class="layui-form-item">
+    <label class="layui-form-label">产品名称</label>
+    <div class="layui-input-block">
+      <input type="text" id="product_Name" name="product_Name" lay-verify="title" autocomplete="off" placeholder="请输入产品名称" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">设计人</label>
+    <div class="layui-input-block">
+      <input type="text" id="designer" name="designer" lay-verify="required" lay-reqtext="请输入设计人" placeholder="请输入" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">工时总成本</label>
+      <div class="layui-input-inline">
+        <input type="tel" id="cost_Price_Sum" name="cost_Price_Sum" lay-verify="title" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">物料总成本</label>
+      <div class="layui-input-inline">
+        <input type="text" id="module_Cost_Price_Sum" name="module_Cost_Price_Sum" lay-verify="title" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+  </div>
+  
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">设计要求</label>
+    <div class="layui-input-block">
+      <textarea placeholder="请输入内容" id="procedure_Describe" name="procedure_Describe" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <!--<div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">编辑器</label>
+    <div class="layui-input-block">
+      <textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>
+    </div>
+  </div>-->
+  <div id="app">
+		<table class="table ss table-bordered table-hover table-striped">
+			<thead>
+				<tr>
+					<th>产品编号</th>
+					<th>名称</th>
+					<th>工时数</th>
+					<th>工序描述</th>
+					<th>单位</th>
+					<th>单位工时成本</th>
+					<th>工时成本小计</th>
+					<th>物料成本小计</th>
+					<th>登记人</th>
+					<th>登记时间</th>
+					<th>当前工序物料标志</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="goods in search()" :key="goods.parent_Id">
+					<td>{{goods.parent_Id}}</td>
+					<td>{{goods.procedure_Name}}</td>
+					<td>{{goods.labour_Hour_Amount}}</td>
+					<td>{{goods.procedure_Describe}}</td>
+					<td>{{goods.amount_Unit}}</td>
+					<td>{{goods.cost_Price}}</td>
+					<td>{{goods.subtotal}}</td>
+					<td>{{goods.module_Subtotal}}</td>
+					<td>{{goods.register}}</td>
+					<td>{{goods.register_Time}}</td>
+					<td>{{goods.design_Module_Tag}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<span v-if="list==null">
+			暂时没用数据
+		</span>
+	</div>
+  
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button type="submit" class="layui-btn btn_add" lay-submit="" lay-filter="demo1">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+            </div>
+        </div>
+        
+        <script>layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+              //监听提交
+                form.on('submit(demo1)', function(data){
+                	 console.log(data.field);
+                	 $.post("updateMdesignProce",{"design_Id":data.field.design_Id,"cost_Price_Sum":data.field.cost_Price_Sum,"designer":data.field.designer,
+                		 "module_Cost_Price_Sum":data.field.module_Cost_Price_Sum,"procedure_Describe":data.field.procedure_Describe,
+                		 "product_Name":data.field.product_Name},function(res){
+                			 console.log(res)
+                		 if(res=="1"){
+                			 setTimeout(function(){
+			        	            top.layer.msg("操作成功！");
+			        	            layer.closeAll("iframe");
+			        	            //刷新父页面
+			        	            parent.location.reload();
+			        	        },1000);
+                		 }else{
+			        		  top.layer.msg("操作失败！");
+			        	  }
+                	 })
+                	 father_reload();
+                  /* layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                  }) */
+                  return false;
+                });/* 
+                //监听提交
+                form.on('submit(add)',
+                function(data) {
+                    console.log(data);
+                    //发异步，把数据提交给php
+                    layer.alert("增加成功", {
+                        icon: 6
+                    },
+                    function() {
+                        //关闭当前frame
+                        xadmin.close();
+
+                        // 可以对父窗口进行刷新 
+                        xadmin.father_reload();
+                    });
+                    return false;
+                }); */
+
+            });</script>
+	<script>
+	        var sale_id=parent.names;
+			var vm=new Vue({
+				el:'#app',
+				data:{
+					keywords:'',
+					list:[],  //存储所有品牌对象的数据
+					procedure_Name:''
+				},
+				mounted(){
+					this.getSaleDetail();
+				}, 
+				methods:{
+					getSaleDetail(){ 
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						axios.get("mdesignDetailsAll?name="+sale_id).then(res=>{
+							console.log(res);
+							this.list=res.data 
+						}).catch(err=>{
+							console.log("请求失败")
+						})   	 
+						},   
+					getSaleSumMoney(){
+							axios.get("mdesignDetailsAll?name="+sale_id).then(res=>{
+								console.log(res);
+								this.XsSumMoney=res.data
+							}).catch(err=>{
+								console.log("请求失败")
+							})   	
+						}, 
+					search(){ 
+						//遍历list数组,如果品牌名称包含keywords中的内容,
+						//将品牌添加到新的list中
+						var newList=[]
+						this.list.forEach(brand=>{
+							if(brand.procedure_Name.includes(this.keywords)){
+								newList.push(brand)
+							}
+						})
+						return newList;
+					}
+				}
+			})
+		</script>
+</body>
+</html>

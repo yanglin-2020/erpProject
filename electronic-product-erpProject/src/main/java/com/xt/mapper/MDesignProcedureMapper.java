@@ -12,7 +12,9 @@ import com.xt.util.PageUtil;
  *罗文涛
  */
 public interface MDesignProcedureMapper {
+	
 	/**
+	 * 审核标志   S001-0: 等待审核     S001-1: 审核通过    S001-2: 审核不通过 check_Tag
 	 * 分页查询所有产品设计工序
 	 * @return
 	 */
@@ -40,6 +42,8 @@ public interface MDesignProcedureMapper {
 	 * @param updateMdes
 	 * @return
 	 */
-	int mdesUpdate(MDesignProcedure updateMdes);
+	int mdesUpdate(@Param("md")MDesignProcedure md);
+	
+	
 	
 }

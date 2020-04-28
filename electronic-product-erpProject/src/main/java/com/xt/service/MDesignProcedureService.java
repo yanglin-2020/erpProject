@@ -5,6 +5,7 @@ import com.xt.util.PageDemo;
 
 public interface MDesignProcedureService {
 	/**
+	 * 审核标志   S001-0: 等待审核     S001-1: 审核通过    S001-2: 审核不通过 check_Tag
 	 * 分页查询所有产品设计工序
 	 * @return
 	 */

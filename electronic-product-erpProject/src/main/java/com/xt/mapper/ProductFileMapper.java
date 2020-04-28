@@ -100,4 +100,9 @@ public interface ProductFileMapper {
 	int updateMaterialSumMoney(@Param("design_id") String design_id,@Param("money") double money);
 	int updateMaterialSumMoneyadd(@Param("design_id") String design_id,@Param("money") double money);
 	int delMaterialById(String product_id);
+	
+	//罗文涛的制定产品生产工序设计单分页查询
+	int getProductlwtCount(@Param("df") D_file df);
+	public List<D_file> getProductlwtInfo(@Param("page") PageUtil page,@Param("df") D_file df);
+	
 }

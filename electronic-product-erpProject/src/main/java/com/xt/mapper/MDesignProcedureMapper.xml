@@ -6,23 +6,48 @@
   	<!-- 分页查询有多少产品 -->
   	<select id="listfind" resultType="MDesignProcedure">
  		select * from m_design_procedure where 1=1
+ 		<if test="md.check_Tag !=null and md.check_Tag != '' ">
+ 			and check_Tag = #{md.check_Tag}
+ 		</if>
+ 		<if test="md.design_Module_Tag !=null and md.design_Module_Tag != '' ">
+ 			and design_Module_Tag = #{md.design_Module_Tag}
+ 		</if>
+ 		<if test="md.design_Module_Change_Tag !=null and md.design_Module_Change_Tag != '' ">
+ 			and design_Module_Change_Tag = #{md.design_Module_Change_Tag}
+ 		</if>
+ 		<if test="md.change_Tag != null and md.change_Tag != '' ">
+ 			and change_Tag = #{md.change_Tag}
+ 		</if>
  		<if test="md.product_Name!=null and md.product_Name!=''">
 			and product_Name like CONCAT('%',#{md.product_Name},'%')
 		</if>
+		<if test="page.startRow != null and page.pageSize != null">
 		    limit #{page.startRow},#{page.pageSize}
+		</if>
  	</select>
  	<!-- 分页查询总数量 -->
  	<select id="MdesCount" resultType="Integer">
  		select count(1) from m_design_procedure where 1=1
+ 		<if test="md.check_Tag !=null and md.check_Tag != '' ">
+ 			and check_Tag = #{md.check_Tag}
+ 		</if>
+ 		<if test="md.design_Module_Tag !=null and md.design_Module_Tag != '' ">
+ 			and design_Module_Tag = #{md.design_Module_Tag}
+ 		</if>
+ 		<if test="md.design_Module_Change_Tag !=null and md.design_Module_Change_Tag != '' ">
+ 			and design_Module_Change_Tag = #{md.design_Module_Change_Tag}
+ 		</if>
+ 		<if test="md.change_Tag != null and md.change_Tag != '' ">
+ 			and change_Tag = #{md.change_Tag}
+ 		</if>
  		<if test="md.product_Name!=null and md.product_Name!=''">
 			and product_Name like CONCAT('%',#{md.product_Name},'%')
 		</if>
  	</select>
  	<!-- 添加产品 -->
  	<insert id="mdesadd">
- 		insert into m_design_procedure values(null, #{design_Id}, #{first_Kind_Id}, #{first_Kind_Name}, #{second_Kind_Id},
- 		#{second_Kind_Name}, #{third_Kind_Id}, #{third_Kind_Name}, #{product_Id}, #{product_Name}, #{procedure_Describe},
- 		#{cost_Price_Sum}, #{module_Cost_Price_Sum}, #{designer}, #{register}, #{register_Time},
+ 		insert into m_design_procedure values(#{id},#{design_Id}, #{first_Kind_Id}, #{first_Kind_Name},#{product_Id}
+ 		,#{product_Name},#{procedure_Describe},#{cost_Price_Sum}, #{module_Cost_Price_Sum}, #{designer}, #{register}, #{register_Time},
  		#{checker}, #{check_Time}, #{check_Suggestion}, #{check_Tag}, #{changer},
  		#{change_Time}, #{change_Tag}, #{design_Module_Tag}, #{design_Module_Change_Tag})
  	</insert>
@@ -42,13 +67,13 @@
 			<if test="md.register != null and md.register != '' ">
 				register=#{md.register},
 			</if>
-			<if test="md.register_Time != null and md.register_Time!=''">
+			<if test="md.register_Time != null">
 				register_Time= #{md.register_Time},
 			</if>
 			<if test="md.checker !=null and md.checker != '' ">
 				checker= #{md.checker},
 			</if>
-			<if test="md.check_Time !=null and md.check_Time != '' ">
+			<if test="md.check_Time !=null ">
 				check_Time= #{md.check_Time},
 			</if>
 			<if test="md.check_Suggestion !=null and md.check_Suggestion != '' ">
@@ -73,10 +98,10 @@
 				design_Module_Change_Tag= #{md.design_Module_Change_Tag},
 			</if>
 		</set>
- 		where design_Id = #{md.design_Id}
+ 		where id = #{md.id}
  	</update>
  	<select id="findId" resultType="MDesignProcedure">
- 		select * from m_design_procedure where design_Id = #{design_Id}
+ 		select * from m_design_procedure where id = #{design_Id}
  	</select>
   </mapper>
   

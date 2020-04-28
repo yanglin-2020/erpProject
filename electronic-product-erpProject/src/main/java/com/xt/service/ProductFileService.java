@@ -83,4 +83,7 @@ public interface ProductFileService {
 	int updateMaterialSumMoney(@Param("design_id") String design_id,@Param("money") double money);
 	int updateMaterialSumMoneyadd(@Param("design_id") String design_id,@Param("money") double money);
 	int delMaterialById(String product_id);
+	
+	//罗文涛的制定产品生产工序设计单分页查询
+	public PageDemo<D_file> getProductlwtInfo(int nowPage, int pageSize,D_file df);
 }

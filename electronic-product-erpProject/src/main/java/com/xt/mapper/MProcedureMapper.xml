@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.xt.mapper.MProcedureMapper">
+  <!-- 分页查询有多少生产工序 -->
+  	<select id="listfind" resultType="MProcedure">
+  		select * from M_Procedure where 1=1
+  		<if test="ma.procedure_Finish_Tag !=null and ma.procedure_Finish_Tag != '' ">
+ 			and procedure_Finish_Tag = #{ma.procedure_Finish_Tag}
+ 		</if>
+ 		<if test="ma.procedure_Transfer_Tag != null and ma.procedure_Transfer_Tag != '' ">
+ 			and procedure_Transfer_Tag = #{ma.procedure_Transfer_Tag}
+ 		</if>
+  		<if test="ma.procedure_Name!=null and ma.procedure_Name!=''">
+			and procedure_Name like CONCAT('%',#{ma.procedure_Name},'%')
+		</if>
+  		<if test="page.startRow != null and page.pageSize != null">
+		    limit #{page.startRow},#{page.pageSize}
+		</if>
+  	</select>
+  	<!-- 分页查询总数量 -->
+ 	<select id="MappCount" resultType="Integer">
+ 		select count(1) from M_Procedure where 1=1
+ 		<if test="ma.procedure_Finish_Tag !=null and ma.procedure_Finish_Tag != '' ">
+ 			and procedure_Finish_Tag = #{ma.procedure_Finish_Tag}
+ 		</if>
+ 		<if test="ma.procedure_Transfer_Tag != null and ma.procedure_Transfer_Tag != '' ">
+ 			and procedure_Transfer_Tag = #{ma.procedure_Transfer_Tag}
+ 		</if>
+  		<if test="ma.procedure_Name!=null and ma.procedure_Name!=''">
+			and procedure_Name like CONCAT('%',#{ma.procedure_Name},'%')
+		</if>
+ 	</select>
+ 	<!-- 添加生产工序 -->
+ 	<insert id="mappadd">
+ 		insert into M_Procedure values(null, #{parent_Id}, #{details_Number}, #{procedure_Id}, #{procedure_Name},
+ 		#{labour_Hour_Amount}, #{realLabour_Hour_Amount}, #{subtotal}, #{real_Subtotal}, #{module_Subtotal}, #{real_Module_Subtotal},
+ 		#{cost_Price}, #{demand_Amount}, #{real_Amount}, #{procedure_Finish_Tag}, #{procedure_Transfer_Tag})
+ 	</insert>
+ 	<!-- 修改生产工序 -->
+ 	<update id="mappUpdate">
+ 		update M_Procedure 
+		<set>
+			<if test="procedure_Name !=null and procedure_Name != '' ">
+				procedure_Name=#{procedure_Name},
+			</if>
+			<if test="labour_Hour_Amount != null and labour_Hour_Amount != '' ">
+				labour_Hour_Amount=#{labour_Hour_Amount},
+			</if>
+			<if test="realLabour_Hour_Amount != null and realLabour_Hour_Amount !=''">
+				realLabour_Hour_Amount=#{realLabour_Hour_Amount},
+			</if>
+			<if test="subtotal != null and subtotal != '' ">
+				subtotal=#{subtotal},
+			</if>
+			<if test="real_Subtotal != null and real_Subtotal != '' ">
+				real_Subtotal= #{real_Subtotal},
+			</if>
+			<if test="module_Subtotal !=null and module_Subtotal != '' ">
+				module_Subtotal= #{module_Subtotal},
+			</if>
+			<if test="real_Module_Subtotal !=null and real_Module_Subtotal != '' ">
+				real_Module_Subtotal= #{real_Module_Subtotal},
+			</if>
+			<if test="cost_Price !=null and cost_Price != '' ">
+				cost_Price = #{cost_Price},
+			</if>
+			<if test="demand_Amount !=null and demand_Amount != '' ">
+				demand_Amount= #{demand_Amount},
+			</if>
+			<if test="real_Amount !=null and real_Amount != '' ">
+				real_Amount= #{real_Amount},
+			</if>
+			<if test="procedure_Finish_Tag !=null and procedure_Finish_Tag != '' ">
+				procedure_Finish_Tag= #{procedure_Finish_Tag},
+			</if>
+		</set>
+ 		where id = #{id}
+ 	</update>
+ 	<select id="findId" resultType="MProcedure">
+ 		select * from M_Procedure where id = #{id}
+ 	</select>
+  </mapper>

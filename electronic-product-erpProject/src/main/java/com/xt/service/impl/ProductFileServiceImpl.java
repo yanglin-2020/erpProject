@@ -283,4 +283,18 @@ public class ProductFileServiceImpl implements ProductFileService{
 	public int delMaterialById(String product_id) {
 		return mapper.delMaterialById(product_id);
 	}
+
+	@Override
+	public PageDemo<D_file> getProductlwtInfo(int nowPage, int pageSize, D_file df) {
+		PageDemo<D_file> pd = new PageDemo<D_file>();
+		//(调用mapper的方法)
+		int rowCount = mapper.getProductlwtCount(df);
+		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+		List<D_file> list = mapper.getProductlwtInfo(page, df);
+		pd.setCode(0);
+		pd.setCount(rowCount);
+		pd.setMsg("");
+		pd.setData(list);
+		return pd;
+	}
 }

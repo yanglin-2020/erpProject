@@ -23,7 +23,7 @@ public class MDesignProcedureModule implements Serializable {
     //用途类型
     private String type;
     //本工序数量
-    private Object amount;
+    private int amount;
     //描述
     private String product_Describe;
     //单位
@@ -68,10 +68,10 @@ public class MDesignProcedureModule implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public Object getAmount() {
+	public int getAmount() {
 		return amount;
 	}
-	public void setAmount(Object amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 	public String getProduct_Describe() {
@@ -109,7 +109,7 @@ public class MDesignProcedureModule implements Serializable {
 				+ cost_Price + ", subtotal=" + subtotal + "]";
 	}
 	public MDesignProcedureModule(Integer id, Integer parent_Id, Integer details_Number, String product_Id,
-			String product_Name, String type, Object amount, String product_Describe, String amount_Unit,
+			String product_Name, String type, int amount, String product_Describe, String amount_Unit,
 			Object cost_Price, Object subtotal) {
 		super();
 		this.id = id;

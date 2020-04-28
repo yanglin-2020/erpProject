@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<script type="text/javascript">
+</script>
+    <head>
+        <meta charset="UTF-8">
+        <title>生产工序物料-lwt</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+    </head>
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">首页</a>
+                <a href="">演示</a>
+                <a>
+                    <cite>导航元素</cite></a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                         <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                               <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="euUserName" placeholder="请输入产品名" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <a class="layui-btn search_btn" data-type="reload">
+                                        <i class="layui-icon">&#xe615;</i></a>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-body ">
+                           <table class="layui-table"id="demo"  lay-filter="test"></table>
+					</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    
+    <!--操作-->
+<!-- 	 -->
+	 <!--操作-->
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-group demoTable">
+  <button class="layui-btn" lay-event="fmdes" data-type="fmdes">确认</button>
+</div>
+    </script>
+        <!--操作-->
+	<script type="text/html" id="oprListBar">
+ 		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="updateMDesign">制定</a>
+	</script>
+    <script>layui.use('laydate',
+        function() {
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#start' //指定元素
+            });
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#end' //指定元素
+            });
+
+        });</script>
+    <script th:inline="none">layui.use('table',
+        function() {
+    	var form = layui.form;
+            var table = layui.table;
+            var sale_id=parent.names;
+            var product_id=parent.product_id;
+            table.render({
+                elem: '#demo'
+                ,height: 312
+                ,toolbar: '#toolbarDemo'
+                ,url: 'mdesignDetailsAll?id='+sale_id //数据接口
+                ,page: true //开启分页
+                ,cols: [[ //表头
+                	{field:'procedure_Id', width:100, title:"工序编号", sort: true},
+                	{field:'procedure_Name', width:100, title:"名称", sort: true},
+                	{field:'procedure_Describe', width:100, title:"工序描述", sort: true},
+                	{field:'amount_Unit', width:80, title:"单位", sort: true},
+                	{field:'labour_Hour_Amount', width:100, title:"工时数",event: "labour_Hour_Amount", sort: true,edit: 'text'},
+                	{field:'subtotal', width:150, title:"工时成本小计",event: "subtotal", sort: true,edit: 'text'},
+                	{field:'cost_Price', width:150, title:"单位工时成本", sort: true},
+                	{field:'register', width:100, title:"登记人", sort: true},
+                	{field:'register_Time', width:120, title:"登记时间", sort: true ,templet: function(d){return layui.util.toDateString(d.u_create)}},
+                	{width:270, templet:'#oprListBar',title:"操作",fixed:'right'}
+                ]]
+              });
+            $ = layui.jquery;
+            var form = layui.form,
+            layer = layui.layer;
+          //监听提交
+          /* 
+            form.on('submit(demo1)', function(data){
+          	  console.log(table.cache)
+            	 $.post("addMDesignlist",{mdprod:JSON.stringify(table.cache.demo),id:sale_id,product_Id:data.field.product_id,
+            		 product_Name:data.field.product_name,procedure_Describe:data.field.procedure_Describe,
+            		 designer:data.field.designer},function(res){
+            		 if(res>"0"){
+            			setTimeout(function() {
+          				top.layer.msg("操作成功！");
+          				layer.closeAll("iframe");
+          				//刷新父页面
+          				parent.location.reload();
+          			}, 1000);
+            		 }
+            	 })*/
+            	 //father_reload();
+              /* layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+              }) */
+              /*return false;
+            }); */
+            
+            table.on('tool(test)', function(obj){
+                var layEvent = obj.event,
+                    data = obj.data;
+                if(layEvent === 'updateMDesign'){ //添加
+                	title = "添加物料";
+         	         window.product_id=product_id;
+         	        parent.ids = data.id;
+         	        parent.layer.open({
+         			type: 2,
+         			shadeClose: false,
+         			title: "物料详情页面",
+         			content: 'MDesignProcedurmodule-add-list-dule-cp.html',
+         			skin: 'layui-layer-rim',
+         			 area: ['80%', '80%'],
+         			 end: function () {//点睛之笔，此端代码便是精髓之处，layui监听到弹窗3的销毁之后回调了一个end函数，通过这个end函数我们就能刷新弹窗2的数据
+         				table.reload("test");//就比如这refreshTable()是弹窗2里面的用于拼接数据列表的函数
+         		}
+         		});
+                	
+                } 
+            });
+          //查看
+            function fmdes(){
+          	    title = "添加物料";
+          	         window.names = sale_id
+                parent.layer.open({
+          			type: 2,
+          			shadeClose: false,
+          			title: "产品详情页面",
+          			content: 'MProcedure-list.html',
+          			skin: 'layui-layer-rim',
+          			 area: ['80%', '80%'],
+          			 end: function () {//点睛之笔，此端代码便是精髓之处，layui监听到弹窗3的销毁之后回调了一个end函数，通过这个end函数我们就能刷新弹窗2的数据
+          				table.reload("test");//就比如这refreshTable()是弹窗2里面的用于拼接数据列表的函数
+          		}
+          		});
+
+            }
+            
+            
+            var $ = layui.$, active = {
+          		  fmdes: function(){ //获取选中数据
+          			  $.post("updateMdesignProcedures",{mdprod:JSON.stringify(table.cache.demo),id:sale_id},function(res){
+          				  if(res=="1"){
+		          			top.layer.msg("操作成功！");
+		            	    layer.closeAll("iframe");
+									//刷新父页面
+							parent.location.reload();
+          				  }else{
+          					layer.msg("操作失败！请联系管理员-2646550407");
+          				  }
+          			  })
+            	    }
+            	    ,getCheckLength: function(){ //获取选中数目
+            	      var checkStatus = table.checkStatus('idTest')
+            	      ,data = checkStatus.data;
+            	      layer.msg('选中了：'+ data.length + ' 个');
+            	    }
+            	    ,isAll: function(){ //验证是否全选
+            	      var checkStatus = table.checkStatus('idTest');
+            	      layer.msg(checkStatus.isAll ? '全选': '未全选')
+            	    }
+            	  };
+            $('.demoTable .layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+              });
+            //头工具栏事件
+            table.on('toolbar(test)',
+            function(obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                case 'addData':
+                	 xadmin.open('添加用户','useradd.html',490,500);
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+                };
+            });
+          //监听单元格编辑
+            table.on('edit(test)', function(obj){
+              var value = obj.value //得到修改后的值
+              ,data = obj.data //得到所在行所有键值
+              ,field = obj.field; //得到字段
+              
+              
+              data.cost_Price=data.labour_Hour_Amount*data.subtotal;
+              obj.update(obj.data)
+              console.log(obj)
+              //layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+            });
+          	//条件查询
+            $(".search_btn").on("click",function(){
+                     table.reload("test",{
+                         page: {
+                             curr: 1 //重新从第 1 页开始
+                         },
+                         where: {
+                        	 name: $("input[name=euUserName]").val()  //搜索的关键字
+                         }
+                     });
+             }); 
+        });</script>
+</html>

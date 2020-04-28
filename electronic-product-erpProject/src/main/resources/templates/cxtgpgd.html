@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<script type="text/javascript">
+	
+</script>
+<head>
+<meta charset="UTF-8">
+<title>查询审核通过的派工单——zm</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./css/xadmin.css">
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/xadmin.js"></script>
+</head>
+<body>
+	<div class="x-nav">
+		<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">演示</a>
+			<a> <cite>导航元素</cite></a>
+		</span> <a class="layui-btn layui-btn-small"
+			style="line-height: 1.6em; margin-top: 3px; float: right"
+			onclick="location.reload()" title="刷新"> <i
+			class="layui-icon layui-icon-refresh" style="line-height: 30px"></i>
+		</a>
+	</div>
+	<div class="layui-fluid">
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-body ">
+						<form class="layui-form layui-col-space5">
+							<div class="layui-inline layui-show-xs-block">
+								<input type="text" name="manufacture_id" placeholder="请输入派工单编号"
+									autocomplete="off" class="layui-input">
+							</div>
+
+							<div class="layui-inline layui-show-xs-block">
+								<input type="text" name="product_id" placeholder="请输入产品编号"
+									autocomplete="off" class="layui-input">
+							</div>
+
+							<div class="layui-inline layui-show-xs-block">
+								<input type="text" name="product_name" placeholder="请输入产品名称"
+									autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-inline layui-show-xs-block">
+								<a class="layui-btn search_btn" data-type="reload"> <i
+									class="layui-icon">&#xe615;</i></a>
+							</div>
+						</form>
+					</div>
+					<div class="layui-card-body ">
+						<table class="layui-table"
+							lay-data="{url:'getAllMManufactureInfoo',page:true,toolbar: '#toolbarDemo',id:'test'}"
+							lay-filter="test">
+							<thead>
+								<tr>
+									<th lay-data="{field:'manufacture_id', width:150, sort: true}">派工单编号</th>
+									<th lay-data="{field:'product_id', width:150, sort: true}">产品编号</th>
+									<th lay-data="{field:'product_name', width:120}">产品名称</th>
+									<th lay-data="{field:'amount', width:100}">投产数量</th>
+									<th lay-data="{field:'module_cost_price_sum', width:120}">设计物料总成本</th>
+									<th lay-data="{field:'real_module_cost_price_sum', width:120}">实际物料总成本</th>
+									<th lay-data="{field:'labour_cost_price_sum', width:120}">设计工时总成本</th>
+									<th lay-data="{field:'real_labour_cost_price_sum', width:120}">实际工时总成本</th>
+									<th lay-data="{field:'designer', width:100}">工单制定人</th>
+									<th lay-data="{field:'register', width:100}">登记人</th>
+									<th
+										lay-data="{field:'register_time', width:162,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.register_time)}}">登录时间</th>
+									<th lay-data="{field:'checker', width:100}">审核人</th>
+									<th
+										lay-data="{field:'check_time', width:163,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.check_time)}}">审核时间</th>
+								</tr>
+							</thead>
+						</table>
+						<script type="text/html" id="titleTpl">
+  						{{#  if(d.u_status == 1){ }}
+    						 <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
+  						{{#  } else if(d.u_status == 0) { }}
+    						<span class="layui-btn layui-btn-normal layui-btn-mini">已禁用</span>
+ 						{{#  } else{ }}
+							
+  						{{#  }  }}
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	layui.use('laydate', function() {
+		var laydate = layui.laydate;
+
+		//执行一个laydate实例
+		laydate.render({
+			elem : '#start' //指定元素
+		});
+
+		//执行一个laydate实例
+		laydate.render({
+			elem : '#end' //指定元素
+		});
+
+	});
+</script>
+<script>
+	layui.use('table', function() {
+		var table = layui.table;
+		//条件查询
+		$(".search_btn").on("click", function() {
+			table.reload("test", {
+				page : {
+					curr : 1
+				//重新从第 1 页开始
+				},
+				where : {
+					//搜索的关键字
+					product_name : $("[name=product_name]").val(),
+					manufacture_id : $("[name=manufacture_id]").val(),
+					product_id : $("[name=product_id]").val()
+				}
+			});
+		});
+	});
+</script>
+</html>

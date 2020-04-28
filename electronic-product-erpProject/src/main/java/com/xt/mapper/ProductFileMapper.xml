@@ -279,4 +279,21 @@
 	<delete id="delMaterialById">
 		delete from d_module_details where parent_id=#{product_id}
 	</delete>
+	
+	<!--罗文涛的制定产品生产工序设计单分页查询  -->
+	<select id="getProductlwtCount" resultType="int">
+		select count(1) from d_file where type = '商品' and check_tag='审核通过'  and delete_tag ='未删除' 
+		and design_module_tag='已设计' and design_procedure_tag = '未设计'
+		<if test="df.product_name!=null and df.product_name!=''">
+			and product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
+	</select>
+	<select id="getProductlwtInfo" resultType="D_file">
+		select * from d_file where type = '商品' and check_tag='审核通过'  and delete_tag ='未删除' and design_module_tag='已设计'
+		 and design_procedure_tag = '未设计'
+		<if test="df.product_name!=null and df.product_name!=''">
+			and product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
 </mapper>

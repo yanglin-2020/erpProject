@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class MDesignProcedureDetails implements Serializable {
     private static final long serialVersionUID = -82773682098904902L;
+    
     //序号
     private Integer id;
     //父级序号
@@ -35,7 +36,7 @@ public class MDesignProcedureDetails implements Serializable {
     //登记人
     private String register;
     //登记时间
-    private Object register_Time;
+    private String register_Time;
     //当前工序物料标志      D002-0: 未设计    D002-1: 已设计
     private String design_Module_Tag;
     //当前工序物料变更标志    D003-0: 未变更     D003-0: 已变更
@@ -112,10 +113,10 @@ public class MDesignProcedureDetails implements Serializable {
 	public void setRegister(String register) {
 		this.register = register;
 	}
-	public Object getRegister_Time() {
+	public String getRegister_Time() {
 		return register_Time;
 	}
-	public void setRegister_Time(Object register_Time) {
+	public void setRegister_Time(String register_Time) {
 		this.register_Time = register_Time;
 	}
 	public String getDesign_Module_Tag() {
@@ -141,30 +142,6 @@ public class MDesignProcedureDetails implements Serializable {
 				+ ", cost_Price=" + cost_Price + ", subtotal=" + subtotal + ", module_Subtotal=" + module_Subtotal
 				+ ", register=" + register + ", register_Time=" + register_Time + ", design_Module_Tag="
 				+ design_Module_Tag + ", design_Module_Change_Tag=" + design_Module_Change_Tag + "]";
-	}
-	public MDesignProcedureDetails(Integer id, Integer parent_Id, Integer details_Number, String procedure_Id,
-			String procedure_Name, Object labour_Hour_Amount, String procedure_Describe, String amount_Unit,
-			Object cost_Price, Object subtotal, Object module_Subtotal, String register, Object register_Time,
-			String design_Module_Tag, String design_Module_Change_Tag) {
-		super();
-		this.id = id;
-		this.parent_Id = parent_Id;
-		this.details_Number = details_Number;
-		this.procedure_Id = procedure_Id;
-		this.procedure_Name = procedure_Name;
-		this.labour_Hour_Amount = labour_Hour_Amount;
-		this.procedure_Describe = procedure_Describe;
-		this.amount_Unit = amount_Unit;
-		this.cost_Price = cost_Price;
-		this.subtotal = subtotal;
-		this.module_Subtotal = module_Subtotal;
-		this.register = register;
-		this.register_Time = register_Time;
-		this.design_Module_Tag = design_Module_Tag;
-		this.design_Module_Change_Tag = design_Module_Change_Tag;
-	}
-	public MDesignProcedureDetails() {
-		super();
 	}
 
 

@@ -20,6 +20,14 @@ public class DModuleDetails implements Serializable {
 	private int residual_amount;// 可用数量
 	private double cost_price;// 单价
 	private double subtotal;// 小计
+	private int shuliang;//罗文涛加的数量
+	
+	public int getShuliang() {
+		return shuliang;
+	}
+	public void setShuliang(int shuliang) {
+		this.shuliang = shuliang;
+	}
 	public int getId() {
 		return id;
 	}

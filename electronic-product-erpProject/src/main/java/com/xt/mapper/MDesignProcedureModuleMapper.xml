@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.xt.mapper.MDesignProcedureModuleMapper">
+ <!-- 产品设计详情 -->
+  	<select id="mdesignAll" resultType="MDesignProcedureModule">
+  		select * from M_DESIGN_PROCEDURE_MODULE 
+  		<where>
+  			<if test="md.parent_Id !=null and md.parent_Id !=''">
+			parent_Id = #{md.parent_Id}
+			</if>
+			<if test="md.product_Name !=null and md.product_Name !=''">
+			and product_Name = #{md.product_Name}
+			</if>
+			<if test="page.startRow != null and page.pageSize != null">
+		    limit #{page.startRow},#{page.pageSize}
+		</if>
+  		</where>
+  	</select>
+  	<select id="mdesignCount" resultType="Integer">
+  		select count(1) from M_DESIGN_PROCEDURE_MODULE
+  		<where>
+  			<if test="md.parent_Id !=null and md.parent_Id !=''">
+			parent_Id = #{md.parent_Id}
+			</if>
+			<if test="md.product_Name !=null and md.product_Name !=''">
+			and product_Name = #{md.product_Name}
+			</if>
+  		</where>
+  	</select>
+  	<!--  添加产品设计详情 -->
+  	<insert id="mdesignadd">
+  		insert into M_DESIGN_PROCEDURE_MODULE values(null,#{parent_Id},#{details_Number},#{product_Id},
+  		#{product_Name},#{type},#{amount},#{product_Describe},
+  		#{amount_Unit},#{cost_Price},#{subtotal})
+  	</insert>
+  	<!-- 修改产品设计详情 -->
+  	<update id="mdesignUpdate">
+  		update M_DESIGN_PROCEDURE_MODULE
+  		<set>
+  			<if test=" type != null and type != ''">
+  				type=#{type},
+  			</if>
+  			<if test=" amount != null and amount != ''">
+  				amount=#{amount},
+  			</if>
+  			<if test=" product_Describe != null and product_Describe != ''">
+  				product_Describe=#{product_Describe},
+  			</if>
+  			<if test=" amount_Unit != null and amount_Unit != ''">
+  				amount_Unit=#{amount_Unit},
+  			</if>
+  			<if test=" cost_Price != null and cost_Price != ''">
+  				cost_Price=#{cost_Price},
+  			</if>
+  			<if test=" subtotal != null and subtotal != ''">
+  				subtotal=#{subtotal},
+  			</if>
+  		</set>
+  		where id = #{id}
+  	</update>
+ </mapper>

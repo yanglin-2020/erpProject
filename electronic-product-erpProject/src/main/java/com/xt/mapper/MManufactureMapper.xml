@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xt.mapper.MManufactureMapper">
+	<!-- 获取生产派工单 -->
+	<select id="selectMManufacture">
+		select * from m_manufacture
+	</select>
+	<!-- 拿到生产派工单的数量 -->
+	<select id="getMManufactureCount" resultType="int">
+		select count(1) from m_manufacture where check_tag='等待审核' 
+		<if test="mm.product_name!=null and mm.product_name!=''">
+			and product_name like CONCAT('%',#{mm.product_name},'%')
+		</if>
+	</select>
+	<!-- 拿到生产派工单的数量 -->
+	<select id="getMManufactureCountt" resultType="int">
+		select count(1) from m_manufacture where check_tag='审核通过' 
+		<if test="mm.product_name!=null and mm.product_name!=''">
+			and product_name like CONCAT('%',#{mm.product_name},'%')
+		</if>
+	</select>
+	<!-- 分页查询生产计划 -->
+	<select id="getAllMManufactureInfo" resultType="MManufacture">
+		select * from m_manufacture where check_tag='等待审核' 
+		<if test="mm.product_name!=null and mm.product_name!=''">
+			and product_name like CONCAT('%',#{mm.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!-- 审核生产派工单 -->
+	<update id="updateMManufacture">
+		update m_manufacture set
+		checker=#{checker},check_time=#{check_time},check_tag=#{check_tag},remark=#{remark}
+		where
+		manufacture_id=#{manufacture_id}
+	</update>
+	<!-- 分页查询生产派工单审核通过的信息 -->
+	<select id="getAllMManufactureInfoo" resultType="MManufacture">
+		select * from m_manufacture where check_tag='审核通过' 
+		<if test="mm.manufacture_id!=null and mm.manufacture_id!=''">
+			and manufacture_id like
+			CONCAT('%',#{mm.manufacture_id},'%')
+		</if>
+		<if test="mm.product_id!=null and mm.product_id!=''">
+			and product_id like
+			CONCAT('%',#{mm.product_id},'%')
+		</if>
+		<if test="mm.product_name!=null and mm.product_name!=''">
+			and product_name like
+			CONCAT('%',#{mm.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!-- 获取产品生产计划 -->
+	<select id="selectMapply">
+		select
+		id,apply_id,product_id,product_name,product_describe,amount,check_time
+		from m_apply
+	</select>
+	<!-- 拿到生产计划的数量 -->
+	<select id="getMapplyCount" resultType="int">
+		select count(1) from m_apply where 1=1
+		<if test="m.product_name!=null and m.product_name!=''">
+			and product_name like CONCAT('%',#{m.product_name},'%')
+		</if>
+	</select>
+	<!-- 查询所有生产计划 -->
+	<select id="getAllMapplyInfo" resultType="Mapply">
+		select * from m_apply where 1=1
+		<if test="m.product_name!=null and m.product_name!=''">
+			and product_name like CONCAT('%',#{m.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+</mapper>

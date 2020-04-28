@@ -6,7 +6,7 @@
 </script>
     <head>
         <meta charset="UTF-8">
-        <title>产品设计</title>
+        <title>生产工序查询-lwt</title>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -34,7 +34,7 @@
                          <div class="layui-card-body ">
                             <form class="layui-form layui-col-space5">
                                <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="euUserName" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                                    <input type="text" name="euUserName" placeholder="请输入产品名" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
                                     <a class="layui-btn search_btn" data-type="reload">
@@ -43,19 +43,22 @@
                             </form>
                         </div>
                         <div class="layui-card-body ">
-                            <table class="layui-table" lay-data="{url:'mdesignAll',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
+                            <table class="layui-table" lay-data="{url:'mdesignAll?bh=通过',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
                                         <th lay-data="{type:'checkbox'}">ID</th>
-                                        <th lay-data="{field:'design_Id', width:60, sort: true}">ID</th>
+                                        <th lay-data="{field:'design_Id', width:200, sort: true}">ID</th>
                                         <th lay-data="{field:'product_Name', width:80, sort: true, edit: 'text'}">产品名称</th>
                                         <th lay-data="{field:'procedure_Describe', width:120}">设计要求</th>
                                         <th lay-data="{field:'cost_Price_Sum', width:100}">工时总成本</th>
                                         <!-- <th lay-data="{field:'module_Cost_Price_Sum', edit: 'text',width:100, minWidth: 100,templet: '#titleTpl'}">状态</th> -->
                                         <th lay-data="{field:'module_Cost_Price_Sum', width:100}">物料总成本</th>
                                         <th lay-data="{field:'designer', width:70}">设计人</th>
-                                        <th lay-data="{field:'register_Time', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.u_create)}}">创建时间</th>
-                                        <th lay-data="{width:270, templet:'#oprListBar',fixed:'right'}">操作</th>
+                                         <th lay-data="{field:'register', width:70}">登记人</th>
+                                        <th lay-data="{field:'checker', width:70}">复核人</th>
+                                        <th lay-data="{field:'check_Suggestion', width:70}">审核意见</th>
+                                        <th lay-data="{field:'check_Time', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.u_create)}}">审核时间</th>
+                                       <th lay-data="{width:270, templet:'#oprListBar',fixed:'right'}">操作</th>
                                         </tr>
                                 </thead>
                             </table>
@@ -74,18 +77,13 @@
             </div>
         </div>
     </body>
+    
     <!--操作-->
+<!-- 	 -->
 	<script type="text/html" id="oprListBar">
- 		<i class="layui-icon layui-btn layui-btn-warning" lay-event="edit">&#xe642;</i>
-		<i class="layui-icon layui-btn  layui-btn-danger" lay-event="del">&#xe640;</i>
-		<a class="layui-btn layui-btn-xs" lay-event="role">授予角色</a> 
-		<a class="layui-btn layui-btn-xs" lay-event="cancelRole">取消授予</a> 
+<i class="layui-icon layui-btn layui-btn-warning" lay-event="find">&#xe63c;</i>
+	<a class="layui-btn layui-btn-xs" lay-event="edit">修改</a> 
 	</script>
-    <script type="text/html" id="toolbarDemo">
-        <div class = "layui-btn-container" > 
-            <button class = "layui-btn layui-btn-sm" lay-event = "addData" > 添加用户</button>
-        </div > 
-    </script>
     <script>layui.use('laydate',
         function() {
             var laydate = layui.laydate;
@@ -103,30 +101,75 @@
         });</script>
     <script>layui.use('table',
         function() {
+    	var form = layui.form;
             var table = layui.table;
-
           //编辑操作
             function editUser(edit){
-        	    title = "编辑用户";
+        	    title = "编辑产品";
+        	    window.names = edit.id
                 var index = layui.layer.open({
                     title : title,
                     type : 2,
-                    content : "updateuser.html",
-                    area: ['490px', '400px'],
+                    area : [ '900px', '550px' ],
+                   // content : "matrialdesignss?id="+edit.id,
+                    content : "cesi.html",
                    /*  maxmin: true, */
                     success : function(layero, index){
+                    	//var iframe = window['layui-layer-iframe'+index];
                     	//获取子窗体对象
                     	var body = layui.layer.getChildFrame('body', index);
-                        if(edit){
-                        	body.find(".euUserId").val(edit.u_id);
-                        	body.find(".name").val(edit.u_name);
-                        	body.find(".phone").val(edit.phone);
-                        	body.find(".sex").val(edit.sex);
-                        	body.find(".btn_add").text("修改");
-                        	form.render();
-                        }
+    		         //调用子页面的全局函数
+    		          
+    		        if (edit) {
+						body.find("#product_Id").val(edit.product_Id);
+						body.find("#product_Name").val(edit.product_Name);
+						body.find("#designer").val(edit.designer);
+						body.find("#cost_Price_Sum").val(edit.cost_Price_Sum);
+						body.find("#module_Cost_Price_Sum").val(edit.module_Cost_Price_Sum);
+						body.find("#procedure_Describe").val(edit.procedure_Describe);
+						body.find(".btn_add").text("修改");
+						form.render();
+					} 
                     }
                 });
+            }
+          //监听提交
+            form.on('submit(demo1)', function(data){
+           	 console.log(data.field);
+           	 $.post("addMdesignProce",{"cost_Price_Sum":data.field.cost_Price_Sum,"designer":data.field.designer,
+           		 "module_Cost_Price_Sum":data.field.module_Cost_Price_Sum,"procedure_Describe":data.field.procedure_Describe,
+           		 "product_Name":data.field.product_Name},function(res){
+           		 if(res>"0"){
+           			 layer.alert("操作成功");
+           		 }
+           	 })
+           	 father_reload();
+             /* layer.alert(JSON.stringify(data.field), {
+               title: '最终的提交信息'
+             }) */
+             return false;
+           });
+          //查看
+            function editssUser(find){
+        	    title = "查看";
+    		         window.names = find.id //主要是这句
+                var index = layer.open({
+    				type: 2,
+    				title: "产品详情页面",
+    				fix: false,
+    				maxmin: true,
+    				shadeClose: true,
+    				shade: 0.4,
+    				content: 'mdesignProcedure-Details.html',
+    				skin: 'layui-layer-rim',
+    				 area: ['80%', '80%'],
+    		         success: function(layero, index){
+    		         var iframe = window['layui-layer-iframe'+index];
+    		         //调用子页面的全局函数
+    		         //console.log(find.design_Id)
+    		         }
+    			});
+   
             }
           //列表操作
             table.on('tool(test)', function(obj){
@@ -176,6 +219,8 @@
                			 xadmin.open('取消授予','cancelrole.html',600,400);
                		 }
                	});
+                }else if(layEvent == 'find'){
+                	editssUser(data);
                 }
             });
             //头工具栏事件

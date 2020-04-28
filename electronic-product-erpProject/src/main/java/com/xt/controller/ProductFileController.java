@@ -614,4 +614,20 @@ public class ProductFileController {
 		}
 		return "成功";
 	}
+	//罗文涛的制定产品生产工序设计单分页查询
+	@RequestMapping("/getProductlwtInfo")
+	public void getProductlwtInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		String nowpage = request.getParameter("page");
+		String pageSize = request.getParameter("limit");
+		String name = request.getParameter("name");// 商品的名字
+		D_file df = new D_file();
+		df.setProduct_name(name);
+		PageDemo<D_file> pd = service.getProductlwtInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), df);
+		PrintWriter out = response.getWriter();
+		String str = JSONArray.toJSONString(pd);
+		out.print(str);
+		out.flush();
+		out.close();
+	}
 }

@@ -1,6 +1,7 @@
 package com.xt.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 产品生产工序实体类
@@ -17,14 +18,6 @@ public class MDesignProcedure implements Serializable {
     private String first_Kind_Id;
     //产品I级分类名称
     private String first_Kind_Name;
-    //产品II级分类编号
-    private String second_Kind_Id;
-    //产品II级分类名称
-    private String second_Kind_Name;
-    //产品III级分类编号
-    private String third_Kind_Id;
-    //产品III级分类名称
-    private String third_Kind_Name;
     //产品编号
     private String product_Id;
     //产品名称
@@ -34,17 +27,17 @@ public class MDesignProcedure implements Serializable {
     //工时总成本
     private Object cost_Price_Sum;
     //物料总成本
-    private Object module_Cost_Price_Sum;
+    private int module_Cost_Price_Sum;
     //设计人
     private String designer;
     //登记人
     private String register;
     //登记时间
-    private Object register_Time;
+    private String register_Time;
     //复核人
     private String checker;
     //审核时间
-    private Object check_Time;
+    private String check_Time;
     //审核意见
     private String check_Suggestion;
     //审核标志   S001-0: 等待审核     S001-1: 审核通过    S001-2: 审核不通过
@@ -53,12 +46,21 @@ public class MDesignProcedure implements Serializable {
     private String changer;
     //变更时间
     private Object change_Time;
-    //变更标志
+    //变更标志B002-0: 未变更  B002-1: 已变更
     private String change_Tag;
     //工序物料设计标志   G002-0: 未设计    G002-1: 已提交   G002-2: 已审核
     private String design_Module_Tag;
     //工序物料变更标志    G003-0: 未变更     G003-1: 已变更
     private String design_Module_Change_Tag;
+    
+    private List<MDesignProcedureDetails> listMdes;
+    
+	public List<MDesignProcedureDetails> getListMdes() {
+		return listMdes;
+	}
+	public void setListMdes(List<MDesignProcedureDetails> listMdes) {
+		this.listMdes = listMdes;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -82,30 +84,6 @@ public class MDesignProcedure implements Serializable {
 	}
 	public void setFirst_Kind_Name(String first_Kind_Name) {
 		this.first_Kind_Name = first_Kind_Name;
-	}
-	public String getSecond_Kind_Id() {
-		return second_Kind_Id;
-	}
-	public void setSecond_Kind_Id(String second_Kind_Id) {
-		this.second_Kind_Id = second_Kind_Id;
-	}
-	public String getSecond_Kind_Name() {
-		return second_Kind_Name;
-	}
-	public void setSecond_Kind_Name(String second_Kind_Name) {
-		this.second_Kind_Name = second_Kind_Name;
-	}
-	public String getThird_Kind_Id() {
-		return third_Kind_Id;
-	}
-	public void setThird_Kind_Id(String third_Kind_Id) {
-		this.third_Kind_Id = third_Kind_Id;
-	}
-	public String getThird_Kind_Name() {
-		return third_Kind_Name;
-	}
-	public void setThird_Kind_Name(String third_Kind_Name) {
-		this.third_Kind_Name = third_Kind_Name;
 	}
 	public String getProduct_Id() {
 		return product_Id;
@@ -131,10 +109,10 @@ public class MDesignProcedure implements Serializable {
 	public void setCost_Price_Sum(Object cost_Price_Sum) {
 		this.cost_Price_Sum = cost_Price_Sum;
 	}
-	public Object getModule_Cost_Price_Sum() {
+	public int getModule_Cost_Price_Sum() {
 		return module_Cost_Price_Sum;
 	}
-	public void setModule_Cost_Price_Sum(Object module_Cost_Price_Sum) {
+	public void setModule_Cost_Price_Sum(int module_Cost_Price_Sum) {
 		this.module_Cost_Price_Sum = module_Cost_Price_Sum;
 	}
 	public String getDesigner() {
@@ -149,10 +127,10 @@ public class MDesignProcedure implements Serializable {
 	public void setRegister(String register) {
 		this.register = register;
 	}
-	public Object getRegister_Time() {
+	public String getRegister_Time() {
 		return register_Time;
 	}
-	public void setRegister_Time(Object register_Time) {
+	public void setRegister_Time(String register_Time) {
 		this.register_Time = register_Time;
 	}
 	public String getChecker() {
@@ -161,10 +139,10 @@ public class MDesignProcedure implements Serializable {
 	public void setChecker(String checker) {
 		this.checker = checker;
 	}
-	public Object getCheck_Time() {
+	public String getCheck_Time() {
 		return check_Time;
 	}
-	public void setCheck_Time(Object check_Time) {
+	public void setCheck_Time(String check_Time) {
 		this.check_Time = check_Time;
 	}
 	public String getCheck_Suggestion() {
@@ -209,34 +187,32 @@ public class MDesignProcedure implements Serializable {
 	public void setDesign_Module_Change_Tag(String design_Module_Change_Tag) {
 		this.design_Module_Change_Tag = design_Module_Change_Tag;
 	}
+	public MDesignProcedure() {
+		super();
+	}
+	
 	@Override
 	public String toString() {
 		return "MDesignProcedure [id=" + id + ", design_Id=" + design_Id + ", first_Kind_Id=" + first_Kind_Id
-				+ ", first_Kind_Name=" + first_Kind_Name + ", second_Kind_Id=" + second_Kind_Id + ", second_Kind_Name="
-				+ second_Kind_Name + ", third_Kind_Id=" + third_Kind_Id + ", third_Kind_Name=" + third_Kind_Name
-				+ ", product_Id=" + product_Id + ", product_Name=" + product_Name + ", procedure_Describe="
-				+ procedure_Describe + ", cost_Price_Sum=" + cost_Price_Sum + ", module_Cost_Price_Sum="
-				+ module_Cost_Price_Sum + ", designer=" + designer + ", register=" + register + ", register_Time="
-				+ register_Time + ", checker=" + checker + ", check_Time=" + check_Time + ", check_Suggestion="
-				+ check_Suggestion + ", check_Tag=" + check_Tag + ", changer=" + changer + ", change_Time="
-				+ change_Time + ", change_Tag=" + change_Tag + ", design_Module_Tag=" + design_Module_Tag
-				+ ", design_Module_Change_Tag=" + design_Module_Change_Tag + "]";
+				+ ", first_Kind_Name=" + first_Kind_Name + ", product_Id=" + product_Id + ", product_Name="
+				+ product_Name + ", procedure_Describe=" + procedure_Describe + ", cost_Price_Sum=" + cost_Price_Sum
+				+ ", module_Cost_Price_Sum=" + module_Cost_Price_Sum + ", designer=" + designer + ", register="
+				+ register + ", register_Time=" + register_Time + ", checker=" + checker + ", check_Time=" + check_Time
+				+ ", check_Suggestion=" + check_Suggestion + ", check_Tag=" + check_Tag + ", changer=" + changer
+				+ ", change_Time=" + change_Time + ", change_Tag=" + change_Tag + ", design_Module_Tag="
+				+ design_Module_Tag + ", design_Module_Change_Tag=" + design_Module_Change_Tag + ", listMdes="
+				+ listMdes + "]";
 	}
 	public MDesignProcedure(Integer id, String design_Id, String first_Kind_Id, String first_Kind_Name,
-			String second_Kind_Id, String second_Kind_Name, String third_Kind_Id, String third_Kind_Name,
 			String product_Id, String product_Name, String procedure_Describe, Object cost_Price_Sum,
-			Object module_Cost_Price_Sum, String designer, String register, Object register_Time, String checker,
-			Object check_Time, String check_Suggestion, String check_Tag, String changer, Object change_Time,
+			int module_Cost_Price_Sum, String designer, String register, String register_Time, String checker,
+			String check_Time, String check_Suggestion, String check_Tag, String changer, Object change_Time,
 			String change_Tag, String design_Module_Tag, String design_Module_Change_Tag) {
 		super();
 		this.id = id;
 		this.design_Id = design_Id;
 		this.first_Kind_Id = first_Kind_Id;
 		this.first_Kind_Name = first_Kind_Name;
-		this.second_Kind_Id = second_Kind_Id;
-		this.second_Kind_Name = second_Kind_Name;
-		this.third_Kind_Id = third_Kind_Id;
-		this.third_Kind_Name = third_Kind_Name;
 		this.product_Id = product_Id;
 		this.product_Name = product_Name;
 		this.procedure_Describe = procedure_Describe;
@@ -254,9 +230,6 @@ public class MDesignProcedure implements Serializable {
 		this.change_Tag = change_Tag;
 		this.design_Module_Tag = design_Module_Tag;
 		this.design_Module_Change_Tag = design_Module_Change_Tag;
-	}
-	public MDesignProcedure() {
-		super();
 	}
 
 
