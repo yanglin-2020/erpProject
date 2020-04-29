@@ -46,10 +46,11 @@ public class MDesignProcedureController {
 	@RequestMapping("/mdesignAll")
 	@ResponseBody
 	public String mdesignAll(@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10") int limit,String name,String bh,String change){
+			@RequestParam(defaultValue = "10") int limit,String name,String bh,String change,String dmt){
 		MDesignProcedure md = new MDesignProcedure();
 		md.setChange_Tag(change);//变更状态
 		md.setProduct_Name(name);
+		md.setDesign_Module_Tag(dmt);
 		md.setCheck_Tag(bh);//审核状态
 		PageDemo<MDesignProcedure> pd = serivce.getAllMdesign(page, limit, md);
 		String str = JSONArray.toJSONString(pd);
@@ -237,12 +238,13 @@ public class MDesignProcedureController {
 		md.setChange_Tag("未更改");//变更转态
 		md.setDesign_Module_Change_Tag("未变更");
 		md.setDesign_Module_Tag("未变更");
-		md.setModule_Cost_Price_Sum(sum);
+		md.setCost_Price_Sum(sum);
 		String name =(String) session.getAttribute("username");
 		md.setRegister(name);//登记人
 		int count = serivce.mdesadd(md);
 		String str = JSONArray.toJSONString(count);
-		System.out.println(str);
+		//添加产品设计成功后，修改档案的design_procedure_tag的状态(已设计)
+		serivce.updatelwtdesign_procedure_tag(md.getProduct_Id());
 		return str;
 	}
 	

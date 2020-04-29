@@ -70,7 +70,7 @@
   		#{cost_Price},#{subtotal},#{module_Subtotal},#{register},#{register_Time},#{design_Module_Tag},#{design_Module_Change_Tag})
   	</insert>
   	<update id="upd_moule">
-  		update d_module_details set residual_amount = #{residual_amount} where id=#{id}
+  		update d_module_details set residual_amount = #{residual_amount} where details_number=#{id}
   	</update>
   	<!-- 修改产品设计详情 -->
   	<update id="updatemdesignDetails">

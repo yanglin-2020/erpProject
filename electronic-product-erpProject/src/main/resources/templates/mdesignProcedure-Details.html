@@ -25,12 +25,10 @@
 				<tr>
 					<th>产品编号</th>
 					<th>名称</th>
-					<th>工序描述</th>
 					<th>单位</th>
 					<th>工时数</th>
-					<th>工时成本小计</th>
 					<th>单位工时成本</th>
-					<th>物料成本小计</th>
+					<th>工时成本小计</th>
 					<th>登记人</th>
 					<th>登记时间</th>
 					<th>当前工序物料标志</th>
@@ -40,12 +38,10 @@
 				<tr v-for="goods in search()" :key="goods.parent_Id">
 					<td>{{goods.parent_Id}}</td>
 					<td>{{goods.procedure_Name}}</td>
-					<td>{{goods.procedure_Describe}}</td>
 					<td>{{goods.amount_Unit}}</td>
 					<td>{{goods.labour_Hour_Amount}}</td>
-					<td>{{goods.cost_Price}}</td>
 					<td>{{goods.subtotal}}</td>
-					<td>{{goods.module_Subtotal}}</td>
+					<td>{{goods.cost_Price}}</td>
 					<td>{{goods.register}}</td>
 					<td>{{goods.register_Time}}</td>
 					<td>{{goods.design_Module_Tag}}</td>

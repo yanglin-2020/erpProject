@@ -91,16 +91,14 @@
                 ,url: 'mdesignDetailsAll?id='+sale_id //数据接口
                 ,page: true //开启分页
                 ,cols: [[ //表头
-                	{field:'procedure_Id', width:100, title:"工序编号", sort: true},
-                	{field:'procedure_Name', width:100, title:"名称", sort: true},
-                	{field:'procedure_Describe', width:100, title:"工序描述", sort: true},
-                	{field:'amount_Unit', width:80, title:"单位", sort: true},
-                	{field:'labour_Hour_Amount', width:100, title:"工时数",event: "labour_Hour_Amount", sort: true,edit: 'text'},
-                	{field:'subtotal', width:150, title:"工时成本小计",event: "subtotal", sort: true,edit: 'text'},
+                	{field:'procedure_Id', width:100, title:"工序编号"},
+                	{field:'procedure_Name', width:100, title:"名称"},
+                	{field:'labour_Hour_Amount', width:100, title:"工时数",event: "labour_Hour_Amount",edit: 'text'},
                 	{field:'cost_Price', width:150, title:"单位工时成本", sort: true},
-                	{field:'register', width:100, title:"登记人", sort: true},
-                	{field:'register_Time', width:120, title:"登记时间", sort: true ,templet: function(d){return layui.util.toDateString(d.u_create)}},
-                	{width:270, templet:'#oprListBar',title:"操作",fixed:'right'}
+                	{field:'subtotal', width:150, title:"工时成本小计",event: "subtotal",edit: 'text'},
+                	{field:'register', width:100, title:"登记人"},
+                	{field:'register_Time', width:140, title:"登记时间",templet: function(d){return layui.util.toDateString(d.register_Time)}},
+                	{width:100, templet:'#oprListBar',title:"操作",fixed:'right'}
                 ]]
               });
             $ = layui.jquery;

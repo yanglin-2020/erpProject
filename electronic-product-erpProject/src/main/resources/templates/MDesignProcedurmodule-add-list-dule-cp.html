@@ -32,15 +32,6 @@
                 <div class="layui-col-md12">
                     <div class="layui-card">
                          <div class="layui-card-body ">
-                            <form class="layui-form layui-col-space5">
-                               <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="euUserName" placeholder="请输入产品名" autocomplete="off" class="layui-input">
-                                </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
-                            </form>
                         </div>
                         <div class="layui-card-body ">
                            <table class="layui-table"id="demo"  lay-filter="test"></table>
@@ -88,15 +79,15 @@
                 ,url: 'MdesignmoduleAll?id='+product_id //数据接口
                 ,page: true //开启分页
                 ,cols: [[ //表头
-                	{field:'id', width:100, title:"序号", sort: true},
-                	{field:'product_name', width:100, title:"物品名称", sort: true},
-                	{field:'product_id', width:100, title:"物料编号", sort: true},
-                	{field:'product_describe', width:100, title:"描述", sort: true},
-                	{field:'amount', width:150, title:"设计数量",event: "subtotal", sort: true},
-                	{field:'residual_amount', width:150, title:"可用数量", sort: true},
-                	{field:'amount_unit', width:80, title:"单位", sort: true},
-                	{field:'cost_price', width:100, title:"单价", sort: true},
-                	{field:'shuliang', width:100, title:"本工序数量",edit: 'text', sort: true},
+                	{field:'id', width:80, title:"序号"},
+                	{field:'product_name', width:100, title:"物品名称"},
+                	{field:'product_id', width:110, title:"物料编号"},
+                	{field:'product_describe', width:120, title:"描述"},
+                	{field:'amount', width:120, title:"设计数量",event: "subtotal"},
+                	{field:'residual_amount', width:150, title:"可用数量"},
+                	{field:'amount_unit', width:80, title:"单位"},
+                	{field:'cost_price', width:80, title:"单价"},
+                	{field:'shuliang', width:120, title:"本工序数量",edit: 'text'},
                 ]]
               });
             $ = layui.jquery;

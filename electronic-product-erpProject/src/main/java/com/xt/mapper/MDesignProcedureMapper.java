@@ -43,6 +43,7 @@ public interface MDesignProcedureMapper {
 	 * @return
 	 */
 	int mdesUpdate(@Param("md")MDesignProcedure md);
+	public int updatelwtdesign_procedure_tag(String product_Id);
 	
 	
 	

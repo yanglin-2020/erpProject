@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>查询杨林做的d_file的数据-cqk</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script type="text/javascript" src="./js/jquery.min.js"></script>
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+    </head>
+    
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">生产计划管理</a>
+                <a href="">生产计划登记</a>
+                <a>
+                    <cite>商品档案</cite></a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-btn-group demoTable">
+		  <a href="getD_file"><button class="layui-btn">返回</button></a>
+		</div>
+		 
+		 <table class="layui-table" lay-data="{url:'getAllD_file',page:true,id:'test',toolbar: '#toolbarDemo'}" lay-filter="test">
+			<thead>
+				<tr>
+					<th lay-data="{field:'product_id', width:120, sort: true}">产品编号</th>
+					<th lay-data="{field:'product_name', width:120, sort: true}">产品名称</th>
+					<th lay-data="{field:'product_describe', width:150, sort: true}">描述</th>
+					<th lay-data="{field:'type',width:100}">类型</th>
+					<th lay-data="{field:'personal_unit',width:100, }">单位</th>
+		            <th lay-data="{field:'list_price', width:180}">单价（元）</th>
+		           	<th lay-data="{fixed: 'right', width:118,  toolbar: '#barDemo',templet:'#oprListBar'}"></th>
+				</tr>
+			</thead>
+		</table>
+		 
+		<script type="text/html" id="barDemo">
+  			<a class="layui-btn layui-btn-xs" lay-event="edit">生产</a>
+		</script>
+		               
+		          
+		<script src="../lib/layui/layui.js" charset="utf-8"></script>
+		<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+		<script>
+		layui.use('table', function(){
+		  var table = layui.table;
+		  //监听表格复选框选择
+		  table.on('checkbox(demo)', function(obj){
+		    console.log(obj)
+		  });
+		  //监听工具条
+		  table.on('tool(test)', function(obj){
+		    var data = obj.data;
+		    if(obj.event === 'edit'){
+		      $.ajax({
+		    	  type:"post",
+		    	  url:"addD_file",
+		    	  data: JSON.stringify(data),
+		    	  dataType:'text',
+		    	  contentType:"application/json;charset=utf-8",
+		    	  success: function (rs) {
+		    		  console.log(rs);
+		    		  if(rs==1){
+		    	    		 layer.msg("操作成功！");
+		    	           	 table.reload("test");
+		    	      }else{
+		    	    		 layer.alert("该产品已经加入生产计划单！");
+		    	      }
+		    	  }
+		      })
+		    }
+		  });
+		  
+		  var $ = layui.$, active = {
+		    getCheckData: function(){ //获取选中数据
+		      var checkStatus = table.checkStatus('test')
+		      ,data = checkStatus.data;
+		    	if(data.length==0){
+		    		layer.alert('没有选择');
+		    	}else{
+		    		layer.alert(JSON.stringify(data));
+		    	}
+		    	
+		    }
+		    ,getCheckLength: function(){ //获取选中数目
+		      var checkStatus = table.checkStatus('test')
+		      ,data = checkStatus.data;
+		      layer.msg('选中了：'+ data.length + ' 个');
+		    }
+		    ,isAll: function(){ //验证是否全选
+		      var checkStatus = table.checkStatus('test');
+		      layer.msg(checkStatus.isAll ? '全选': '未全选')
+		    }
+		  };
+		  
+		  $('.demoTable .layui-btn').on('click', function(){
+		    var type = $(this).data('type');
+		    active[type] ? active[type].call(this) : '';
+		  });
+		});
+		</script>
+      
+    </body>
+</html>

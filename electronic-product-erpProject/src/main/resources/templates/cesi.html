@@ -62,12 +62,6 @@
     </div>
   </div>
   
-  <!--<div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">编辑器</label>
-    <div class="layui-input-block">
-      <textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>
-    </div>
-  </div>-->
   <div class="layui-form-item">
     <div class="layui-input-block">
       <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
@@ -121,15 +115,13 @@
                 ,url: 'mdesignDetailsAll?id='+sale_id //数据接口
                 ,page: true //开启分页
                 ,cols: [[ //表头
-                	{field:'parent_Id', width:80, title:"产品编号", sort: true},
-                	{field:'procedure_Name', width:100, title:"名称", sort: true},
-                	{field:'procedure_Describe', width:100, title:"工序描述", sort: true},
-                	{field:'amount_Unit', width:80, title:"单位", sort: true},
-                	{field:'labour_Hour_Amount', width:100, title:"工时数",event: "labour_Hour_Amount", sort: true,edit: 'text'},
-                	{field:'subtotal', width:150, title:"工时成本小计",event: "subtotal", sort: true,edit: 'text'},
-                	{field:'cost_Price', width:150, title:"单位工时成本", sort: true},
-                	{field:'register', width:100, title:"登记人", sort: true},
-                	{field:'register_Time', width:120, title:"登记时间", sort: true ,templet: function(d){return layui.util.toDateString(d.u_create)}},
+                	{field:'parent_Id', width:100, title:"产品编号"},
+                	{field:'procedure_Name', width:100, title:"名称"},
+                	{field:'labour_Hour_Amount', width:100, title:"工时数",event: "labour_Hour_Amount",edit: 'text'},
+                	{field:'subtotal', width:140, title:"单位工时成本",event: "subtotal",edit: 'text'},
+                	{field:'cost_Price', width:140, title:"工时总成本"},
+                	{field:'register', width:90, title:"登记人"},
+                	{field:'register_Time', width:140, title:"登记时间" ,templet: function(d){return layui.util.toDateString(d.register_Time)}},
                 ]]
               });
             $ = layui.jquery;
@@ -158,7 +150,7 @@
             });
           //查看
             function fmdes(){
-          	    title = "添加物料";
+          	    title = "添加工序";
           	         window.names = sale_id
                 parent.layer.open({
           			type: 2,

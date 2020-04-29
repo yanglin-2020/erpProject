@@ -1,7 +1,12 @@
 package com.xt.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +23,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -51,18 +58,20 @@ public class UsersController {
 	public String login(String u_name, String u_password, HttpSession session, Model model, boolean rememberMe) {
 		// 实现登陆认证,由shiro框架完成身份认证
 		// 用户存起来
+		try {
 		Users u = service.selectByName(u_name);
 		session.setAttribute("username", u_name);
 		session.setAttribute("u", u);
+		session.setAttribute("u_image", u.getU_image());
+		session.setAttribute("gongneng", "55");
 		Subject subject = SecurityUtils.getSubject();
 		UsernamePasswordToken token = new UsernamePasswordToken(u_name, u_password, rememberMe);
-		try {
 			subject.login(token);
-		} catch (AuthenticationException e) {
+		} catch (Exception e) {
 			// 认证失败,跳转到login.html,带提示信息
 			model.addAttribute("errMsg", "用户名或密码错误");
 			model.addAttribute("failUser", u_name);
-			return "login";
+			return "Userlogin";
 		}
 		// 认证成功，index主页面
 		return "redirect:/selectMenus";
@@ -73,8 +82,27 @@ public class UsersController {
 	public String selectMenus(HttpSession session, Model model, String uName) {
 		Subject currentUser = SecurityUtils.getSubject();
 		String username = (String) currentUser.getPrincipal().toString();
+		String gongneng = (String) session.getAttribute("gongneng");
+		Users u = service.selectByName(username);
+		session.setAttribute("u_image", u.getU_image());
+		List<Permissions> Menuslist = new ArrayList<Permissions>();
+		if (gongneng != null && !gongneng.equals("")) {
+			Menuslist = service.selectMenus(username, Integer.parseInt(gongneng));
+		} else {
+			Menuslist = service.selectMenus(username, 55);
+		}
 		session.setAttribute("username", username);
-		List<Permissions> Menuslist = service.selectMenus(username);
+		model.addAttribute("Menuslist", Menuslist);
+		return "index";
+	}
+
+	// 功能模块
+	@RequestMapping("/gongneng")
+	public String gongneng(int gongnengid, HttpSession session, Model model) {
+		Subject currentUser = SecurityUtils.getSubject();
+		String username = (String) currentUser.getPrincipal().toString();
+		List<Permissions> Menuslist = service.selectMenus(username, gongnengid);
+		session.setAttribute("username", username);
 		model.addAttribute("Menuslist", Menuslist);
 		return "index";
 	}
@@ -145,5 +173,54 @@ public class UsersController {
 		u.setPhone(phone);
 		int row = service.updateUserInfo(u);
 		return row > 0 ? "1" : "0";
+	}
+
+	// 上传商品图片
+	@RequestMapping(value = "/uploadImg", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		String path = "D:\\毕业项目\\repository\\electronic-product-erpProject\\src\\main\\resources\\static\\images";
+		File newfile = new File(path, file.getOriginalFilename());
+		String imgName = file.getOriginalFilename();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			file.transferTo(newfile);
+			map.put("msg", imgName);
+			map.put("code", 200);
+		} catch (IOException e) {
+			e.printStackTrace();
+			map.put("msg", "erro");
+			map.put("code", 0);
+		}
+		return map;
+	}
+	//把个人信息添加到数据库
+	@RequestMapping("/addUserDetailInfo")
+	@ResponseBody
+	public String addUserDetailInfo(HttpServletRequest request,HttpSession session) {
+		String imgName = request.getParameter("imgName");//获的图片的名称
+		System.out.println("图片的名字啊 :"+imgName);
+		String u_image = "./images/"+imgName;
+		String trueName = request.getParameter("trueName");
+		String birthday = request.getParameter("birthday");
+		String email = request.getParameter("email");
+		String personl = request.getParameter("personl");//个性宣言
+		String province = request.getParameter("province");//省份
+		String city = request.getParameter("city");//城市
+		String area = request.getParameter("area");//县、区
+		String u_name = (String)session.getAttribute("username");
+		String address = province+"/"+city+"/"+area;
+		Users u = new Users(u_name, u_image, trueName, birthday, address, email, personl);
+		int row = service.addUserDetailInfo(u);
+		session.removeAttribute("u_image");
+		session.setAttribute("u_image", u_image);
+		return row>0?"成功":"失败";
+	}
+	//跳转页面
+	@RequestMapping("/tiaozhuang")
+	public String tiaozhuang() {
+		System.out.println("jinle");
+		return "redirect:/selectMenus";
 	}
 }

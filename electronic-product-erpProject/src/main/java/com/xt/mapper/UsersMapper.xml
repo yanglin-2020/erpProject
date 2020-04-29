@@ -19,7 +19,7 @@
 		select * from permissions where id 
 		in (select pid from permission_role where rid 
 		in (select r_id from  user_role where u_id 
-		in (select u_id from users where u_name =#{u_name}))) and type= 0 and parentMenu =0
+		in (select u_id from users where u_name =#{u_name}))) and type= 0 and parentMenu =0 and gongneng=#{gongneng}
 	</select>
 	<!--拿到相应的子菜单  -->
 	<select id="selectSonMenus" resultType="Permissions">
@@ -55,5 +55,10 @@
 	<!--修改用户  -->
 	<update id="updateUserInfo">
 		update users set u_name=#{u_name},sex=#{sex},phone=#{phone},u_create=default where u_id =#{u_id}
+	</update>
+	<!--把个人信息添加到数据库  -->
+	<update id="addUserDetailInfo">
+		update users set trueName=#{trueName},birthday=#{birthday},email=#{email},address=#{address},
+		personl=#{personl},u_image=#{u_image} where u_name=#{u_name};
 	</update>
   </mapper>

@@ -28,4 +28,5 @@ public interface MDesignProcedureService {
 	 * @return
 	 */
 	int mdesUpdate(MDesignProcedure updateMdes);
+	int updatelwtdesign_procedure_tag(String product_Id);
 }

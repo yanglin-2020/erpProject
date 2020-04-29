@@ -53,4 +53,9 @@ public class MDesignProcedureServiceImpl implements MDesignProcedureService {
 		return mapper.mdesUpdate(updateMdes);
 	}
 
+	@Override
+	public int updatelwtdesign_procedure_tag(String product_Id) {
+		return mapper.updatelwtdesign_procedure_tag(product_Id);
+	}
+
 }

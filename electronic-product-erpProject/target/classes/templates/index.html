@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="./css/xadmin.css">
         <link rel="stylesheet" href="./css/theme3360.min.css"><!--更换模板主题  -->
         <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon"/>
         <script type="text/javascript" src="./js/xadmin.js"></script>
         <script>
             // 是否开启刷新记忆tab功能
@@ -27,44 +28,34 @@
             </div>
             <ul class="layui-nav left fast-add" lay-filter="">
                 <li class="layui-nav-item">
-                    <a href="javascript:;">+新增</a>
+                    <a href="javascript:;">功能模板</a>
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
-                        <dd>
-                            <a onclick="xadmin.open('最大化','http://www.baidu.com','','',true)">
-                                <i class="iconfont">&#xe6a2;</i>弹出最大化</a></dd>
-                        <dd>
-                            <a onclick="xadmin.open('弹出自动宽高','http://www.baidu.com')">
-                                <i class="iconfont">&#xe6a8;</i>弹出自动宽高</a></dd>
-                        <dd>
-                            <a onclick="xadmin.open('弹出指定宽高','http://www.baidu.com',500,300)">
-                                <i class="iconfont">&#xe6a8;</i>弹出指定宽高</a></dd>
-                        <dd>
-                            <a onclick="xadmin.add_tab('在tab打开','member-list.html')">
-                                <i class="iconfont">&#xe6b8;</i>在tab打开</a></dd>
-                        <dd>
-                            <a onclick="xadmin.add_tab('在tab打开刷新','member-del.html',true)">
-                                <i class="iconfont">&#xe6b8;</i>在tab打开刷新</a></dd>
+                        <dd><a th:href="@{/gongneng(gongnengid=55)}">产品设计</a></dd>
+                        <dd><a th:href="@{/gongneng(gongnengid=56)}">生产管理</a></dd>
+                        <dd><a th:href="@{/gongneng(gongnengid=57)}">库存管理</a></dd>
+                        <dd><a th:href="@{/gongneng(gongnengid=58)}">系统管理</a></dd>
                     </dl>
                 </li>
             </ul>
             <ul class="layui-nav right" lay-filter="">
                 <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <a href="javascript:;">
-                    [[${session.username}]]</a>
+                    [[${session.username}]]
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
                         <dd>
-                            <a onclick="xadmin.open('个人信息','userInfo.html')">个人信息</a></dd>
+                            <a onclick="xadmin.open('个人信息','userInfo.html','800','650')">个人信息</a></dd>
                         <dd>
                             <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
                         <dd>
-                            <a href="./Userlogin.html">退出</a></dd>
+                            <a href="./Userlogin">退出</a>
+                        </dd>
                     </dl>
+                </a>
                 </li>
                 <li class="layui-nav-item to-index">
-                   <img src="http://t.cn/RCzsdCq" class="layui-nav-img"></li>
+                   <img th:src="${session.u_image}" class="layui-nav-img"></li>
             </ul>
         </div>
         <!-- 顶部结束 -->

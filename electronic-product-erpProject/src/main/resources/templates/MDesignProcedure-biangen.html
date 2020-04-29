@@ -46,27 +46,15 @@
                             <table class="layui-table" lay-data="{url:'mdesignAll?change=更改',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                        <th lay-data="{type:'checkbox'}">ID</th>
                                         <th lay-data="{field:'design_Id', width:200, sort: true}">ID</th>
-                                        <th lay-data="{field:'product_Name', width:80, sort: true, edit: 'text'}">产品名称</th>
+                                        <th lay-data="{field:'product_Name', width:170, sort: true, edit: 'text'}">产品名称</th>
                                         <th lay-data="{field:'procedure_Describe', width:120}">设计要求</th>
                                         <th lay-data="{field:'cost_Price_Sum', width:100}">工时总成本</th>
-                                        <!-- <th lay-data="{field:'module_Cost_Price_Sum', edit: 'text',width:100, minWidth: 100,templet: '#titleTpl'}">状态</th> -->
-                                        <th lay-data="{field:'module_Cost_Price_Sum', width:100}">物料总成本</th>
                                         <th lay-data="{field:'changer', width:70}">变更人</th>
                                         <th lay-data="{field:'change_Time', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.u_create)}}">变更时间</th>
                                         </tr>
                                 </thead>
                             </table>
-						<script type="text/html" id="titleTpl">
-  						{{#  if(d.u_status == 1){ }}
-    						 <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
-  						{{#  } else if(d.u_status == 0) { }}
-    						<span class="layui-btn layui-btn-normal layui-btn-mini">已禁用</span>
- 						{{#  } else{ }}
-							
-  						{{#  }  }}
-						</script>
 					</div>
                     </div>
                 </div>

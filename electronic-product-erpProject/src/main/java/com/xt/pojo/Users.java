@@ -19,6 +19,49 @@ public class Users implements Serializable {
 	private String phone;
 	private String u_status;
 	private String u_create;
+	private String u_image;
+	private String trueName;
+	private String birthday;
+	private String address;
+	private String email;
+	private String personl;
+	
+	public String getTrueName() {
+		return trueName;
+	}
+	public void setTrueName(String trueName) {
+		this.trueName = trueName;
+	}
+	public String getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPersonl() {
+		return personl;
+	}
+	public void setPersonl(String personl) {
+		this.personl = personl;
+	}
+	public String getU_image() {
+		return u_image;
+	}
+	public void setU_image(String u_image) {
+		this.u_image = u_image;
+	}
 	public int getU_id() {
 		return u_id;
 	}
@@ -77,5 +120,16 @@ public class Users implements Serializable {
 	}
 	public Users() {
 		super();
+	}
+	public Users(String u_name, String u_image, String trueName, String birthday, String address, String email,
+			String personl) {
+		super();
+		this.u_name = u_name;
+		this.u_image = u_image;
+		this.trueName = trueName;
+		this.birthday = birthday;
+		this.address = address;
+		this.email = email;
+		this.personl = personl;
 	}
 }

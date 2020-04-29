@@ -46,12 +46,14 @@
                             <table class="layui-table" lay-data="{url:'getAllUsersInfo',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                        <th lay-data="{field:'u_id', width:60, sort: true}">ID</th>
-                                        <th lay-data="{field:'u_name', width:100, sort: true}">用户名</th>
+                                        <th lay-data="{field:'u_id', width:60">ID</th>
+                                        <th lay-data="{field:'u_name', width:100}">用户名</th>
                                         <th lay-data="{field:'phone', width:120}">手机号</th>
                                         <th lay-data="{field:'sex', width:70}">性别</th>
+                                        <th lay-data="{field:'email', width:150}">邮箱地址</th>
+                                        <th lay-data="{field:'birthday', width:100}">出生年月</th>
                                         <th lay-data="{field:'u_status',width:100, minWidth: 100,templet: '#titleTpl'}">状态</th>
-                                        <th lay-data="{field:'u_create', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.u_create)}}">创建时间</th>
+                                        <th lay-data="{field:'u_create', width:180,templet: function(d){return layui.util.toDateString(d.u_create)}}">创建时间</th>
                                         <th lay-data="{width:300, templet:'#oprListBar',fixed:'right'}">操作</th>
                                         </tr>
                                 </thead>

@@ -14,7 +14,7 @@ public interface UsersMapper {
 	//根据用户的名称拿到相应的权限
 	List<String> selectPermissions(String username);
 	//根据用户的id拿到相应的菜单
-	List<Permissions> selectMenus(String u_name);
+	List<Permissions> selectMenus(@Param("u_name") String u_name,@Param("gongneng")int gongneng);
 	//拿到子菜单
 	List<Permissions> selectSonMenus(@Param("u_name") String u_name,@Param("menu_id")int menu_id);
 	//拿到用户的数量
@@ -27,4 +27,6 @@ public interface UsersMapper {
 	int deleteUser(int id);
 	//修改用户信息
 	int updateUserInfo(Users u);
+	//个人详细信息添加到数据库
+	int addUserDetailInfo(Users u);
 }

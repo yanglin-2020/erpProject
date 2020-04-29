@@ -6,6 +6,9 @@
   	<!-- 分页查询有多少产品 -->
   	<select id="listfind" resultType="MDesignProcedure">
  		select * from m_design_procedure where 1=1
+ 		<if test="md.design_Module_Tag !=null and md.design_Module_Tag != '' ">
+ 			and design_Module_Tag = #{md.design_Module_Tag}
+ 		</if>
  		<if test="md.check_Tag !=null and md.check_Tag != '' ">
  			and check_Tag = #{md.check_Tag}
  		</if>
@@ -103,5 +106,9 @@
  	<select id="findId" resultType="MDesignProcedure">
  		select * from m_design_procedure where id = #{design_Id}
  	</select>
+ 	<!--添加产品设计成功后，修改档案的design_procedure_tag的状态(已设计)  -->
+ 	<update id="updatelwtdesign_procedure_tag">
+ 		update d_file set design_procedure_tag='已设计'  where product_id=#{product_id}
+ 	</update>
   </mapper>
   
