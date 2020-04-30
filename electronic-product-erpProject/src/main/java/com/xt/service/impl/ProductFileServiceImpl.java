@@ -13,6 +13,7 @@ import com.xt.mapper.ProductFileMapper;
 import com.xt.pojo.DModule;
 import com.xt.pojo.DModuleDetails;
 import com.xt.pojo.D_file;
+import com.xt.pojo.KuCun;
 import com.xt.pojo.Users;
 import com.xt.service.ProductFileService;
 import com.xt.util.PageDemo;
@@ -291,6 +292,20 @@ public class ProductFileServiceImpl implements ProductFileService{
 		int rowCount = mapper.getProductlwtCount(df);
 		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
 		List<D_file> list = mapper.getProductlwtInfo(page, df);
+		pd.setCode(0);
+		pd.setCount(rowCount);
+		pd.setMsg("");
+		pd.setData(list);
+		return pd;
+	}
+
+	@Override
+	public PageDemo<KuCun> getKuCunInfo(int nowPage, int pageSize, KuCun kc) {
+		PageDemo<KuCun> pd = new PageDemo<KuCun>();
+		//(调用mapper的方法)
+		int rowCount = mapper.getKuCunCount(kc);
+		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+		List<KuCun> list = mapper.getKuCunInfo(page, kc);
 		pd.setCode(0);
 		pd.setCount(rowCount);
 		pd.setMsg("");

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.xt.pojo.DModule;
 import com.xt.pojo.DModuleDetails;
 import com.xt.pojo.D_file;
+import com.xt.pojo.KuCun;
 import com.xt.util.PageUtil;
 /**
  * 产品档案
@@ -105,4 +106,7 @@ public interface ProductFileMapper {
 	int getProductlwtCount(@Param("df") D_file df);
 	public List<D_file> getProductlwtInfo(@Param("page") PageUtil page,@Param("df") D_file df);
 	
+	//杨林写的库存动态查询
+	int getKuCunCount(@Param("kc") KuCun kc);
+	public List<KuCun> getKuCunInfo(@Param("page") PageUtil page,@Param("kc") KuCun kc);
 }

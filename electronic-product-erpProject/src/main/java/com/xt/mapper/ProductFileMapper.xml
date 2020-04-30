@@ -296,4 +296,29 @@
 		</if>
 		limit #{page.startRow},#{page.pageSize}
 	</select>
+	<!--杨林写的库存动态查询  -->
+	<select id="getKuCunCount" resultType="int">
+		select count(1) from  s_cell c,d_file d where c.product_id=d.product_id  and c.check_tag='审核通过' 
+	</select>
+	<select id="getKuCunInfo" resultType="KuCun">
+		select c.store_id,c.product_id,c.product_name,c.min_amount,c.max_amount,c.max_capacity_amount,
+		c.amount,d.type,d.product_class,d.product_describe
+		from  s_cell c,d_file d where c.product_id=d.product_id  and c.check_tag='审核通过'
+		<if test="kc.store_id!=null and kc.store_id!=''">
+			and store_id like CONCAT('%',#{kc.store_id},'%')
+		</if>
+		<if test="kc.product_id!=null and kc.product_id!=''">
+			and c.product_id like CONCAT('%',#{kc.product_id},'%')
+		</if>
+		<if test="kc.product_name!=null and kc.product_name!=''">
+			and c.product_name like CONCAT('%',#{kc.product_name},'%')
+		</if>
+		<if test="kc.type!=null and kc.type!=''">
+			and d.type like CONCAT('%',#{kc.type},'%')
+		</if>
+		<if test="kc.product_class!=null and kc.product_class!=''">
+			and d.product_class like CONCAT('%',#{kc.product_class},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
 </mapper>

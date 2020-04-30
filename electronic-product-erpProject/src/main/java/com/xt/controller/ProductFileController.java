@@ -29,6 +29,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.xt.pojo.DModule;
 import com.xt.pojo.DModuleDetails;
 import com.xt.pojo.D_file;
+import com.xt.pojo.KuCun;
 import com.xt.pojo.Users;
 import com.xt.service.ProductFileService;
 import com.xt.util.DanhaoUtil;
@@ -624,6 +625,25 @@ public class ProductFileController {
 		D_file df = new D_file();
 		df.setProduct_name(name);
 		PageDemo<D_file> pd = service.getProductlwtInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), df);
+		PrintWriter out = response.getWriter();
+		String str = JSONArray.toJSONString(pd);
+		out.print(str);
+		out.flush();
+		out.close();
+	}
+	//杨林写的动态库存查询
+	@RequestMapping("/getKuCunInfo")
+	public void getKuCunInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		String nowpage = request.getParameter("page");
+		String pageSize = request.getParameter("limit");
+		String store_id = request.getParameter("store_id");//库存编号
+		String product_id = request.getParameter("product_id");
+		String product_name=request.getParameter("product_name");
+		String type = request.getParameter("type");
+		String product_class = request.getParameter("product_class");
+		KuCun kc =new KuCun(store_id, product_id, product_name, type, product_class);
+		PageDemo<KuCun> pd = service.getKuCunInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), kc);
 		PrintWriter out = response.getWriter();
 		String str = JSONArray.toJSONString(pd);
 		out.print(str);

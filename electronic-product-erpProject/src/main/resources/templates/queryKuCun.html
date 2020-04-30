@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<script type="text/javascript">
+</script>
+    <head>
+        <meta charset="UTF-8">
+        <title>库存动态查询-yl</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+      
+    </head>
+    
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+             <a><cite>产品档案复核</cite></a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                    <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                               <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="store_id" placeholder="请输入库存编号" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <a class="layui-btn search_btn1" data-type="reload">
+                                        <i class="layui-icon">&#xe615;</i></a>
+                                </div>
+                                
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="product_id" placeholder="请输入产品的编号" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <a class="layui-btn search_btn2" data-type="reload">
+                                        <i class="layui-icon">&#xe615;</i></a>
+                                </div>
+                                
+                                 <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="product_name" placeholder="请输入产品的名称" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <a class="layui-btn search_btn3" data-type="reload">
+                                        <i class="layui-icon">&#xe615;</i></a>
+                                </div>
+                                
+                                <div class="layui-inline layui-show-xs-block">
+									<div class="layui-input-inline">
+										<select name="type" id="type" lay-verify="tid">
+											<option value="" >请选择用途类型</option>
+											<option value="商品">商品</option>
+											<option value="物料">物料</option>
+										</select> 
+									</div>
+								</div>
+								<div class="layui-inline layui-show-xs-block">
+                                    <a class="layui-btn search_btn4" data-type="reload">
+                                        <i class="layui-icon">&#xe615;</i></a>
+                                </div>
+                                
+                                <div class="layui-inline layui-show-xs-block">
+									<div class="layui-input-inline">
+										<select name="product_class"  lay-verify="tid">
+											<option value="" >请选择产品档次</option>
+											<option value="高档">高档</option>
+											<option value="中档">中档</option>
+											<option value="低档">低档</option>
+										</select> 
+									</div>
+								</div>
+								<div class="layui-inline layui-show-xs-block">
+                                    <a class="layui-btn search_btn5" data-type="reload">
+                                        <i class="layui-icon">&#xe615;</i></a>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table" lay-data="{url:'getKuCunInfo',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
+                                <thead>
+                                    <tr>
+                                        <th lay-data="{field:'store_id', width:140}">库存编号</th>
+                                         <th lay-data="{field:'product_id', width:130}">产品编号</th>
+                                        <th lay-data="{field:'product_name', width:105}">产品名称</th>
+                                        <th lay-data="{field:'type', width:80}">用途类型</th>
+                                         <th lay-data="{field:'product_class', width:80}">产品档次</th>
+                                         <th lay-data="{field:'product_describe', width:150}">产品描述</th>
+                                         <th lay-data="{field:'min_amount', width:130}">报警下限数</th>
+                                         <th lay-data="{field:'max_amount', width:130}">报警上限数</th>
+                                         <th lay-data="{field:'max_capacity_amount', width:130}">最大存储量</th>
+                                         <th lay-data="{field:'amount', width:130}">当前储存量</th>
+                                        </tr>
+                                </thead>
+                            </table>
+					</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <!--操作-->
+	<script type="text/html" id="oprListBar">
+	</script>
+    <script type="text/html" id="toolbarDemo">
+        <div class = "layui-btn-container" > 
+            <button class = "layui-btn layui-btn-sm" lay-event = "" >库存信息如下</button>
+        </div > 
+    </script>
+    <script>layui.use('table',
+        function() {
+            var table = layui.table;
+
+          //列表操作
+            table.on('tool(test)', function(obj){
+                var layEvent = obj.event,
+                    data = obj.data;
+                if(layEvent === 'updateinfo'){ //修改产品档案信息
+                	editUser(data);
+                } else if(layEvent === 'del'){ //删除
+                    layer.confirm('确定删除该产品？',{icon:3, title:'提示信息'},function(index){
+                         $.get("updateDelProduct",{
+                        	 product_id : data.product_id 
+                         },function(data){
+                        	 if(data=="成功"){
+                        		 layer.msg("删除成功！");
+                                table.reload("test");
+                                 layer.close(index);
+                        	 }else{
+                        		 layer.alert("操作失败~ ");
+                        	 }
+                         });
+                    });
+                } 
+            });
+            //头工具栏事件
+            table.on('toolbar(test)',
+            function(obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                case 'addmenu':
+                	 xadmin.open('添加权限(菜单)','menuadd.html',500,460);
+                    break;
+                case 'batchdelete':
+                    var data = checkStatus.data;
+                    if(data.length==0){
+                    	layer.msg("至少选择一个产品");
+                    	return;
+                    }
+                    layer.confirm('确定删除这些该产品？',{icon:3, title:'提示信息'},function(index){
+                    $.post("batchdelteproduct",{"idlist":JSON.stringify(data)},function(result){
+              			 if(result=="成功"){
+     		        		  setTimeout(function(){
+     		        	            top.layer.msg("操作成功！");
+     		        	            layer.closeAll("iframe");
+     		        	            //刷新父页面
+     		        	         table.reload("test");
+     		        	      	layer.close(index);
+     		        	        },1000);
+     		        	  }else{
+     		        		 layer.alert(" 删除失败 ~ ");
+     		        	  } 
+              		 });
+                    });
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+                };
+            });
+          //条件查询
+            $(".search_btn1").on("click",function(){
+                     table.reload("test",{
+                         page: {
+                             curr: 1 //重新从第 1 页开始
+                         },
+                         where: {
+                        	 store_id: $("input[name=store_id]").val()  //搜索的关键字
+                         }
+                     });
+    
+             });
+            $(".search_btn2").on("click",function(){
+          	  table.reload("test",{
+          		page:{
+          			curr:1
+          		},
+          		where:{
+          			product_id: $("[name=product_id]").val()
+          		}
+          	  });
+            });
+            $(".search_btn3").on("click",function(){
+            	  table.reload("test",{
+            		page:{
+            			curr:1
+            		},
+            		where:{
+            			product_name: $("[name=product_name]").val()
+            		}
+            	  });
+              });
+            $(".search_btn4").on("click",function(){
+          	  table.reload("test",{
+          		page:{
+          			curr:1
+          		},
+          		where:{
+          			type: $("[name=type]").val()
+          		}
+          	  });
+            });
+            $(".search_btn5").on("click",function(){
+            	  table.reload("test",{
+            		page:{
+            			curr:1
+            		},
+            		where:{
+            			product_class: $("[name=product_class]").val()
+            		}
+            	  });
+              });
+        });</script>
+</html>

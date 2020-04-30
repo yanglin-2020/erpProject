@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.xt.pojo.DModule;
 import com.xt.pojo.DModuleDetails;
 import com.xt.pojo.D_file;
+import com.xt.pojo.KuCun;
 import com.xt.util.PageDemo;
 
 public interface ProductFileService {
@@ -86,4 +87,7 @@ public interface ProductFileService {
 	
 	//罗文涛的制定产品生产工序设计单分页查询
 	public PageDemo<D_file> getProductlwtInfo(int nowPage, int pageSize,D_file df);
+	
+	//杨林写的库存动态查询
+	public PageDemo<KuCun> getKuCunInfo(int nowPage, int pageSize,KuCun kc);
 }
