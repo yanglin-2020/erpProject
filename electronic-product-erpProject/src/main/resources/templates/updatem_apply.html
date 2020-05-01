@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>生产计划审核(详细) cqk</title>
+		<title>生产计划审核(修改) cqk</title>
 		<link rel="stylesheet" href="./css/font.css">
         <link rel="stylesheet" href="./css/xadmin.css">
         <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
@@ -378,23 +378,23 @@
 
 	<body>
 		<div class="formoverlay"></div>
-		<form th:action="@{/approveMapply}" method="post">
+		<form th:action="@{/updateMapply}" method="post">
 			<table cellpadding="0" cellspacing="0" border="0" class="formborder"
-			 style="z-index:99;position:absolute;left:150px;top:40px;width:880px; display: block;">
+			 style="z-index:99;position:absolute;display: block;">
 				<tbody>
 					<tr>
 						<td align="left" valign="top" style="width:880px;height:300px;background:#fff;">
 							<div class="formcontentsize" style="width:auto;height:auto;">
 								<div class="layoutitem">
 									<div class="layout-tit">
-										<h2 align="center">生产计划单</h2>
+										<h2 align="center">修改生产计划单</h2>
 									</div>
 									<div class="layout-xx">
 										<ul>
 											<li>
 												<div class="item-input">
 													<label class="item-label">计划单编号:</label>&nbsp;&nbsp;
-													<input type="text" th:value="${session.mapply.apply_id}" name="apply_id" style="border:0px;" readonly />
+													<input type="text" name="apply_id" style="border:0px;" readonly />
 												</div>
 											</li>
 											<li>
@@ -410,10 +410,10 @@
 														</thead>
 														<tbody id="tbody">
 															<tr>
-																<td><input type="text" th:value="${session.mapply.product_id}" size="10" style="border:0px;" readonly /></td>
-																<td><input type="text" th:value="${session.mapply.product_name}" size="15" style="border:0px;" readonly /></td>
-																<td><input type="text" th:value="${session.mapply.product_describe}" size="25" style="border:0px;" readonly /></td>
-																<td><input type="text" th:value="${session.mapply.amount}" size="5" style="border:0px;" readonly /></td>
+																<td><input type="text" name="product_id" size="10" style="border:0px;" readonly /></td>
+																<td><input type="text" name="product_name" size="15" style="border:0px;" readonly /></td>
+																<td><input type="text" name="product_describe" size="25" style="border:0px;" readonly /></td>
+																<td><input type="text" size="5" name="amount" style="border:0px;"/></td>
 															</tr>
 															
 														</tbody>
@@ -425,27 +425,23 @@
 											<li>
 												<div class="item-input">
 													<label class="item-label">登记人:</label>&nbsp;&nbsp;
-													<input type="text" th:value="${session.mapply.register}" name="register" style="border:0px;" readonly />
+													<input type="text" name="register" style="border:0px;" readonly />
 												</div>
 												<div class="item-input">
 													<label class="item-label">登记时间:</label>&nbsp;&nbsp;
-													<input type="text" th:value="${session.mapply.register_time}" style="border:0px;" name="register_time" readonly />
+													<input type="text" style="border:0px;" name="register_time" readonly />
 												</div>
 											</li>
 											<li>
 												<div class="item-input">
-													<label class="item-label">审核人:</label>&nbsp;&nbsp;
-													<input type="text" th:value="${session.username}" style="border:0px;" name="checker" readonly />
-												</div>
-												<div class="item-input">
-													<label class="item-label">审核时间:</label>&nbsp;&nbsp;
-													<input type="text" id="shijian" name="check_time" style="border:0px;" readonly />
+													<label class="item-label">设计人:</label>&nbsp;&nbsp;
+													<input type="text" name="designer" style="border:0px;"/>
 												</div>
 											</li>
 											<li style="margin-top:20px;">
 												<div class="item-input1">
-													<label class="item-label"> 审核意见:</label>&nbsp;&nbsp;
-													<input type="text" class="layout-bz" name="check_suggestion"/>
+													<label class="item-label">备注:</label>&nbsp;&nbsp;
+													<input type="text" class="layout-bz" name="remark"/>
 												</div>
 											</li>
 										</ul>
@@ -454,8 +450,8 @@
 	
 							</div>
 							<div class="layoutitem-add">
-								<button type="submit" class="btn btn-default">复核通过</button>
-								<button type="button" class="btn btn-error" id="btn1">返回</button>
+								<button type="submit" class="btn btn-default xg">修改</button>
+								<button type="button" class="btn btn-error fh" id="btn1">返回</button>
 							</div>
 						</td>
 					</tr>
@@ -474,8 +470,7 @@
 				height: 30
 			});
 			$("#btn1").click(function(){
-				//复核不行
-				window.location.href="m_Apply.html";
+				window.location.href="m_applyall.html";
 			});
 
 		});

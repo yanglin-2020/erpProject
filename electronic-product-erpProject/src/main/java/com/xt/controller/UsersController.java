@@ -3,7 +3,9 @@ package com.xt.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +33,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.xt.pojo.MDesignProcedureDetails;
 import com.xt.pojo.Permissions;
+import com.xt.pojo.SysLogs;
 import com.xt.pojo.Users;
 import com.xt.service.UsersService;
+import com.xt.util.Config;
+import com.xt.util.DanhaoUtil;
 import com.xt.util.PageDemo;
 
 /**
@@ -59,40 +64,90 @@ public class UsersController {
 		// 实现登陆认证,由shiro框架完成身份认证
 		// 用户存起来
 		try {
-		Users u = service.selectByName(u_name);
-		session.setAttribute("username", u_name);
-		session.setAttribute("u", u);
-		session.setAttribute("u_image", u.getU_image());
-		session.setAttribute("gongneng", "55");
-		Subject subject = SecurityUtils.getSubject();
-		UsernamePasswordToken token = new UsernamePasswordToken(u_name, u_password, rememberMe);
+			Users u = service.selectByName(u_name);
+			session.setAttribute("username", u_name);
+			session.setAttribute("u", u);
+			session.setAttribute("u_image", u.getU_image());
+			session.setAttribute("gongneng", "0");
+			Subject subject = SecurityUtils.getSubject();
+			UsernamePasswordToken token = new UsernamePasswordToken(u_name, u_password, rememberMe);
 			subject.login(token);
+			//用户访问加1
+			service.updateCount();
 		} catch (Exception e) {
 			// 认证失败,跳转到login.html,带提示信息
 			model.addAttribute("errMsg", "用户名或密码错误");
 			model.addAttribute("failUser", u_name);
 			return "Userlogin";
 		}
-		// 认证成功，index主页面
+		// 认证成功，
+		String ip = DanhaoUtil.getLocalAddress();//登录的ip地址
+		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Users u = service.selectByName(u_name);
+		//拿到用户访问量
+		session.removeAttribute("count");
+		session.setAttribute("count", u.getCount());
+		//拿到用户的总数
+		int UsersCount = service.selectAllUserCount();
+		session.removeAttribute("UsersCount");
+		session.setAttribute("UsersCount", UsersCount);
+		//拿到物料总成本
+		double materialMoney = service.getMaterialSumMoney();
+		session.removeAttribute("materialMoney");
+		session.setAttribute("materialMoney", materialMoney);
+		//拿到产品总数
+		int productCount = service.getProductAllCount();
+		session.removeAttribute("productCount");
+		session.setAttribute("productCount", productCount);
+		SysLogs sl = new SysLogs(u_name, u.getPhone(), formate.format(new Date()), ip);
+		//拿到用户登录的信息。做一个日志记录
+		List<SysLogs> userlist = service.getUserAllLoginInfo();
+		for (SysLogs s : userlist) {
+			if(u_name.equals(s.getU_name())) {
+				//修改操作
+				service.updateUserLoginInfo(formate.format(new Date()), u_name,ip);
+				return "redirect:/selectMenus";
+			}
+		}
+		//添加操作
+		service.addUserLoginInfo(sl);
 		return "redirect:/selectMenus";
 	}
 
 	// 查询所有菜单
 	@RequestMapping("/selectMenus")
 	public String selectMenus(HttpSession session, Model model, String uName) {
+		//用户访问加1
+		service.updateCount();
 		Subject currentUser = SecurityUtils.getSubject();
 		String username = (String) currentUser.getPrincipal().toString();
 		String gongneng = (String) session.getAttribute("gongneng");
 		Users u = service.selectByName(username);
 		session.setAttribute("u_image", u.getU_image());
+		session.setAttribute("u", u);
 		List<Permissions> Menuslist = new ArrayList<Permissions>();
 		if (gongneng != null && !gongneng.equals("")) {
 			Menuslist = service.selectMenus(username, Integer.parseInt(gongneng));
 		} else {
-			Menuslist = service.selectMenus(username, 55);
+			Menuslist = service.selectMenus(username, 0);
 		}
 		session.setAttribute("username", username);
 		model.addAttribute("Menuslist", Menuslist);
+		//拿到用户访问量
+		session.removeAttribute("count");
+		session.setAttribute("count", u.getCount());
+		//拿到用户的总数
+		int UsersCount = service.selectAllUserCount();
+		session.removeAttribute("UsersCount");
+		session.setAttribute("UsersCount", UsersCount);
+		//拿到物料总成本
+		double materialMoney = service.getMaterialSumMoney();
+		session.removeAttribute("materialMoney");
+		session.setAttribute("materialMoney", materialMoney);
+		//拿到产品总数
+		int productCount = service.getProductAllCount();
+		session.removeAttribute("productCount");
+		session.setAttribute("productCount", productCount);
 		return "index";
 	}
 
@@ -195,32 +250,94 @@ public class UsersController {
 		}
 		return map;
 	}
-	//把个人信息添加到数据库
+
+	// 把个人信息添加到数据库
 	@RequestMapping("/addUserDetailInfo")
 	@ResponseBody
-	public String addUserDetailInfo(HttpServletRequest request,HttpSession session) {
-		String imgName = request.getParameter("imgName");//获的图片的名称
-		System.out.println("图片的名字啊 :"+imgName);
-		String u_image = "./images/"+imgName;
+	public String addUserDetailInfo(HttpServletRequest request, HttpSession session) {
+		String imgName = request.getParameter("imgName");// 获的图片的名称
 		String trueName = request.getParameter("trueName");
 		String birthday = request.getParameter("birthday");
 		String email = request.getParameter("email");
-		String personl = request.getParameter("personl");//个性宣言
-		String province = request.getParameter("province");//省份
-		String city = request.getParameter("city");//城市
-		String area = request.getParameter("area");//县、区
-		String u_name = (String)session.getAttribute("username");
-		String address = province+"/"+city+"/"+area;
-		Users u = new Users(u_name, u_image, trueName, birthday, address, email, personl);
+		String personl = request.getParameter("personl");// 个性宣言
+		String province = request.getParameter("province");// 省份
+		String city = request.getParameter("city");// 城市
+		String area = request.getParameter("area");// 县、区
+		String u_name = (String) session.getAttribute("username");
+		String address = province + "/" + city + "/" + area;
+		Users u = new Users(u_name, trueName, birthday, address, email, personl, province, city, area);
+		if (imgName != null && !imgName.equals("")) {
+			String u_image = "./images/" + imgName;
+			session.removeAttribute("u_image");
+			session.setAttribute("u_image", u_image);
+			u.setU_image(u_image);
+		}
 		int row = service.addUserDetailInfo(u);
-		session.removeAttribute("u_image");
-		session.setAttribute("u_image", u_image);
-		return row>0?"成功":"失败";
+		return row > 0 ? "成功" : "失败";
 	}
-	//跳转页面
-	@RequestMapping("/tiaozhuang")
-	public String tiaozhuang() {
-		System.out.println("jinle");
-		return "redirect:/selectMenus";
+
+	// 修改密码时确认旧密码
+	@RequestMapping("/querenOldPwd")
+	@ResponseBody
+	public String querenOldPwd(HttpServletRequest request) {
+		String u_name = request.getParameter("u_name");
+		String oldpwd = request.getParameter("oldpwd");
+		Subject subject = SecurityUtils.getSubject();
+		UsernamePasswordToken token = new UsernamePasswordToken(u_name, oldpwd);
+		try {
+			subject.login(token);
+		} catch (AuthenticationException e) {
+			// 认证失败,跳转到login.jsp,带提示信息
+			return "0";
+		}
+		// 认证成功，index主页面
+		return "1";
+	}
+
+	// 验证码
+	@RequestMapping("/yanzhengma")
+	@ResponseBody
+	public String yanzhengma(HttpServletRequest request) throws Exception {
+		String phone = request.getParameter("phone1");
+		Config.getCode(phone);
+		String random = Config.random;
+		System.out.println("验证码为:" + random);
+		return random;
+	}
+
+	// 修改密码
+	@RequestMapping("/updatepwd")
+	@ResponseBody
+	public String updatepwd(HttpServletRequest request) {
+		String newpwd = request.getParameter("newPwd");
+		String u_name = request.getParameter("u_name");
+		HttpSession session = request.getSession();
+		Users u = (Users) session.getAttribute("u");
+		String salt = u.getSalt();
+		// md5密码加密
+		Md5Hash md5 = new Md5Hash(newpwd, salt, 2);
+		service.updatepwd(md5.toString(), u_name);
+		return "1";
+	}
+	@RequestMapping("/tiaozhuan")
+	public String tiaozhuan(HttpSession session) {
+		session.removeAttribute("u");
+		session.removeAttribute("username");
+		session.removeAttribute("count");
+		return "redirect:/Userlogin.html";
+	}
+	//查询用户的登录信息
+	@RequestMapping("/getUserLoginInfo")
+	public void getUserLoginInfo(HttpServletResponse response, HttpServletRequest request) throws IOException {
+		response.setContentType("text/html;charset=utf-8");
+		String nowpage = request.getParameter("page");
+		String pageSize = request.getParameter("limit");
+		SysLogs sl = new SysLogs();
+		PageDemo<SysLogs> pd = service.getUserLoginInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), sl);
+		PrintWriter out = response.getWriter();
+		String str = JSONArray.toJSONString(pd);
+		out.print(str);
+		out.flush();
+		out.close();
 	}
 }

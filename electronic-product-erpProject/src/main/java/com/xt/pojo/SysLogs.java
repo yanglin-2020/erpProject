@@ -1,90 +1,60 @@
 package com.xt.pojo;
 
-import java.util.Date;
 import java.io.Serializable;
-
 /**
- * 日志信息(SysLogs)实体类
- *
- * @author makejava
- * @since 2020-04-17 10:35:18
+ * 记录登录的信息
  */
 public class SysLogs implements Serializable {
-    private static final long serialVersionUID = -72584709241863178L;
-    /**
-    * 序号
-    */
-    private Integer id;
-    /**
-    * 用户名称
-    */
-    private String loginId;
-    /**
-    * 级别
-    */
-    private String priority;
-    /**
-    * 时间
-    */
-    private Date logDate;
-    /**
-    * 类名
-    */
-    /**
-    * 方法名
-    */
-    private String method;
-    /**
-    * 信息
-    */
-    private String msg;
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getLoginId() {
-        return loginId;
-    }
-
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
-    public Date getLogDate() {
-        return logDate;
-    }
-
-    public void setLogDate(Date logDate) {
-        this.logDate = logDate;
-    }
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
+	private int id;
+	private String u_name;
+	private String phone;
+	private String login_time;
+	private String login_address;
+	private int login_num;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getU_name() {
+		return u_name;
+	}
+	public void setU_name(String u_name) {
+		this.u_name = u_name;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getLogin_time() {
+		return login_time;
+	}
+	public void setLogin_time(String login_time) {
+		this.login_time = login_time;
+	}
+	public String getLogin_address() {
+		return login_address;
+	}
+	public void setLogin_address(String login_address) {
+		this.login_address = login_address;
+	}
+	public int getLogin_num() {
+		return login_num;
+	}
+	public void setLogin_num(int login_num) {
+		this.login_num = login_num;
+	}
+	public SysLogs(String u_name, String phone, String login_time, String login_address) {
+		super();
+		this.u_name = u_name;
+		this.phone = phone;
+		this.login_time = login_time;
+		this.login_address = login_address;
+	}
+	public SysLogs() {
+		super();
+	}
 }

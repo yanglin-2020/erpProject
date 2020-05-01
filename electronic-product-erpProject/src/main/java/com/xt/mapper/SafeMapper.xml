@@ -72,7 +72,8 @@
 	<!--修改安全配置单 -->
 	<update id="updateSCell">
 		update s_cell set
-		product_name=#{product_name},min_amount=#{min_amount},max_amount=#{max_amount},amount=#{amount},max_capacity_amount=#{max_capacity_amount},config=#{config},register=#{register},register_time=#{register_time}
+		product_name=#{product_name},min_amount=#{min_amount},max_amount=#{max_amount},amount=#{amount},max_capacity_amount=#{max_capacity_amount},config=#{config},register=#{register},
+		register_time=#{register_time},check_tag='未审核'
 		where product_id=#{product_id}
 	</update>
 </mapper>

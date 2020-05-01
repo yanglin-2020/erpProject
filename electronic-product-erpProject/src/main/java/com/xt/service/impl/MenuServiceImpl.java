@@ -47,4 +47,9 @@ public class MenuServiceImpl implements MenuService{
 	public int updateMenu(Permissions p) {
 		return mm.updateMenu(p);
 	}
+
+	@Override
+	public List<Permissions> Menubangding() {
+		return mm.Menubangding();
+	}
 }

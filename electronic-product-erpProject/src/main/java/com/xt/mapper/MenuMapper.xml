@@ -24,8 +24,8 @@
  	</select>
  	<!--添加菜单或权限  -->
  	<insert id="addMenu">
- 		insert into permissions(name,descn,linkUrl,type)
- 		values(#{name},#{descn},#{linkUrl},#{type})
+ 		insert into permissions(name,descn,linkUrl,type,parentMenu)
+ 		values(#{name},#{descn},#{linkUrl},#{type},#{parentMenu})
  	</insert>
  	<!--删除一个菜单或权限  -->
  	<delete id="deleteMenu">
@@ -34,7 +34,11 @@
  	<!--修改菜单或权限  -->
  	<update id="updateMenu">
  		update permissions set name=#{name},descn=#{descn},
- 		linkUrl=#{linkUrl},type=#{type}
+ 		linkUrl=#{linkUrl},type=#{type},parentMenu=#{parentMenu}
  		where id=#{id}
  	</update>
+ 	<!--菜单下拉框绑定  -->
+ 	<select id="Menubangding" resultType="permissions">
+ 		select * from permissions
+ 	</select>
  </mapper>

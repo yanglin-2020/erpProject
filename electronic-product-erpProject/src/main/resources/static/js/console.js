@@ -10,7 +10,7 @@ layui.use(["okUtils", "table", "okCountUp", "okMock"], function () {
      * 收入、商品、博客、用户
      */
     function statText() {
-        var elem_nums = $(".stat-text");
+        var elem_nums = $("#stat-text");
         elem_nums.each(function (i, j) {
             var ran = parseInt(Math.random() * 99 + 1);
             !new countUp({
@@ -52,18 +52,17 @@ layui.use(["okUtils", "table", "okCountUp", "okMock"], function () {
     function userList() {
         table.render({
             method: "get",
-            url: okMock.api.user.list,
+            url:  "/getUserLoginInfo",
             elem: '#userData',
             height: 340,
             page: true,
-            limit: 7,
+            limit: 10,
             cols: [[
-                {field: "id", title: "ID", width: 180},
-                {field: "username", title: "账号", width: 100},
-                {field: "password", title: "密码", width: 80},
-                {field: "email", title: "邮箱", width: 200},
-                {field: "createTime", title: "创建时间", width: 180},
-                {field: "logins", title: "登录次数", width: 100}
+            	 {field: "u_name", title: "账号", width: 80},
+                 {field: "phone", title: "手机号", width: 130},
+                 {field: "login_time", title: "登录时间", width: 166},
+                 {field: "login_address", title: "登录地点", width: 120},
+                 {field: "login_num", title: "登录次数", width: 100}
             ]],
         });
     }

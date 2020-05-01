@@ -25,7 +25,42 @@ public class Users implements Serializable {
 	private String address;
 	private String email;
 	private String personl;
+	private String province;
+	private String city;
+	private String area;
+	private int count;//用户访问量
+	private int selfcount;//用户单独访问量
 	
+	public int getSelfcount() {
+		return selfcount;
+	}
+	public void setSelfcount(int selfcount) {
+		this.selfcount = selfcount;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public String getProvince() {
+		return province;
+	}
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
 	public String getTrueName() {
 		return trueName;
 	}
@@ -121,15 +156,17 @@ public class Users implements Serializable {
 	public Users() {
 		super();
 	}
-	public Users(String u_name, String u_image, String trueName, String birthday, String address, String email,
-			String personl) {
+	public Users(String u_name,String trueName, String birthday, String address, String email, String personl,
+			String province, String city, String area) {
 		super();
-		this.u_name = u_name;
-		this.u_image = u_image;
+		this.u_name=u_name;
 		this.trueName = trueName;
 		this.birthday = birthday;
 		this.address = address;
 		this.email = email;
 		this.personl = personl;
+		this.province = province;
+		this.city = city;
+		this.area = area;
 	}
 }

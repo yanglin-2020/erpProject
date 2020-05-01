@@ -46,7 +46,20 @@
                                     <a class="layui-btn search_btn2" data-type="reload">
                                         <i class="layui-icon">&#xe615;</i></a>
                                 </div>
-                                
+                                <div class="layui-inline layui-show-xs-block">
+									<div class="layui-input-inline">
+										<select name="check_tag" id="check_tag" lay-verify="tid">
+											<option value="" >审核状态</option>
+											<option value="审核通过">审核通过</option>
+											<option value="等待审核">等待审核</option>
+											<option value="审核不通过">审核不通过</option>
+										</select> 
+									</div>
+								</div>
+								<div class="layui-inline layui-show-xs-block">
+                                    <a class="layui-btn search_btn3" data-type="reload">
+                                        <i class="layui-icon">&#xe615;</i></a>
+                                </div>
                             </form>
                         </div>
                         <div class="layui-card-body ">
@@ -61,12 +74,22 @@
                                         <th lay-data="{field:'cost_price_sum', width:80}">物料成本</th>
                                          <th lay-data="{field:'register', width:70}">登记人</th>
                                          <th lay-data="{field:'register_time', width:150,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.register_time)}}">登记时间</th>
+                                          <th lay-data="{field:'check_tag',width:100, minWidth: 100,templet: '#titleTpl'}">审核状态</th>
                                           <th lay-data="{field:'checker', width:70}">复核人</th>
                                          <th lay-data="{field:'check_time', width:150,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.register_time)}}">复核时间</th>
                                         <th lay-data="{width:160, templet:'#oprListBar',fixed:'right'}">操作</th>
                                         </tr>
                                 </thead>
                             </table>
+                              <script type="text/html" id="titleTpl">
+  						{{#  if(d.check_tag == "审核通过"){ }}
+    						 <span class="layui-btn layui-btn-normal layui-btn-mini">审核通过</span>
+  						{{#  } else if(d.check_tag == "等待审核") { }}
+    						<span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-danger">等待审核</span>
+ 						{{#  } else{ }}
+							<span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-danger">审核驳回</span>
+  						{{#  }  }}
+						</script>
 					</div>
                     </div>
                 </div>
@@ -160,6 +183,16 @@
             		},
             		where:{
             			product_id: $("[name=product_id]").val()
+            		}
+            	  });
+              });
+            $(".search_btn3").on("click",function(){
+            	  table.reload("test",{
+            		page:{
+            			curr:1
+            		},
+            		where:{
+            			check_tag: $("[name=check_tag]").val()
             		}
             	  });
               });

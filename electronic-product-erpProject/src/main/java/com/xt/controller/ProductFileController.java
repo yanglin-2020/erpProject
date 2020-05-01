@@ -152,10 +152,16 @@ public class ProductFileController {
 		String product_name = request.getParameter("name");// 产品的名称
 		String type = request.getParameter("type");// 用途类型
 		String product_id = request.getParameter("product_id");// 产品的id
+		String check_tag = request.getParameter("check_tag");//审核状态
 		D_file df = new D_file();
 		df.setProduct_name(product_name);
 		df.setProduct_id(product_id);
 		df.setType(type);
+		if(check_tag==null) {
+			df.setCheck_tag("审核通过");
+		}else {
+			df.setCheck_tag(check_tag);
+		}
 		PageDemo<D_file> pd = service.getD_fileInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), df);
 		PrintWriter out = response.getWriter();
 		String str = JSONArray.toJSONString(pd);
@@ -529,9 +535,15 @@ public class ProductFileController {
 		String pageSize = request.getParameter("limit");
 		String name = request.getParameter("name");// 物料的名字
 		String product_id = request.getParameter("product_id");// 产品的编号
+		String check_tag = request.getParameter("check_tag");//审核状态
 		DModule dd = new DModule();
 		dd.setProduct_name(name);
 		dd.setProduct_id(product_id);
+		if(check_tag==null) {
+			dd.setCheck_tag("审核通过");
+		}else {
+			dd.setCheck_tag(check_tag);
+		}
 		PageDemo<DModule> pd = service.getAllModuleInfo(Integer.parseInt(nowpage), Integer.parseInt(pageSize), dd);
 		PrintWriter out = response.getWriter();
 		String str = JSONArray.toJSONString(pd);

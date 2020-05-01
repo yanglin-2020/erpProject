@@ -2,63 +2,123 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.xt.mapper.UsersMapper">
-  	<!--登陆验证 -->
- 	<select id="selectByName" resultType="Users">
- 		select * from users where u_name=#{u_name}
- 	</select>
- 	<!--拿到相应的权限 -->
+<mapper namespace="com.xt.mapper.UsersMapper">
+	<!--登陆验证 -->
+	<select id="selectByName" resultType="Users">
+		select * from users where u_name=#{u_name}
+	</select>
+	<!--拿到相应的权限 -->
 	<select id="selectPermissions" resultType="String">
-		select p.name from permissions p where id 
-		in (select pid from permission_role where rid 
-		in (select r_id from  user_role where u_id 
-		in (select u_id from users where u_name =#{u_name}))) and type= 1 
+		select p.name from
+		permissions p where id
+		in (select pid from permission_role where rid
+		in (select r_id from user_role where u_id
+		in (select u_id from users where u_name =#{u_name}))) and type= 1
 	</select>
-	<!--拿到相应的父级菜单  -->
+	<!--拿到相应的父级菜单 -->
 	<select id="selectMenus" resultType="Permissions">
-		select * from permissions where id 
-		in (select pid from permission_role where rid 
-		in (select r_id from  user_role where u_id 
-		in (select u_id from users where u_name =#{u_name}))) and type= 0 and parentMenu =0 and gongneng=#{gongneng}
+		select * from permissions
+		where id
+		in (select pid from permission_role where rid
+		in (select r_id from user_role where u_id
+		in (select u_id from users where u_name =#{u_name}))) and type= 0 and
+		parentMenu =0 and gongneng=#{gongneng}
 	</select>
-	<!--拿到相应的子菜单  -->
+	<!--拿到相应的子菜单 -->
 	<select id="selectSonMenus" resultType="Permissions">
-		select * from permissions where id 
-		in (select pid from permission_role where rid 
-		in (select r_id from  user_role where u_id 
-		in (select u_id from users where u_name =#{u_name}))) and type= 0 and parentMenu =#{menu_id}
+		select * from permissions
+		where id
+		in (select pid from permission_role where rid
+		in (select r_id from user_role where u_id
+		in (select u_id from users where u_name =#{u_name}))) and type= 0 and
+		parentMenu =#{menu_id}
 	</select>
-	<!--拿到用户的数量  -->
+	<!--拿到用户的数量 -->
 	<select id="getUsersCount" resultType="int">
 		select count(1) from Users where 1=1
 		<if test="u.u_name!=null and u.u_name!=''">
 			and u_name like CONCAT('%',#{u.u_name},'%')
 		</if>
 	</select>
-	<!--查询所有用户(员工)  -->
+	<!--查询所有用户(员工) -->
 	<select id="getAllUserInfo" resultType="Users">
 		select * from users where 1=1
 		<if test="u.u_name!=null and u.u_name!=''">
 			and u_name like CONCAT('%',#{u.u_name},'%')
 		</if>
-		    limit #{page.startRow},#{page.pageSize}
+		limit #{page.startRow},#{page.pageSize}
 	</select>
-	<!--添加用户  -->
+	<!--添加用户 -->
 	<insert id="addUserInfo">
-		insert into users(u_name,sex,u_password,salt,phone) values
+		insert into users(u_name,sex,u_password,salt,phone)
+		values
 		(#{u_name},#{sex},#{u_password},#{salt},#{phone})
 	</insert>
-	<!--删除一个用户  -->
+	<!--删除一个用户 -->
 	<delete id="deleteUser">
 		delete from users where u_id=#{u_id}
 	</delete>
-	<!--修改用户  -->
+	<!--修改用户 -->
 	<update id="updateUserInfo">
-		update users set u_name=#{u_name},sex=#{sex},phone=#{phone},u_create=default where u_id =#{u_id}
+		update users set
+		u_name=#{u_name},sex=#{sex},phone=#{phone},u_create=default where u_id
+		=#{u_id}
 	</update>
-	<!--把个人信息添加到数据库  -->
+	<!--把个人信息添加到数据库 -->
 	<update id="addUserDetailInfo">
-		update users set trueName=#{trueName},birthday=#{birthday},email=#{email},address=#{address},
-		personl=#{personl},u_image=#{u_image} where u_name=#{u_name};
+		update users
+		<set>
+			<if test="u_image!='' and u_image!=null">u_image=#{u_image},</if>
+			<if test="trueName!='' and trueName!=null">trueName=#{trueName},</if>
+			<if test="birthday!='' and birthday!=null">birthday=#{birthday},</if>
+			<if test="email!='' and email!=null">email=#{email},</if>
+			<if test="address!='' and address!=null">address=#{address},</if>
+			<if test="personl!='' and personl!=null">personl=#{personl},</if>
+			<if test="province!='' and province!=null">province=#{province},</if>
+			<if test="city!='' and city!=null">city=#{city},</if>
+			<if test="area!='' and area!=null">area=#{area}</if>
+		</set>
+		where u_name=#{u_name};
 	</update>
-  </mapper>
+	<!--修改用户密码 -->
+	<update id="updatepwd">
+		update users set u_password=#{pwd} where u_name=#{name}
+	</update>
+	<!--拿到用户登录信息，做一个日志记录  -->
+	<insert id="addUserLoginInfo">
+		insert into sys_logs(u_name,phone,login_time,login_address) 
+		values(#{u_name},#{phone},#{login_time},#{login_address})
+	</insert>
+	<!--查询用户登录信息  -->
+	<select id="getUserLoginInfoCount" resultType="int">
+		select count(1) from sys_logs
+	</select>
+	<select id="getUserLoginInfo" resultType="SysLogs">
+		select * from sys_logs
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!--拿到用户的登录信息  -->
+	<select id="getUserAllLoginInfo" resultType="SysLogs">
+		select * from sys_logs
+	</select>
+	<!--修改用户的登录信息  -->
+	<update id="updateUserLoginInfo">
+		update sys_logs set login_time=#{login_time},login_num=login_num+1,login_address=#{ip} where u_name=#{u_name}
+	</update>
+	<!--用户访问量加1  -->
+	<update id="updateCount">
+		update users set count=count+1
+	</update>
+	<!--拿到用户的总数  -->
+	<select id="selectAllUserCount" resultType="int">
+		select count(1) from users
+	</select>
+	<!--拿到物料的总成本  -->
+	<select id="getMaterialSumMoney" resultType="double">
+		select SUM(cost_price_sum) from d_module
+	</select>
+	<!--拿到产品的数量  -->
+	<select id="getProductAllCount" resultType="int">
+		select count(1) from d_file
+	</select>
+</mapper>

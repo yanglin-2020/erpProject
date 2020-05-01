@@ -20,4 +20,6 @@ public interface MenuMapper {
 	public int deleteMenu(int id);
 	//修改菜单或权限
 	public int updateMenu(Permissions p);
+	//菜单下拉框绑定
+	public List<Permissions> Menubangding();
 }

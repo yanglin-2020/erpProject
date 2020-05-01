@@ -5,7 +5,7 @@
   <mapper namespace="com.xt.mapper.M_apply_Mapper">
   	<!-- 查询需要审核的生产计划数量 -->
   	<select id="getAllMapplyAuditCount" resultType="int">
-  		select count(1) from m_apply where check_tag='S001-0' and manufacture_tag='P001-0'
+  		select count(1) from m_apply where check_tag='等待审核' and manufacture_tag='未派工'
   		<if test="m.product_id!=null and m.product_id!=''">
   			and productId like CONCAT('%',#{m.productId},'%')
   		</if>
@@ -13,7 +13,7 @@
   	
   	<!-- 查询没有审核生产计划信息 -->
   	<select id="getAllMapplyAudit" resultType="MApply">
-  		select * from m_apply where check_tag='S001-0' and manufacture_tag='P001-0'
+  		select * from m_apply where check_tag='等待审核' and manufacture_tag='未派工'
   		<if test="m.product_id!=null and m.product_id!=''">
   			and productId like CONCAT('%',#{m.product_id},'%')
   		</if>
@@ -48,11 +48,25 @@
   		<if test="m.check_tag!=null and m.check_tag!=''">
   			and check_tag=#{m.check_tag} 
   		</if>
+  		<if test="m.apply_id!=null and m.apply_id!=''">
+  			and apply_id=#{m.apply_id}
+  		</if>
   		<if test="m.product_name!=null and m.product_name!=''">
   			and product_name like CONCAT('%',#{m.product_name},'%')
   		</if>
   		limit #{page.startRow},#{page.pageSize}
   	</select>
+  	
+  	<!-- 根据生产计划编号修改审核标志 -->
+  	<update id="examination">
+  		update m_apply set check_tag=#{m.check_tag},checker=#{m.checker},check_time=#{m.check_time},
+  		check_suggestion=#{m.check_suggestion} where apply_id=#{m.apply_id}
+  	</update>
+  	
+  	<!-- 修改生产计划单 -->
+  	<update id="updateMapply">
+  		update m_apply set amount=#{m.amount},designer=#{m.designer},remark=#{m.remark} where apply_id=#{m.apply_id}
+  	</update>
   	
   	
   </mapper>

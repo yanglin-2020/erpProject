@@ -1,5 +1,6 @@
 <!doctype html>
 <html class="x-admin-sm">
+<html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
     <head>
         <meta charset="UTF-8">
         <title>电子产品ERP管理系统</title>
@@ -17,6 +18,7 @@
             // 是否开启刷新记忆tab功能
             var is_remember = false;
         </script>
+        
     </head>
     <body class="index">
         <!-- 顶部开始 -->
@@ -31,10 +33,11 @@
                     <a href="javascript:;">功能模板</a>
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
-                        <dd><a th:href="@{/gongneng(gongnengid=55)}">产品设计</a></dd>
-                        <dd><a th:href="@{/gongneng(gongnengid=56)}">生产管理</a></dd>
-                        <dd><a th:href="@{/gongneng(gongnengid=57)}">库存管理</a></dd>
-                        <dd><a th:href="@{/gongneng(gongnengid=58)}">系统管理</a></dd>
+                        <dd><a shiro:hasPermission="产品设计"th:href="@{/gongneng(gongnengid=63)}">产品设计</a></dd>
+                        <dd><a shiro:hasPermission="生产管理" th:href="@{/gongneng(gongnengid=64)}">生产管理</a></dd>
+                        <dd><a shiro:hasPermission="库存管理" th:href="@{/gongneng(gongnengid=65)}">库存管理</a></dd>
+                        <dd><a shiro:hasPermission="系统管理" th:href="@{/gongneng(gongnengid=66)}">系统管理</a></dd>
+                        <dd><a th:href="@{/gongneng(gongnengid=0)}">退出</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -45,11 +48,11 @@
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
                         <dd>
-                            <a onclick="xadmin.open('个人信息','userInfo.html','800','650')">个人信息</a></dd>
+                            <a onclick="xadmin.open('个人信息','userInfo.html','800','620')">个人信息</a></dd>
                         <dd>
-                            <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
+                            <a href="/updatepwd.html">修改密码</a></dd>
                         <dd>
-                            <a href="./Userlogin">退出</a>
+                            <a href="/tiaozhuan">退出</a>
                         </dd>
                     </dl>
                 </a>
@@ -74,6 +77,62 @@
                                 <a th:onclick=xadmin.add_tab([[${sonMenu.name}]],[[${sonMenu.linkUrl}]])>
                                     <i class="iconfont">&#xe718;</i>
                                     <cite><span th:text="${sonMenu.name}"></span></cite></a>
+                            </li>
+                        </ul>
+                    </li>
+                     <li>
+                        <a href="javascript:;">
+                            <i class="iconfont left-nav-li" lay-tips="图标字体">&#xe6b4;</i>
+                            <cite>图标字体</cite>
+                            <i class="iconfont nav_right">&#xe697;</i></a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a onclick="xadmin.add_tab('图标对应字体','unicode.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>图标对应字体</cite></a>
+                            </li>
+                        </ul>
+                    </li>
+                     <li>
+                        <a href="javascript:;">
+                            <i class="iconfont left-nav-li" lay-tips="第三方组件">&#xe6b4;</i>
+                            <cite>layui第三方组件</cite>
+                            <i class="iconfont nav_right">&#xe697;</i></a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a onclick="xadmin.add_tab('滑块验证','https://fly.layui.com/extend/sliderVerify/')" target="">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>滑块验证</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('富文本编辑器','https://fly.layui.com/extend/layedit/')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>富文本编辑器</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('eleTree 树组件','https://fly.layui.com/extend/eleTree/')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>eleTree 树组件</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('图片截取','https://fly.layui.com/extend/croppers/')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>图片截取</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('formSelects 4.x 多选框','https://fly.layui.com/extend/formSelects/')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>formSelects 4.x 多选框</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('Magnifier 放大镜','https://fly.layui.com/extend/Magnifier/')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>Magnifier 放大镜</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('notice 通知控件','https://fly.layui.com/extend/notice/')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>notice 通知控件</cite></a>
                             </li>
                         </ul>
                     </li>

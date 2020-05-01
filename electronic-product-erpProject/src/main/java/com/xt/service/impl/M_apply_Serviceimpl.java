@@ -16,6 +16,12 @@ import com.xt.util.PageDemo;
 import com.xt.util.PageUtil;
 import com.xt.util.ShengchanUtil;
 
+/**
+ *  生产计划 		Serviceimpl
+ * @author CQK
+ * 
+ *
+ */
 @Service
 public class M_apply_Serviceimpl implements M_apply_Service {
 	
@@ -157,6 +163,20 @@ public class M_apply_Serviceimpl implements M_apply_Service {
 		pd.setMsg("");
 		pd.setData(list);
 		return pd;
+	}
+
+	//根据生产计划编号修改审核标志
+	@Override
+	public int examination(MApply mapply) {
+		int row=mapper.examination(mapply);
+		return row;
+	}
+
+	//修改生产计划单
+	@Override
+	public int updateMapply(MApply mapply) {
+		int row=mapper.updateMapply(mapply);
+		return row;
 	}
 
 

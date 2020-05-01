@@ -45,6 +45,7 @@ public class D_file {
 	private String design_procedure_tag;//工序组成标志G001-0: 未设计  G001-1: 已设计
 	private String design_cell_tag;//库存分配标志,未设计K001-1: 已设计
 	private String reason;//审核不通过的理由
+	
 	public String getReason() {
 		return reason;
 	}

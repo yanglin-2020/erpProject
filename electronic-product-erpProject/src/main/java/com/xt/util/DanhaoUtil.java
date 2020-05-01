@@ -1,5 +1,7 @@
 package com.xt.util;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 /**
  * 各种单号生成工具类
  */
@@ -28,14 +30,26 @@ public class DanhaoUtil {
 		String danhao = "d" + DanhaoUtil.formatDateToCommon(d);
 		return danhao;
 	}
+
 	/**
 	 * 生成库存编号
+	 * 
 	 * @return
 	 */
 	public static String getKcBianhao() {
 		SimpleDateFormat formate = new SimpleDateFormat("yyyyMMddhhmmss");
 		Date date = new Date();
-		String danhao = "kc"+formate.format(date);
+		String danhao = "kc" + formate.format(date);
 		return danhao;
+	}
+
+	public static String getLocalAddress() {
+		String ip = "";
+		try {
+			ip = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) { 
+			e.printStackTrace();
+		}
+		return ip;
 	}
 }

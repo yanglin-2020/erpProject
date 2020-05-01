@@ -65,11 +65,13 @@ public class MenuController {
 		String miaoshu = request.getParameter("miaoshu");
 		String url = request.getParameter("url");
 		String type = request.getParameter("type");
+		String parentid = request.getParameter("parentid");
 		Permissions p = new Permissions();
 		p.setName(name);
 		p.setDescn(miaoshu);
 		p.setLinkUrl(url);
-		//p.setType(type);
+		p.setType(Integer.parseInt(type));
+		p.setParentMenu(Integer.parseInt(parentid));
 		int id1 = id==""?0:1;
 		if(id1==0) {
 			//添加操作
@@ -90,5 +92,17 @@ public class MenuController {
 	public String delMenuInfo(int id) {
 		service.deleteMenu(id);
 		return "1";
+	}
+	//菜单下拉框绑定
+	@RequestMapping("/Menubangding")
+	@ResponseBody
+	public void Menubangding(HttpServletResponse response) throws IOException {
+		response.setContentType("text/html;charset=utf-8");
+		List<Permissions> list = service.Menubangding();
+		String str = JSONArray.toJSONString(list);
+		PrintWriter out = response.getWriter();
+		out.print(str);
+		out.flush();
+		out.close();
 	}
 }

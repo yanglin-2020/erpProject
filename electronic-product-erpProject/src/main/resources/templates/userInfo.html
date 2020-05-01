@@ -15,7 +15,11 @@
 <script src="./lib/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript" src="./js/xadmin.js"></script>
 </head>
-
+<style>
+body{
+background-image:url('./images/userinfo.jpg');
+};
+</style>
 <body>
 	<div class="layui-fluid">
 		<div class="layui-row">
@@ -64,22 +68,29 @@
 						<input type="email" name="email" class="layui-input" th:value="${session.u.email}">
 					</div>
 				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">住址</label>
+					<div class="layui-input-inline">
+						<input type="email" name="address" class="layui-input" 
+						th:value="${session.u.address}" readonly="readonly"> 
+					</div>
+				</div>
 				<div class="layui-form-item x-city" id="start">
 					<label for="L_pass" class="layui-form-label"> <span
-						class="x-red"></span>住址
+						class="x-red"></span>修改住址
 					</label>
 					<div class="layui-input-inline">
-						<select name="province" lay-filter="province">
+						<select name="province" lay-filter="province" th:value="${session.u.province}">
 							<option value="">请选择省</option>
 						</select>
 					</div>
 					<div class="layui-input-inline">
-						<select name="city" lay-filter="city">
+						<select name="city" lay-filter="city" th:value="${session.u.city}">
 							<option value="">请选择市</option>
 						</select>
 					</div>
 					<div class="layui-input-inline">
-						<select name="area" lay-filter="area">
+						<select name="area" lay-filter="area" th:value="${session.u.area}">
 							<option value="">请选择县/区</option>
 						</select>
 					</div>
@@ -88,7 +99,7 @@
 			<label class="layui-form-label">个人宣言</label>
 			<div class="layui-input-block">
 				<textarea name="personl" placeholder="请输入内容"
-					class="layui-textarea" th:value="${session.u.personl}"></textarea>
+					class="layui-textarea" th:text="${session.u.personl}"></textarea>
 			</div>
 		</div>
 		<div class="layui-form-item">

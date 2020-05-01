@@ -30,8 +30,8 @@
 						<img src="./images/home-01.png" alt="none"/>
 					</div>
 					<div class="cart-r">
-						<div class="stat-text incomes-num">0</div>
-						<div class="stat-heading">收入</div>
+						<div class="stat-text incomes-num">[[${session.materialMoney}]]</div>
+						<div class="stat-heading">物料总成本</div>
 					</div>
 				</div>
 			</div>
@@ -44,8 +44,8 @@
 						<img src="./images/home-02.png" alt="none"/>
 					</div>
 					<div class="cart-r">
-						<div class="stat-text goods-num">0</div>
-						<div class="stat-heading">商品</div>
+						<div class="stat-text goods-num">[[${session.productCount}]]</div>
+						<div class="stat-heading">产品数量</div>
 					</div>
 				</div>
 			</div>
@@ -58,8 +58,8 @@
 						<img src="./images/home-03.png" alt="none"/>
 					</div>
 					<div class="cart-r">
-						<div class="stat-text blogs-num">0</div>
-						<div class="stat-heading">博客</div>
+						<div class="stat-text blogs-num">[[${session.count}]]</div>
+						<div class="stat-heading">访问量</div>
 					</div>
 				</div>
 			</div>
@@ -72,8 +72,8 @@
 						<img src="./images/home-04.png" alt="none"/>
 					</div>
 					<div class="cart-r">
-						<div class="stat-text fans-num">0</div>
-						<div class="stat-heading">用户</div>
+						<div class="stat-text fans-num">[[${session.UsersCount}]]</div>
+						<div class="stat-heading">员工数量</div>
 					</div>
 				</div>
 			</div>
@@ -105,11 +105,18 @@
 						<div class="pro-data">
 							<h4 class="por-title">Visits</h4>
 							<div class="por-txt pro-a">用户比例</div>
-							<div class="layui-progress" lay-filter="pro-a">
-								<div class="layui-progress-bar per-bg-a" lay-percent="35%"></div>
-							</div>
 						</div>
 					</div>
+					<div class="progress-box ">
+						<div class="pro-head">
+							<img src="./images/face.jpg" alt="none"/>
+						</div>
+						<div class="pro-data">
+							<h4 class="por-title">Visits</h4>
+							<div class="por-txt pro-a">用户比例</div>
+						</div>
+					</div>
+					
 
 					<div class="progress-box ">
 						<div class="pro-head">
@@ -118,9 +125,6 @@
 						<div class="pro-data">
 							<h4 class="por-title">Visits</h4>
 							<div class="por-txt pro-a">用户比例</div>
-							<div class="layui-progress" lay-filter="pro-b">
-								<div class="layui-progress-bar per-bg-b" lay-percent="15%"></div>
-							</div>
 						</div>
 					</div>
 
@@ -131,9 +135,6 @@
 						<div class="pro-data">
 							<h4 class="por-title">Visits</h4>
 							<div class="por-txt pro-c">用户比例</div>
-							<div class="layui-progress" lay-filter="pro-c">
-								<div class="layui-progress-bar per-bg-c" lay-percent="20%"></div>
-							</div>
 						</div>
 					</div>
 
@@ -144,9 +145,16 @@
 						<div class="pro-data">
 							<h4 class="por-title">Visits</h4>
 							<div class="por-txt pro-d">用户比例</div>
-							<div class="layui-progress" lay-filter="pro-d">
-								<div class="layui-progress-bar per-bg-d" lay-percent="30%"></div>
-							</div>
+						</div>
+					</div>
+					
+					<div class="progress-box ">
+						<div class="pro-head">
+							<img src="images/face.jpg" alt="none"/>
+						</div>
+						<div class="pro-data">
+							<h4 class="por-title">Visits</h4>
+							<div class="por-txt pro-d">用户比例</div>
 						</div>
 					</div>
 				</div>

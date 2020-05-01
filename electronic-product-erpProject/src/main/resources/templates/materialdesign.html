@@ -237,6 +237,7 @@ td {
 	display: inline-block;
 	padding: 2px 3px;
 }
+
 .layoutitem-add button {
 	width: 70px;
 	height: 30px;
@@ -354,108 +355,112 @@ body {
 <body>
 	<div class="formoverlay"></div>
 	<div class="x-nav">
-            <span class="layui-breadcrumb">
-            </span>
-            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
-                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
-            </a>
-        </div>
-   <form th:action="@{/saveMaterail}" method="post">
-	<table cellpadding="0" cellspacing="0" border="0px" class="formborder"
-		style="z-index: 99; position: absolute; left: 220px; top: 80px;  width: 880px; display: block;">
-		<tbody>
+		<span class="layui-breadcrumb"> </span> <a
+			class="layui-btn layui-btn-small"
+			style="line-height: 1.6em; margin-top: 3px; float: right"
+			onclick="location.reload()" title="刷新"> <i
+			class="layui-icon layui-icon-refresh" style="line-height: 30px"></i>
+		</a>
+	</div>
+	<form th:action="@{/saveMaterail}" method="post">
+		<table cellpadding="0" cellspacing="0" border="0px" class="formborder"
+			style="z-index: 99; position: absolute; left: 220px; top: 80px; width: 880px; display: block;">
+			<tbody>
 
-			<tr>
-				<td align="left" valign="top"
-					style="width: 880px; height: 500px; background: #fff;">
-					<div class="formcontentsize" style="width: auto; height: auto;">
-						<div class="layoutitem">
-							<div class="layout-tit">
-								<h3 align="center">物料组成设计单</h3>
+				<tr>
+					<td align="left" valign="top"
+						style="width: 880px; height: 500px; background: #fff;">
+						<div class="formcontentsize" style="width: auto; height: auto;">
+							<div class="layoutitem">
+								<div class="layout-tit">
+									<h3 align="center">物料组成设计单</h3>
+								</div>
+								<div class="layout-xx">
+									<ul>
+										<li>
+											<div class="item-input">
+												<label class="item-label">产品名称:</label>&nbsp;&nbsp; <b>[[${session.product_name}]]</b>
+											</div>
+											<div class="item-input">
+												<label class="item-label">产品编号:</label>&nbsp;&nbsp; <b>[[${session.product_id}]]</b>
+											</div>
+										</li>
+
+										<li>
+											<div class="item-input">
+												<label class="item-label"> 设计人:</label>&nbsp;&nbsp; <input
+													type="text" class="layoutitemcon" maxlength="50"
+													name="designer" required="required">
+											</div>
+
+										</li>
+										<li>
+											<div class="demo">
+												<table id="thetable" cellspacing="0" cellpadding="0"
+													style="width: 2000px;">
+													<thead>
+														<tr>
+															<td>物料编号</td>
+															<td>物料名称</td>
+															<td>用途类型</td>
+															<td>描述</td>
+															<td>数量</td>
+															<td>单位</td>
+															<td>计划成本单价</td>
+															<td>小计</td>
+															<td>操作</td>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="m:${session.materialList}">
+															<input type="hidden" th:value="${m.parent_id}">
+															<td th:text="${m.product_id}"></td>
+															<td th:text="${m.product_name}"></td>
+															<td th:text="${m.type}"></td>
+															<td th:text="${m.product_describe}"></td>
+															<td th:text="${m.amount}"></td>
+															<td th:text="${m.amount_unit}"></td>
+															<td th:text="${m.cost_price}"></td>
+															<td th:text="${m.subtotal}"></td>
+															<td><a
+																th:href="@{/delMaterial(id=${m.product_id},num=${m.amount},parent_id=${m.parent_id})}">删除</a></td>
+														</tr>
+													</tbody>
+
+												</table>
+											</div>
+
+										</li>
+										<li>
+											<div class="item-input">
+												<label class="item-label">登记人:</label>&nbsp;&nbsp; <b>[[${session.username}]]</b>
+											</div>
+											<div class="item-input">
+												<label class="item-label">登记时间:</label>&nbsp;&nbsp; <b>[[${session.time}]]</b>
+											</div>
+										</li>
+										<li>
+											<div class="item-input1">
+												<label class="item-label"> 设计要求:</label>&nbsp;&nbsp; <input
+													type="text" class="layout-bz" name="module_describe"
+													required="required">
+											</div>
+										</li>
+									</ul>
+								</div>
 							</div>
-							<div class="layout-xx">
-								<ul>
-									<li>
-										<div class="item-input">
-											<label class="item-label">产品名称:</label>&nbsp;&nbsp; <b>[[${session.product_name}]]</b>
-										</div>
-										<div class="item-input">
-											<label class="item-label">产品编号:</label>&nbsp;&nbsp; <b>[[${session.product_id}]]</b>
-										</div>
-									</li>
 
-									<li>
-										<div class="item-input">
-											<label class="item-label"> 设计人:</label>&nbsp;&nbsp; <input
-												type="text" class="layoutitemcon" maxlength="50" name="designer" required="required">
-										</div>
-
-									</li>
-									<li>
-										<div class="demo">
-											<table id="thetable" cellspacing="0" cellpadding="0"
-												style="width: 2000px;">
-												<thead>
-													<tr>
-														<td>物料编号</td>
-														<td>物料名称</td>
-														<td>用途类型</td>
-														<td>描述</td>
-														<td>数量</td>
-														<td>单位</td>
-														<td>计划成本单价</td>
-														<td>小计</td>
-														<td>操作</td>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="m:${session.materialList}">
-														<input type="hidden" th:value="${m.parent_id}">
-														<td th:text="${m.product_id}"></td>
-														<td th:text="${m.product_name}"></td>
-														<td th:text="${m.type}"></td>
-														<td th:text="${m.product_describe}"></td>
-														<td th:text="${m.amount}"></td>
-														<td th:text="${m.amount_unit}"></td>
-														<td th:text="${m.cost_price}"></td>
-														<td th:text="${m.subtotal}"></td>
-														<td><a th:href="@{/delMaterial(id=${m.product_id},num=${m.amount},parent_id=${m.parent_id})}">删除</a></td>
-													</tr>
-												</tbody>
-
-											</table>
-										</div>
-
-									</li>
-									<li>
-										<div class="item-input">
-											<label class="item-label">登记人:</label>&nbsp;&nbsp; <b>[[${session.username}]]</b>
-										</div>
-										<div class="item-input">
-											<label class="item-label">登记时间:</label>&nbsp;&nbsp; <b>[[${session.time}]]</b>
-										</div>
-									</li>
-									<li>
-										<div class="item-input1">
-											<label class="item-label"> 设计要求:</label>&nbsp;&nbsp; <input
-												type="text" class="layout-bz" name="module_describe" required="required">
-										</div>
-									</li>
-								</ul>
-							</div>
 						</div>
-
-					</div>
-					<div class="layoutitem-add">
-						<a href="materialdetail.html" class="add">添加物料</a> 
-						<a th:href="makematerial.html" class="tc">返回</a>
-						<button type="submit" class="bc">保存</button>
-					</div>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+						<div class="layoutitem-add">
+							<a href="materialdetail.html" class="add">添加物料</a> <a
+								th:href="makematerial.html" class="tc">返回</a>
+							<button type="submit" class="bc">保存</button>
+						</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</form>
 	<!--弹窗 仓库管理开始-->
 

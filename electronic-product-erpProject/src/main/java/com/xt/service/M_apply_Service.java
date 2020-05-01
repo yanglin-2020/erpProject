@@ -6,6 +6,12 @@ import com.xt.pojo.D_file;
 import com.xt.util.PageDemo;
 import com.xt.pojo.MApply;
 
+/**
+ *  生产计划 		Service
+ * @author CQK
+ * 
+ *
+ */
 public interface M_apply_Service {
 	public PageDemo<D_file> getAllM_applyInfo(int nowPage, int pageSize);
 	public int addMApply(MApply mapply);
@@ -24,5 +30,9 @@ public interface M_apply_Service {
 	public int noApproveMapply(MApply mapply);
 	//查询生产计划信息(条件)
 	public PageDemo<MApply> allMapply(int nowPage, int pageSize, MApply ma);
+	//根据生产计划编号修改审核标志
+	public int examination(MApply mapply);
+	//修改生产计划单
+	public int updateMapply(MApply mapply);
 
 }

@@ -62,6 +62,17 @@
 				
 				<div class="layui-form-item">
 					<label for="tid" class="layui-form-label"> <span
+						class="x-red">*</span>父级菜单
+					</label>
+					<div class="layui-input-inline">
+						<select name="parentid" id="parentid" lay-verify="tid">
+							<option value="0">请选择</option>
+						</select> 
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label for="tid" class="layui-form-label"> <span
 						class="x-red">*</span>类型
 					</label>
 					<div class="layui-input-inline">
@@ -100,6 +111,38 @@
 					}
 				});
 				return false;
+			});
+		});
+	</script>
+	 <script>
+		layui.use([ 'form', 'layer' ], function() {
+			$ = layui.jquery;
+			var form = layui.form, layer = layui.layer;
+			//下拉框绑定数据
+			$.ajax({
+				//提交数据的类型 POST GET
+				type : "POST",
+				//提交的网址
+				url : "Menubangding",
+				//提交的数据
+				//返回数据的格式
+				datatype : "json",//“xml”, “html”, “script”, “json”, “jsonp”, “text”.
+				//成功返回之后调用的函数
+				success : function(result) {
+					var s = $(".tid").val();
+					var data = eval('(' + result + ')');
+					$.each(data, function(index, item) {
+						var option = "<option ";
+						option += " value=" + item.id + ">" + item.name
+								+ "</option>";
+						option += "</optgroup>";
+						$("#parentid").append($(option));
+					});
+					layui.form.render("select");
+				},
+				error : function() {
+					alert("查询失败！！！")
+				}
 			});
 		});
 	</script>

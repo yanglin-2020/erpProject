@@ -45,13 +45,16 @@
 	</update>
 	
 	<select id="getD_FileCount1" resultType="int">
-		select count(1) from d_file where check_tag='审核通过' and delete_tag ='未删除'
+		select count(1) from d_file where   delete_tag ='未删除'
 		<if test="df.product_name!=null and df.product_name!=''">
 			and product_name like CONCAT('%',#{df.product_name},'%')
 		</if>
+		<if test="df.check_tag!=null and df.check_tag!=''">
+			and check_tag like CONCAT('%',#{df.check_tag},'%')
+		</if>
 	</select>
 	<select id="getD_fileInfo" resultType="D_file">
-		select * from d_file where check_tag='审核通过' and delete_tag ='未删除'
+		select * from d_file where delete_tag ='未删除'
 		<if test="df.product_name!=null and df.product_name!=''">
 			and product_name like CONCAT('%',#{df.product_name},'%')
 		</if>
@@ -60,6 +63,9 @@
 		</if>
 		<if test="df.product_id!=null and df.product_id!=''">
 			and product_id like CONCAT('%',#{df.product_id},'%')
+		</if>
+		<if test="df.check_tag!=null and df.check_tag!=''">
+			and check_tag like CONCAT('%',#{df.check_tag},'%')
 		</if>
 		limit #{page.startRow},#{page.pageSize}
 	</select>
@@ -75,7 +81,7 @@
 		product_nick=#{product_nick},type=#{type},product_class=#{product_class},personal_unit=#{personal_unit},personal_value=#{personal_value},
 		list_price=#{list_price},cost_price=#{cost_price},warranty=#{warranty},lifecycle=#{lifecycle},product_describe=#{product_describe},
 		responsible_person=#{responsible_person},register=#{register},file_change_amount=file_change_amount+1,changer=#{changer},change_time=#{change_time}
-		,change_tag='已变更' where product_id=#{product_id}
+		,change_tag='已变更',check_tag='等待审核' where product_id=#{product_id}
 	</update>
 	<!--分页查询变更后的档案信息  -->
 	<select id="getD_FileCount2" resultType="int">
@@ -211,21 +217,27 @@
 	</select>
 	<!--分页查询物料组成信息(通过)  -->
 	<select id="getModuleCount" resultType="int">
-		select count(1) from d_module where check_tag='审核通过' 
+		select count(1) from d_module where 1=1 
 		<if test="dm.product_name!=null and dm.product_name!=''">
 			and product_name like CONCAT('%',#{dm.product_name},'%')
 		</if>
 		<if test="dm.product_id!=null and dm.product_id!=''">
 			and product_id like CONCAT('%',#{dm.product_id},'%')
+		</if>
+		<if test="dm.check_tag!=null and dm.check_tag!=''">
+			and check_tag like CONCAT('%',#{dm.check_tag},'%')
 		</if>
 	</select>
 	<select id="getAllModuleInfo" resultType="DModule">
-		select * from d_module where check_tag='审核通过' 
+		select * from d_module where 1=1 
 		<if test="dm.product_name!=null and dm.product_name!=''">
 			and product_name like CONCAT('%',#{dm.product_name},'%')
 		</if>
 		<if test="dm.product_id!=null and dm.product_id!=''">
 			and product_id like CONCAT('%',#{dm.product_id},'%')
+		</if>
+		<if test="dm.check_tag!=null and dm.check_tag!=''">
+			and check_tag like CONCAT('%',#{dm.check_tag},'%')
 		</if>
 		limit #{page.startRow},#{page.pageSize}
 	</select>
@@ -242,7 +254,8 @@
 	<!--修改产品需要的物料信息  -->
 	<update id="updateMaterialSuccess">
 		update d_module set changer=#{changer},change_time=#{change_time},change_tag=#{change_tag},
-		designer=#{designer},module_describe=#{module_describe},change_count=change_count+1
+		designer=#{designer},module_describe=#{module_describe},change_count=change_count+1,
+		check_tag='等待审核'
 		where product_id=#{product_id}
 	</update>
 	<!--分页查询变更后的物料组成设计信息  -->

@@ -1,6 +1,6 @@
 var ok_load_options = {
 	time: 1000,
-	content: "ok-admin..."
+	content: "ERP管理系统..."
 };
 !function (content, options) {
 	function templateFun(options) {

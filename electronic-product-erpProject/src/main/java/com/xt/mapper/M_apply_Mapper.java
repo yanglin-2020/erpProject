@@ -10,8 +10,9 @@ import com.xt.pojo.D_file;
 import com.xt.pojo.MApply;
 import com.xt.util.PageUtil;
 /**
+ *  生产计划 		Mapper
+ * @author CQK
  * 
- * @author cqk
  *
  */
 public interface M_apply_Mapper {
@@ -21,7 +22,7 @@ public interface M_apply_Mapper {
 	@Select("select * from d_file where type='商品' and check_tag='审核通过' limit #{page.startRow},#{page.pageSize}")
 	List<D_file> getAllDfileInfo(@Param("page") PageUtil page);
 	
-	@Insert("insert into m_apply values(null,#{mapply.apply_id},#{mapply.product_id},#{mapply.product_name},#{mapply.product_describe},#{mapply.type},#{mapply.amount},#{mapply.designer},#{mapply.remark},#{mapply.register},#{mapply.register_time},null,null,null,'S001-0','P001-0')")
+	@Insert("insert into m_apply values(null,#{mapply.apply_id},#{mapply.product_id},#{mapply.product_name},#{mapply.product_describe},#{mapply.type},#{mapply.amount},#{mapply.designer},#{mapply.remark},#{mapply.register},#{mapply.register_time},null,null,null,'等待审核','未派工')")
 	int addMApply(@Param("mapply") MApply mapply);
 	
 	//查询没有审核的生产计划数量
@@ -41,6 +42,12 @@ public interface M_apply_Mapper {
 	
 	//查询生产计划信息(条件)数据
 	List<MApply> getAllMapply(@Param("page") PageUtil page,@Param("m") MApply mapply);
+
+	//根据生产计划编号修改审核标志
+	int examination(@Param("m") MApply mapply);
+
+	//修改生产计划单
+	int updateMapply(@Param("m") MApply mapply);
 
 
 	

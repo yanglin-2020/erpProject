@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.xt.pojo.Permissions;
+import com.xt.pojo.SysLogs;
 import com.xt.pojo.Users;
 import com.xt.util.PageUtil;
 
@@ -29,4 +30,23 @@ public interface UsersMapper {
 	int updateUserInfo(Users u);
 	//个人详细信息添加到数据库
 	int addUserDetailInfo(Users u);
+	//修改用户密码
+	int updatepwd(@Param("pwd")String pwd,@Param("name") String u_name);
+	//拿到用户登录信息，做一个日志记录
+	int addUserLoginInfo(SysLogs sl);
+	//查询用户登录信息
+	int getUserLoginInfoCount(@Param("sl") SysLogs sl);
+	public List<SysLogs> getUserLoginInfo(@Param("page") PageUtil page,@Param("sl") SysLogs sl);
+	//拿到用户登录的信息
+	public List<SysLogs>  getUserAllLoginInfo();
+	//修改用户登录信息
+	int updateUserLoginInfo(@Param("login_time")String login_time,@Param("u_name") String u_name,@Param("ip") String ip);
+	//用户访问量加1
+	int updateCount();
+	//拿到用户的总数
+	int selectAllUserCount();
+	//拿到物料总成本
+	double getMaterialSumMoney();
+	//拿到产品总数
+	int getProductAllCount();
 }

@@ -27,9 +27,9 @@ import com.xt.pojo.MApply;
 import com.xt.service.M_apply_Service;
 import com.xt.util.PageDemo;
 /**
- * 生产计划单
+ *  生产计划 		Controller
+ * @author CQK
  * 
- * @崔庆康 Administrator
  *
  */
 
@@ -136,7 +136,7 @@ public class M_apply_Controller {
 		mapply.setCheck_suggestion(check_suggestion);
 		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		mapply.setCheck_time(formate.format(new Date()));
-		mapply.setCheck_tag("S001-1");
+		mapply.setCheck_tag("审核通过");
 		service.approveMapply(mapply);
 		return "load7";
 	}
@@ -151,7 +151,7 @@ public class M_apply_Controller {
 		MApply mapply=new MApply();
 		mapply.setApply_id(apply_id);
 		mapply.setCheck_suggestion(reason);
-		mapply.setCheck_tag("S001-2");
+		mapply.setCheck_tag("审核不通过");
 		String name=(String)session.getAttribute("username");
 		mapply.setChecker(name);
 		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -166,9 +166,13 @@ public class M_apply_Controller {
 		response.setContentType("text/html;charset=utf-8");
 		String nowpage = request.getParameter("page");
 		String pageSize = request.getParameter("limit");
-		String p_name = request.getParameter("name");
+		String apply_id = request.getParameter("apply_id"); //获取页面传来的生产计划编号
+		String product_name = request.getParameter("product_name"); //获取页面传来的产品编号
+		String check_tag = request.getParameter("check_tag"); //获取页面传来的审核标志
 		MApply ma=new MApply();
-		ma.setProduct_name(p_name);
+		ma.setApply_id(apply_id);
+		ma.setProduct_name(product_name);
+		ma.setCheck_tag(check_tag);
 		PageDemo<MApply> pd = service.allMapply(Integer.parseInt(nowpage),Integer.parseInt(pageSize),ma);
 		String str = JSONArray.toJSONString(pd);
 		PrintWriter out=response.getWriter();
@@ -176,56 +180,36 @@ public class M_apply_Controller {
 		out.flush();
 		out.close();
 	}
-	//查询生产计划信息(等待)
-	@RequestMapping("allAwaitMapply")
-	public void allAwaitMapply(HttpServletResponse response,HttpServletRequest request) throws IOException {
-		response.setContentType("text/html;charset=utf-8");
-		String nowpage = request.getParameter("page");
-		String pageSize = request.getParameter("limit");
-		String p_name = request.getParameter("name");
-		MApply ma=new MApply();
-		ma.setProduct_name(p_name);
-		ma.setCheck_tag("S001-0");
-		PageDemo<MApply> pd = service.allMapply(Integer.parseInt(nowpage),Integer.parseInt(pageSize),ma);
-		String str = JSONArray.toJSONString(pd);
-		PrintWriter out=response.getWriter();
-		out.print(str);
-		out.flush();
-		out.close();
+	
+	//根据生产计划编号修改审核标志
+	@RequestMapping("examination")
+	@ResponseBody
+	public int examination(HttpServletResponse response,HttpServletRequest request){
+		String apply_id=request.getParameter("apply_id");
+		MApply mapply=new MApply();
+		mapply.setApply_id(apply_id);
+		mapply.setCheck_tag("等待审核");
+		mapply.setChecker("");
+		mapply.setCheck_suggestion("");
+		mapply.setCheck_time("");
+		int row=service.examination(mapply);
+		return row;
 	}
-	//查询生产计划信息(通过)
-	@RequestMapping("allPassMapply")
-	public void allPassMapply(HttpServletResponse response,HttpServletRequest request) throws IOException {
-		response.setContentType("text/html;charset=utf-8");
-		String nowpage = request.getParameter("page");
-		String pageSize = request.getParameter("limit");
-		String p_name = request.getParameter("name");
-		MApply ma=new MApply();
-		ma.setCheck_tag("S001-1");
-		ma.setProduct_name(p_name);
-		PageDemo<MApply> pd = service.allMapply(Integer.parseInt(nowpage),Integer.parseInt(pageSize),ma);
-		String str = JSONArray.toJSONString(pd);
-		PrintWriter out=response.getWriter();
-		out.print(str);
-		out.flush();
-		out.close();
+	
+	//修改生产计划单
+	@RequestMapping("updateMapply")
+	public String updateMapply(HttpServletResponse response,HttpServletRequest request) {
+		String apply_id=request.getParameter("apply_id");
+		String amount=request.getParameter("amount");
+		String designer=request.getParameter("designer");
+		String remark=request.getParameter("remark");
+		MApply mapply=new MApply();
+		mapply.setApply_id(apply_id);
+		mapply.setAmount(amount);
+		mapply.setDesigner(designer);
+		mapply.setRemark(remark);
+		service.updateMapply(mapply);
+		return "m_applyall";
 	}
-	//查询生产计划信息(不通过通过)
-	@RequestMapping("allNoPassMapply")
-	public void allNoPassMapply(HttpServletResponse response,HttpServletRequest request) throws IOException {
-		response.setContentType("text/html;charset=utf-8");
-		String nowpage = request.getParameter("page");
-		String pageSize = request.getParameter("limit");
-		String p_name = request.getParameter("name");
-		MApply ma=new MApply();
-		ma.setCheck_tag("S001-2");
-		ma.setProduct_name(p_name);
-		PageDemo<MApply> pd = service.allMapply(Integer.parseInt(nowpage),Integer.parseInt(pageSize),ma);
-		String str = JSONArray.toJSONString(pd);
-		PrintWriter out=response.getWriter();
-		out.print(str);
-		out.flush();
-		out.close();
-	}
-
+	
 }

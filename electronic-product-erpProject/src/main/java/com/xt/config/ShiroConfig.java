@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.xt.realm.UserRealm;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+
 @Configuration
 public class ShiroConfig {
 
@@ -40,7 +42,8 @@ public class ShiroConfig {
 		// 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 一定要注意顺序,否则就不好使了
 		LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 		// 配置不登录可以访问的资源，anon 表示资源都可以匿名访问
-		filterChainDefinitionMap.put("/login*", "anon");
+		filterChainDefinitionMap.put("/Userlogin", "anon");
+		filterChainDefinitionMap.put("/loginUser", "anon");
 		filterChainDefinitionMap.put("/css/**", "anon");
 		filterChainDefinitionMap.put("/forget.html", "anon");
 		filterChainDefinitionMap.put("/register.html", "anon");
@@ -164,4 +167,8 @@ public class ShiroConfig {
 	    //securityManager.setSessionManager(sessionManager());
 	    return securityManager;
 	}
+	 @Bean(name = "shiroDialect")
+	    public ShiroDialect shiroDialect(){
+	        return new ShiroDialect();
+	    }
 }
