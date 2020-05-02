@@ -44,7 +44,16 @@ public class MManufactureController {
 		out.flush();
 		out.close();
 	}
-
+	//打开生产派工单
+	@RequestMapping("/openscpgd")
+	public void openscpgd(HttpServletRequest request) {
+		String product_id = request.getParameter("product_id");// 产品id
+		String product_describe = request.getParameter("product_describe");// 物料的描述
+		String product_name = request.getParameter("product_name");// 产品名字
+	}
+	
+	
+	
 	// 分页查询派工单
 	@RequestMapping("/getAllMManufactureInfo")
 	public void getAllMManufactureInfo(HttpServletResponse response, HttpServletRequest request) throws Exception {

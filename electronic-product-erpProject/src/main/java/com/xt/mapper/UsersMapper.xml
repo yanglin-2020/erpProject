@@ -121,4 +121,12 @@
 	<select id="getProductAllCount" resultType="int">
 		select count(1) from d_file
 	</select>
+	<!--记录用户单个访问量  -->
+	<update id="updateSelfCount">
+		update users set selfcount=selfcount+1 where u_name=#{u_name}
+	</update>
+	<!--查询前五用户的访问量  -->
+	<select id="getUsersInfoCount" resultType="Users">
+		select * from users order by selfcount desc limit 5
+	</select>
 </mapper>

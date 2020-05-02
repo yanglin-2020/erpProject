@@ -18,8 +18,8 @@
 </head>
 <body>
 	<div class="x-nav">
-		<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">演示</a>
-			<a> <cite>导航元素</cite></a>
+		<span class="layui-breadcrumb">
+			<a> <cite>查询需要制定派工单的产品</cite></a>
 		</span> <a class="layui-btn layui-btn-small"
 			style="line-height: 1.6em; margin-top: 3px; float: right"
 			onclick="location.reload()" title="刷新"> <i
@@ -37,15 +37,13 @@
 							lay-filter="test">
 							<thead>
 								<tr>
-									<th
-										lay-data="{field:'apply_id', width:180, sort: true, edit: 'text'}">计划单编号</th>
+									<th lay-data="{field:'apply_id', width:180, sort: true, edit: 'text'}">计划单编号</th>
 									<th lay-data="{field:'product_id', width:120}">产品编号</th>
 									<th lay-data="{field:'product_name', width:120}">产品名称</th>
-									<th lay-data="{field:'product_describe', width:70}">描述</th>
+									<th lay-data="{field:'product_describe', width:170}">描述</th>
 									<th lay-data="{field:'amount', width:70}">数量</th>
-									<th
-										lay-data="{field:'check_time', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.check_time)}}">创建时间</th>
-									<th lay-data="{width:873, templet:'#oprListBar',fixed:'right'}">操作</th>
+									<th lay-data="{field:'check_time', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.check_time)}}">创建时间</th>
+									<th lay-data="{width:110, templet:'#oprListBar',fixed:'right'}">操作</th>
 								</tr>
 							</thead>
 						</table>
@@ -56,7 +54,7 @@
 	</div>
 </body>
 <script type="text/html" id="oprListBar">
-		<a class="layui-icon layui-btn layui-btn-warning" lay-event="edit">生产派工单</a>
+		<a class="layui-icon layui-btn layui-btn-warning" lay-event="scpgd">生产派工单</a>
 	</script>
 <script>
 	layui.use('laydate', function() {
@@ -74,18 +72,80 @@
 
 	});
 </script>
-<script>
-	layui.use('table', function() {
-		var table = layui.table;
-		function scpgd(edit) {
-			title = "生产派工单";
-			var index = layui.layer.open({
-				title : title,
-				type : 2,
-				content : "scpgd.html",
-				area : [ '400x', '400px' ]
-			});
-		}
-	});
-</script>
+<script>layui.use('table',
+        function() {
+            var table = layui.table;
+          //列表操作
+            table.on('tool(test)', function(obj){
+                var layEvent = obj.event,
+                    data = obj.data;
+                if(layEvent === 'edit'){ //编辑
+                	editUser(data);
+                } else if(layEvent === 'scpgd'){ //打开制定生产派工单
+                         $.get("openscpgd",{
+                        	 product_id : data.product_id, product_name:data.product_name,
+                        	 product_describe:data.product_describe,amount:data.amount
+                         },function(data){
+                        	 if(data=="成功"){
+                        		 window.location.href="fuhedetail.html";
+                        	 }else{
+                        		 layer.alert("操作失败~ ");
+                        	 }
+                         });
+                }else if(layEvent === 'nofuhe'){//审核不通过
+                	 layer.prompt({
+                  		 formType: 2,
+               		 value: '',
+               		 title: '请输入理由'
+               		}, function(value, index, elem){
+               		layer.close(index);
+                            $.get("nofuheProduct",{
+                            product_id  : data.product_id , "reason":value  //将需要删除的newsId作为参数传入
+                            },function(data){
+                           	 if(data=="成功"){
+                           		 layer.msg("操作成功！");
+                                  	 table.reload("test");
+                                    layer.close(index);
+                           	 }else{
+                           		 layer.alert("操作失败!");
+                           	 }
+                           	
+                            });
+                       });
+                }
+            });
+          
+           
+          
+            
+            //头工具栏事件
+            table.on('toolbar(test)',
+            function(obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                case 'addmenu':
+                	 xadmin.open('添加权限(菜单)','menuadd.html',500,460);
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+                };
+            });
+          //条件查询
+            $(".search_btn").on("click",function(){
+                     table.reload("test",{
+                         page: {
+                             curr: 1 //重新从第 1 页开始
+                         },
+                         where: {
+                        	 name: $("input[name=euUserName]").val()  //搜索的关键字
+                         }
+                     });
+    
+             });
+        });</script>
 </html>

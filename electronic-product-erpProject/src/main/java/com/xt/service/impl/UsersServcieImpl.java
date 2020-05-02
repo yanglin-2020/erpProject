@@ -113,4 +113,12 @@ public class UsersServcieImpl implements UsersService{
 	public int getProductAllCount() {
 		return mapper.getProductAllCount();
 	}
+	@Override
+	public int updateSelfCount(String u_name) {
+		return mapper.updateSelfCount(u_name);
+	}
+	@Override
+	public List<Users> getUsersInfoCount() {
+		return mapper.getUsersInfoCount();
+	}
 }

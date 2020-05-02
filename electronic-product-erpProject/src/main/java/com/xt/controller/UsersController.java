@@ -63,6 +63,10 @@ public class UsersController {
 	public String login(String u_name, String u_password, HttpSession session, Model model, boolean rememberMe) {
 		// 实现登陆认证,由shiro框架完成身份认证
 		// 用户存起来
+		//查询用户访问前五的个人信息
+		session.removeAttribute("userInfoList");
+		List<Users> userInfoList =service.getUsersInfoCount();
+		session.setAttribute("userInfoList", userInfoList);
 		try {
 			Users u = service.selectByName(u_name);
 			session.setAttribute("username", u_name);
@@ -99,6 +103,8 @@ public class UsersController {
 		int productCount = service.getProductAllCount();
 		session.removeAttribute("productCount");
 		session.setAttribute("productCount", productCount);
+		//记录单个用户访问量
+		service.updateSelfCount(u_name);
 		SysLogs sl = new SysLogs(u_name, u.getPhone(), formate.format(new Date()), ip);
 		//拿到用户登录的信息。做一个日志记录
 		List<SysLogs> userlist = service.getUserAllLoginInfo();
@@ -119,10 +125,16 @@ public class UsersController {
 	public String selectMenus(HttpSession session, Model model, String uName) {
 		//用户访问加1
 		service.updateCount();
+		//查询用户访问前五的个人信息
+		session.removeAttribute("userInfoList");
+		List<Users> userInfoList =service.getUsersInfoCount();
+		session.setAttribute("userInfoList", userInfoList);
 		Subject currentUser = SecurityUtils.getSubject();
 		String username = (String) currentUser.getPrincipal().toString();
 		String gongneng = (String) session.getAttribute("gongneng");
 		Users u = service.selectByName(username);
+		//记录单个用户访问量
+		service.updateSelfCount(username);
 		session.setAttribute("u_image", u.getU_image());
 		session.setAttribute("u", u);
 		List<Permissions> Menuslist = new ArrayList<Permissions>();
@@ -154,8 +166,32 @@ public class UsersController {
 	// 功能模块
 	@RequestMapping("/gongneng")
 	public String gongneng(int gongnengid, HttpSession session, Model model) {
+		//查询用户访问前五的个人信息
+		session.removeAttribute("userInfoList");
+		List<Users> userInfoList =service.getUsersInfoCount();
+		session.setAttribute("userInfoList", userInfoList);
+		//用户访问加1
+		service.updateCount();
+		//拿到用户的总数
+		int UsersCount = service.selectAllUserCount();
+		session.removeAttribute("UsersCount");
+		session.setAttribute("UsersCount", UsersCount);
+		//拿到物料总成本
+		double materialMoney = service.getMaterialSumMoney();
+		session.removeAttribute("materialMoney");
+		session.setAttribute("materialMoney", materialMoney);
+		//拿到产品总数
+		int productCount = service.getProductAllCount();
+		session.removeAttribute("productCount");
+		session.setAttribute("productCount", productCount);
 		Subject currentUser = SecurityUtils.getSubject();
 		String username = (String) currentUser.getPrincipal().toString();
+		//记录单个用户访问量
+		service.updateSelfCount(username);
+		Users u = service.selectByName(username);
+		//拿到用户访问量
+		session.removeAttribute("count");
+		session.setAttribute("count", u.getCount());
 		List<Permissions> Menuslist = service.selectMenus(username, gongnengid);
 		session.setAttribute("username", username);
 		model.addAttribute("Menuslist", Menuslist);

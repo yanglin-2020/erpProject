@@ -49,4 +49,8 @@ public interface UsersMapper {
 	double getMaterialSumMoney();
 	//拿到产品总数
 	int getProductAllCount();
+	//记录用户单个访问量
+	int updateSelfCount(String u_name);
+	//查询前五用户的访问量
+	public List<Users> getUsersInfoCount();
 }

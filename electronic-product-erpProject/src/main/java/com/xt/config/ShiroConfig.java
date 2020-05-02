@@ -44,6 +44,7 @@ public class ShiroConfig {
 		// 配置不登录可以访问的资源，anon 表示资源都可以匿名访问
 		filterChainDefinitionMap.put("/Userlogin", "anon");
 		filterChainDefinitionMap.put("/loginUser", "anon");
+		filterChainDefinitionMap.put("/durid/login.html", "anon");
 		filterChainDefinitionMap.put("/css/**", "anon");
 		filterChainDefinitionMap.put("/forget.html", "anon");
 		filterChainDefinitionMap.put("/register.html", "anon");
