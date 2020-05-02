@@ -62,17 +62,54 @@
 	</select>
 	<!-- 拿到生产计划的数量 -->
 	<select id="getMapplyCount" resultType="int">
-		select count(1) from m_apply where 1=1
+		select count(1) from m_apply where manufacture_tag='未派工'
 		<if test="m.product_name!=null and m.product_name!=''">
 			and product_name like CONCAT('%',#{m.product_name},'%')
 		</if>
 	</select>
 	<!-- 查询所有生产计划 -->
 	<select id="getAllMapplyInfo" resultType="Mapply">
-		select * from m_apply where 1=1
+		select * from m_apply where manufacture_tag='未派工'
 		<if test="m.product_name!=null and m.product_name!=''">
 			and product_name like CONCAT('%',#{m.product_name},'%')
 		</if>
 		limit #{page.startRow},#{page.pageSize}
 	</select>
+	
+	<!--以下yl写的  -->
+	
+	<!--根据产品的单号拿到产品所需的工序  -->
+	<select id="getProcedureByProduct_id" resultType="MDesignProcedureDetails">
+		select * from m_design_procedure_details 
+		where parent_id =(select id from m_design_procedure where product_id=#{product_id})
+	</select>
+	<!--根据id拿到每道工序需要的物料  -->
+	<select id="getMaterialByID" resultType="MDesignProcedureModule">
+		select * from m_design_procedure_module where parent_id =#{id}
+	</select>
+	<!--拿到产品所需工序的总成本  -->
+	<select id="getProcedureSumMoney" resultType="String">
+		select sum(cost_price) from m_design_procedure_details 
+		where parent_id =(select id from m_design_procedure where product_id=#{product_id})
+	</select>
+	<!--拿到产品所需物料的总成本  -->
+	<select id="getMarterialSumMoney" resultType="String">
+		select sum(subtotal) from m_design_procedure_module where parent_id =#{id}
+	</select>
+	<!--保存生产派工单单  -->
+	<insert id="saveScpgd">
+		insert into m_manufacture(manufacture_id,product_id,product_name,amount,product_describe,module_cost_price_sum,
+		labour_cost_price_sum,designer,register,register_time,remark) 
+		values(#{manufacture_id},#{product_id},#{product_name},#{amount},#{product_describe},#{module_cost_price_sum},
+		#{labour_cost_price_sum},#{designer},#{register},#{register_time},#{remark})
+	</insert>
+	<!--保存完后，修改mapply的字段  -->
+	<update id="updateMapply_manufacture_tag">
+		update m_apply set manufacture_tag = '已派工' where product_id=#{product_id}
+	</update>
+	<!--根据生产派工单编号拿到详细信息做复核  -->
+	<select id="getMManufactureDetailInfo" resultType="MManufacture">
+		select * from m_manufacture where manufacture_id=#{id}
+	</select>
+	
 </mapper>

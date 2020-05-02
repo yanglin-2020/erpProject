@@ -29,4 +29,12 @@ public interface MDesignProcedureService {
 	 */
 	int mdesUpdate(MDesignProcedure updateMdes);
 	int updatelwtdesign_procedure_tag(String product_Id);
+	/**
+	 * 查询审核通过和未通过的商品
+	 * @param page
+	 * @param limit
+	 * @param md
+	 * @return
+	 */
+	PageDemo<MDesignProcedure> getAllMdesignlist(int page, int limit, MDesignProcedure md);
 }

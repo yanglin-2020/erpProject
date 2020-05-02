@@ -6,7 +6,7 @@
 </script>
     <head>
         <meta charset="UTF-8">
-        <title>生产工序变更-lwt</title>
+        <title>出库管理登记审核-lwt</title>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -43,15 +43,16 @@
                             </form>
                         </div>
                         <div class="layui-card-body ">
-                            <table class="layui-table" lay-data="{url:'mdesignAll?change=更改',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
+                            <table class="layui-table" lay-data="{url:'SpayAll?bh=未审核&change=已登记',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                        <th lay-data="{field:'design_Id', width:200, sort: true}">ID</th>
-                                        <th lay-data="{field:'product_Name', width:170, sort: true, edit: 'text'}">产品名称</th>
-                                        <th lay-data="{field:'procedure_Describe', width:120}">设计要求</th>
-                                        <th lay-data="{field:'cost_Price_Sum', width:100}">工时总成本</th>
-                                        <th lay-data="{field:'changer', width:70}">变更人</th>
-                                        <th lay-data="{field:'change_Time', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.change_Time)}}">变更时间</th>
+                                       <th lay-data="{field:'pay_Id', width:200 }">出库单编号</th>
+                                        <th lay-data="{field:'storer', width:100}">出库人</th>
+                                        <th lay-data="{field:'reason', width:120}">出库理由</th>
+                                        <th lay-data="{field:'reasonexact', width:120}">出库详细理由</th>
+                                        <th lay-data="{field:'amount_Sum', width:100}">总件数</th>
+                                        <th lay-data="{field:'cost_Price_Sum', width:100}">总金额</th>
+                                       <th lay-data="{width:270, templet:'#oprListBar',fixed:'right'}">操作</th>
                                         </tr>
                                 </thead>
                             </table>
@@ -63,7 +64,9 @@
     </body>
     <!--操作-->
 	<script type="text/html" id="oprListBar">
-	<i class="layui-icon layui-btn layui-btn-warning" lay-event="edit">&#xe63c;</i>
+<a class="layui-btn layui-btn-xs" lay-event="find">查看</a> 
+	<a class="layui-btn layui-btn-xs" lay-event="tonguo">通过</a> 
+	<a class="layui-btn layui-btn-xs" lay-event="cuo">未通过</a> 
 	</script>
     <script>layui.use('laydate',
         function() {
@@ -84,40 +87,18 @@
         function() {
             var table = layui.table;
           //编辑操作
-            function editUser(edit){
-        	    title = "编辑用户";
-                var index = layui.layer.open({
-                    title : title,
-                    type : 2,
-                    content : "updateuser.jsp",
-                    area: ['550px', '480px'],
-                   /*  maxmin: true, */
-                    success : function(layero, index){
-                    	//获取子窗体对象
-                    	var body = layui.layer.getChildFrame('body', index);
-                        if(edit){
-                        	body.find(".design_Id").val(edit.design_Id);
-                        	body.find(".product_Name").val(edit.product_Name);
-                        	body.find(".procedure_Describe").val(edit.procedure_Describe);
-                        	body.find(".sex").val(edit.sex);
-                        	body.find(".btn_add").text("修改");
-                        	form.render();
-                        }
-                    }
-                });
-            }
-          //查看
+            //查看
             function editUser(find){
         	    title = "查看";
-    		         window.names = find.design_Id //主要是这句
+        	    window.names = find.pay_Id;
                 var index = layer.open({
     				type: 2,
-    				title: "产品详情页面",
+    				title: "出库详情页面",
     				fix: false,
     				maxmin: true,
     				shadeClose: true,
     				shade: 0.4,
-    				content: 'mdesignProcedure-Details.html',
+    				content: 'Spay-guanli-shenhe-list.html',
     				skin: 'layui-layer-rim',
     				 area: ['80%', '80%'],
     		         success: function(layero, index){
@@ -132,54 +113,61 @@
             table.on('tool(test)', function(obj){
                 var layEvent = obj.event,
                     data = obj.data;
-                if(layEvent === 'edit'){ //编辑
+                if(layEvent == 'find'){
                 	editUser(data);
-                } else if(layEvent === 'del'){ //删除
-                    layer.confirm('确定删除用户？',{icon:3, title:'提示信息'},function(index){
-                         $.get("delUserInfo",{
-                        	 id : data.u_id  //将需要删除的newsId作为参数传入
-                         },function(data){
-                        	 if(data=="1"){
-                        		 layer.msg("操作成功！");
-                               	 table.reload("test");
-                                 layer.close(index);
-                        	 }else{
-                        		 layer.alert("太残忍了,自己都要删~ ");
-                        	 }
-                        	
-                         });
-                    });
-                } else if(layEvent === 'role'){ //预览
-                	$.post("getRole",{"id":data.u_id},function(result){
-                		 if(result=="1"){
-                			 xadmin.open('授予角色','getroles.jsp',600,400);
-                		 }
-                	});
-                }else if(layEvent === 'jinyong'){
-                	layer.confirm('确定进行该操作？',{icon:3, title:'提示信息'},function(index){
-                		 $.post("jinyong",{"id":data.id,"flag":data.flag},function(result){
-                			 if(result=="1"){
-       		        		  setTimeout(function(){
-       		        	            top.layer.msg("操作成功！");
-       		        	            layer.closeAll("iframe");
-       		        	            //刷新父页面
-       		        	         table.reload("test");
-       		        	      	layer.close(index);
-       		        	        },1000);
-       		        	  }else{
-       		        		 layer.alert("无法禁用正在使用的用户  ~ ");
-       		        	  } 
-                		 });
-                    });
-                }else if(layEvent === 'cancelRole'){
-                	$.post("cancelRole",{"id":data.u_id},function(result){
-               		 if(result==0){
-               			 xadmin.open('取消授予','cancelrole.jsp',600,400);
-               		 }
-               	});
-                }else if(layEvent == 'find'){
-                	editUser(data);
-                }
+                }else if(layEvent === 'tonguo'){ //通过
+                    layer.prompt({
+                  		 formType: 2,
+               		 value: '通过',
+               		 title: '请输入通过意见'
+               		}, function(value, index, elem){
+               		layer.close(index);
+                            $.get("Spayupdate",{
+                           	 id : data.id, bh : '通过' ,"reason":value  //将需要删除的newsId作为参数传入
+                            },function(data){
+                           	 if(data=="1"){
+                           		 layer.msg("操作成功！");
+                                  	 table.reload("test");
+                                    layer.close(index);
+                           	 }else{
+                           		 layer.alert("请联系管理员2646550407~ ");
+                           	 }
+                           	
+                            });
+                       });
+                   }else if(layEvent === 'cuo'){ 
+                   	layer.prompt({
+               		 formType: 2,
+               		 value: '驳回！',
+               		 title: '请输入驳回理由'
+               		}, function(value, index, elem){
+               		layer.close(index);
+               		//layer.alert(value);
+               		$.ajax({
+               		type: "post",
+               		url: "Spayupdate",
+               		data: {
+               			"id" : data.id, 
+               			"bh" : '未通过',
+               			"reason":value
+
+               		},function(data){
+                      	 if(data=="1"){
+                   		 layer.msg("操作成功！");
+                          	 table.reload("test");
+                            layer.close(index);
+                   	 }else{
+                   		 layer.alert("请联系管理员2646550407~ ");
+                   	 }
+                   	
+                    },
+               		async: true,
+
+               		});
+               		layer.alert('驳回成功'); 
+               		location=location;
+               		});
+               }
             });
             //头工具栏事件
             table.on('toolbar(test)',

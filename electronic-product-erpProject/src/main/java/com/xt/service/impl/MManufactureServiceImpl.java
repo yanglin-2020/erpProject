@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.xt.mapper.MManufactureMapper;
 import com.xt.pojo.MApply;
+import com.xt.pojo.MDesignProcedureDetails;
+import com.xt.pojo.MDesignProcedureModule;
 import com.xt.pojo.MManufacture;
 import com.xt.service.MManufactureService;
 import com.xt.util.PageDemo;
@@ -75,6 +77,41 @@ public class MManufactureServiceImpl implements MManufactureService {
 		pd.setMsg("");
 		pd.setData(list);
 		return pd;
+	}
+
+	@Override
+	public List<MDesignProcedureDetails> getProcedureByProduct_id(String product_id) {
+		return mapper.getProcedureByProduct_id(product_id);
+	}
+
+	@Override
+	public List<MDesignProcedureModule> getMaterialByID(String id) {
+		return mapper.getMaterialByID(id);
+	}
+
+	@Override
+	public String getProcedureSumMoney(String product_id) {
+		return mapper.getProcedureSumMoney(product_id);
+	}
+
+	@Override
+	public String getMarterialSumMoney(String id) {
+		return mapper.getMarterialSumMoney(id);
+	}
+
+	@Override
+	public int saveScpgd(MManufacture mm) {
+		return mapper.saveScpgd(mm);
+	}
+
+	@Override
+	public int updateMapply_manufacture_tag(String product_id) {
+		return mapper.updateMapply_manufacture_tag(product_id);
+	}
+
+	@Override
+	public MManufacture getMManufactureDetailInfo(String id) {
+		return mapper.getMManufactureDetailInfo(id);
 	}
 
 }

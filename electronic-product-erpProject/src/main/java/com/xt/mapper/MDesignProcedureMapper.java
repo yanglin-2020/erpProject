@@ -44,6 +44,13 @@ public interface MDesignProcedureMapper {
 	 */
 	int mdesUpdate(@Param("md")MDesignProcedure md);
 	public int updatelwtdesign_procedure_tag(String product_Id);
+	/**
+	 * 查询审核通过和未通过的商品
+	 * @param md
+	 * @return
+	 */
+	public int MdesCountlist(MDesignProcedure md);
+	public List<MDesignProcedure> listfindlist(@Param("page") PageUtil page,@Param("md") MDesignProcedure md);
 	
 	
 	

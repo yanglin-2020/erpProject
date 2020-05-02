@@ -138,6 +138,7 @@ public class MDesignProcedureDetailsController {
 		int num = 0;
 		for (DModuleDetails dd : list) {
 			if(dd.getShuliang()>0) {
+				int s = 0;
 				for (MDesignProcedureModule dmd : listmd.getData()) {
 					if(dmd.getProduct_Id().equals(dd.getProduct_id())) {//两边的物料id相等
 						if(dd.getShuliang()<dmd.getAmount()) {//当物料的数量大于输入的数量
@@ -147,7 +148,13 @@ public class MDesignProcedureDetailsController {
 							dmd.setAmount(dd.getShuliang());
 							mdpmservice.mdesignUpdate(dmd);//修改数量
 						}else if(dmd.getAmount()==dd.getShuliang()) {
-							continue;
+							if(dd.getResidual_amount()>=dd.getShuliang()) {
+								dd.setResidual_amount(dd.getResidual_amount()-dd.getShuliang());
+								dmd.setAmount(dd.getAmount()-dd.getResidual_amount());
+								serivce.upd_moule(dd);
+								num += dmd.getAmount()*dd.getCost_price();
+								mdpmservice.mdesignUpdate(dmd);//修改数量
+							}
 						}else if(dd.getResidual_amount()!=0&&dd.getResidual_amount()>=dd.getShuliang()){
 							dd.setResidual_amount(dd.getResidual_amount()-dd.getShuliang());
 							serivce.upd_moule(dd);
@@ -157,11 +164,27 @@ public class MDesignProcedureDetailsController {
 						}else {
 							return "您输入的超过了物料数";
 						}
+						s = 1;
+						break;
+					}else {
+						s = 0;
 					}
 				}
-//				if(dd.getShuliang()>dd.getResidual_amount()) {
-//					return "您ID为"+dd.getId()+"的可用数量不足";
-//				}
+				if(s==0) {
+					MDesignProcedureModule md = new MDesignProcedureModule();
+					int cou = dd.getAmount()-dd.getResidual_amount();
+					num += (int) (cou*dd.getCost_price());
+					md.setAmount(dd.getShuliang());//本工序数量
+					md.setProduct_Name(dd.getProduct_name());//物料名称
+					md.setParent_Id(Integer.parseInt(id));//父级序号
+					md.setDetails_Number(Integer.parseInt(dd.getDetails_number()));//工序物料序号
+					md.setProduct_Id(dd.getProduct_id());//物料编号
+					md.setType(dd.getType());
+					md.setProduct_Describe(dd.getProduct_describe());
+					md.setAmount_Unit(dd.getAmount_unit());
+					md.setCost_Price(dd.getCost_price());
+					mdpmservice.mdesignadd(md);
+				}
 			}
 		}
 		MDesignProcedureDetails md = new MDesignProcedureDetails();
@@ -185,7 +208,6 @@ public class MDesignProcedureDetailsController {
 	@ResponseBody
 	public String addDModuleDetailslist(String dm,String id,HttpSession session){
 		List<DModuleDetails> list = JSON.parseArray(dm,DModuleDetails.class);
-		List<MDesignProcedureModule> mdlist = new ArrayList<MDesignProcedureModule>();
 		for (DModuleDetails dd : list) {
 			if(dd.getShuliang()>0) {
 				if(dd.getShuliang()>dd.getResidual_amount()) {
@@ -193,27 +215,40 @@ public class MDesignProcedureDetailsController {
 				}
 			}
 		}
+		MDesignProcedureModule mm = new MDesignProcedureModule();
+		mm.setParent_Id(Integer.parseInt(id));
+		PageDemo<MDesignProcedureModule> listmd = mdpmservice.getAllMdesign(0, 9999, mm);
 		int num = 0;
 		for (DModuleDetails dd : list) {
 			if(dd.getShuliang()>0) {
+				int s = 0;
+				MDesignProcedureModule md = new MDesignProcedureModule();
+				for (MDesignProcedureModule mdd : listmd.getData()) {
+					if(mdd.getProduct_Id().equals(dd.getProduct_id())) {//两边的物料id相等
+						md.setId(mdd.getId());
+						md.setAmount(md.getAmount()+dd.getShuliang());
+						num +=(int) md.getAmount()*(int)dd.getCost_price();
+						md.setSubtotal((int) md.getAmount()*(int)dd.getCost_price());
+						mdpmservice.mdesignUpdate(md);
+						s=1;
+					}
+				}
 				dd.setResidual_amount(dd.getResidual_amount()-dd.getShuliang());
 				int cou = dd.getAmount()-dd.getResidual_amount();
-				num += (int) (cou*dd.getCost_price());
-				
-				MDesignProcedureModule md = new MDesignProcedureModule();
-				md.setProduct_Name(dd.getProduct_name());//物料名称
-				md.setAmount(dd.getShuliang());//本工序数量
-				md.setParent_Id(Integer.parseInt(id));//父级序号
-				md.setDetails_Number(Integer.parseInt(dd.getDetails_number()));//工序物料序号
-				md.setProduct_Id(dd.getProduct_id());//物料编号
-				md.setType(dd.getType());
-				md.setProduct_Describe(dd.getProduct_describe());
-				md.setAmount_Unit(dd.getAmount_unit());
-				md.setCost_Price(dd.getCost_price());
-				md.setSubtotal(num);
-				mdpmservice.mdesignadd(md);
-				
-				
+				if(s==0) {
+					num += (int) (cou*dd.getCost_price());
+					md.setAmount(dd.getShuliang());//本工序数量
+					md.setProduct_Name(dd.getProduct_name());//物料名称
+					md.setParent_Id(Integer.parseInt(id));//父级序号
+					md.setDetails_Number(Integer.parseInt(dd.getDetails_number()));//工序物料序号
+					md.setProduct_Id(dd.getProduct_id());//物料编号
+					md.setType(dd.getType());
+					md.setProduct_Describe(dd.getProduct_describe());
+					md.setAmount_Unit(dd.getAmount_unit());
+					md.setCost_Price(dd.getCost_price());
+					md.setSubtotal((int) md.getAmount()*(int)dd.getCost_price());
+					mdpmservice.mdesignadd(md);
+				}
 				serivce.upd_moule(dd);
 			}
 		}

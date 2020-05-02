@@ -46,7 +46,6 @@
                             <table class="layui-table" lay-data="{url:'mdeataslAll?bh=未审核',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                        <th lay-data="{type:'checkbox'}">ID</th>
                                         <th lay-data="{field:'design_Id', width:200, sort: true}">ID</th>
                                         <th lay-data="{field:'product_Name', width:100, sort: true, edit: 'text'}">产品名称</th>
                                         <th lay-data="{field:'procedure_Describe', width:120}">设计要求</th>
@@ -158,7 +157,7 @@
             		}, function(value, index, elem){
             		layer.close(index);
                          $.get("mdesignDetailsshenhe",{
-                        	 id : data.id, bh : '通过' ,"reason":value  //将需要删除的newsId作为参数传入
+                        	 id : data.id, bh : '已设计' ,"reason":value  //将需要删除的newsId作为参数传入
                          },function(data){
                         	 if(data=="1"){
                         		 layer.msg("操作成功！");

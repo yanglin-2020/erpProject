@@ -53,33 +53,24 @@ public class MManufacture implements Serializable {
 	public MManufacture() {
 		super();
 	}
-	public MManufacture(Integer id, String manufacture_id, String product_id, String product_name, Object amount,
-			Object tested_amount, String apply_id_group, String product_describe, Object module_cost_price_sum,
-			Object real_module_cost_price_sum, Object labour_cost_price_sum, Object real_labour_cost_price_sum,
-			String designer, String register, Object register_time, String checker, Object check_time, String remark,
-			String check_tag, String manufacture_procedure_tag) {
+	
+	public MManufacture(String manufacture_id, String product_id, String product_name, Object amount,
+			String product_describe, Object module_cost_price_sum, Object labour_cost_price_sum, String designer,
+			String register, Object register_time, String remark) {
 		super();
-		this.id = id;
 		this.manufacture_id = manufacture_id;
 		this.product_id = product_id;
 		this.product_name = product_name;
 		this.amount = amount;
-		this.tested_amount = tested_amount;
-		this.apply_id_group = apply_id_group;
 		this.product_describe = product_describe;
 		this.module_cost_price_sum = module_cost_price_sum;
-		this.real_module_cost_price_sum = real_module_cost_price_sum;
 		this.labour_cost_price_sum = labour_cost_price_sum;
-		this.real_labour_cost_price_sum = real_labour_cost_price_sum;
 		this.designer = designer;
 		this.register = register;
 		this.register_time = register_time;
-		this.checker = checker;
-		this.check_time = check_time;
 		this.remark = remark;
-		this.check_tag = check_tag;
-		this.manufacture_procedure_tag = manufacture_procedure_tag;
 	}
+
 	public Integer getId() {
 		return id;
 	}

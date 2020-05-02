@@ -12,9 +12,6 @@
  		<if test="md.check_Tag !=null and md.check_Tag != '' ">
  			and check_Tag = #{md.check_Tag}
  		</if>
- 		<if test="md.design_Module_Tag !=null and md.design_Module_Tag != '' ">
- 			and design_Module_Tag = #{md.design_Module_Tag}
- 		</if>
  		<if test="md.design_Module_Change_Tag !=null and md.design_Module_Change_Tag != '' ">
  			and design_Module_Change_Tag = #{md.design_Module_Change_Tag}
  		</if>
@@ -88,8 +85,8 @@
 			<if test="md.changer !=null and md.changer != '' ">
 				changer= #{md.changer},
 			</if>
-			<if test="md.changer !=null and md.changer != '' ">
-				changer= #{md.changer},
+			<if test="md.change_Time !=null  ">
+				change_time= #{md.change_Time},
 			</if>
 			<if test="md.change_Tag !=null and md.change_Tag != '' ">
 				change_Tag= #{md.change_Tag},
@@ -110,5 +107,27 @@
  	<update id="updatelwtdesign_procedure_tag">
  		update d_file set design_procedure_tag='已设计'  where product_id=#{product_id}
  	</update>
+ 	<!--查询审核通过和未通过的商品  -->
+ 	<select id="MdesCountlist" resultType="int">
+ 		select count(1) from m_design_procedure where (check_tag = '通过' or check_tag = '未通过') 
+ 		<if test="design_Module_Tag != null and design_Module_Tag != '' ">
+ 			and design_Module_Tag = #{design_Module_Tag}
+ 		</if>
+ 		<if test="product_Name!=null and product_Name!=''">
+			and product_Name like CONCAT('%',#{product_Name},'%')
+		</if>
+ 	</select>
+ 	<select id="listfindlist" resultType="MDesignProcedure">
+ 		select * from m_design_procedure where (check_tag = '通过' or check_tag = '未通过') 
+ 		<if test="md.design_Module_Tag != null and md.design_Module_Tag != '' ">
+ 			and design_Module_Tag = #{md.design_Module_Tag}
+ 		</if>
+ 		<if test="md.product_Name!=null and md.product_Name!=''">
+			and product_Name like CONCAT('%',#{md.product_Name},'%')
+		</if>
+		<if test="page.startRow != null and page.pageSize != null">
+		    limit #{page.startRow},#{page.pageSize}
+		</if>
+ 	</select>
   </mapper>
   

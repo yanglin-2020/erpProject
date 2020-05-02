@@ -37,13 +37,16 @@
 							lay-filter="test">
 							<thead>
 								<tr>
-									<th lay-data="{field:'manufacture_id', width:200, sort: true}">生产派工单编号</th>
-									<th lay-data="{field:'product_id', width:120}">产品编号</th>
-									<th lay-data="{field:'product_name', width:120}">产品名称</th>
+									<th lay-data="{field:'manufacture_id', width:180}">生产派工单编号</th>
+									<th lay-data="{field:'product_id', width:110}">产品编号</th>
+									<th lay-data="{field:'product_name', width:110}">产品名称</th>
 									<th lay-data="{field:'amount', width:70}">数量</th>
-									<th
-										lay-data="{field:'register_time', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.register_time)}}">登录时间</th>
-									<th lay-data="{width:933, templet:'#oprListBar',fixed:'right'}">审核</th>
+									<th lay-data="{field:'register', width:90}">登记人</th>
+									<th lay-data="{field:'register_time', width:160,templet: function(d){return layui.util.toDateString(d.register_time)}}">登记时间</th>
+									<th lay-data="{field:'designer', width:110}">工单制定人</th>
+									<th lay-data="{field:'labour_cost_price_sum', width:110}">工时总成本</th>
+									<th lay-data="{field:'module_cost_price_sum', width:110}">物料总成本</th>
+									<th lay-data="{width:160, templet:'#oprListBar',fixed:'right'}">审核</th>
 								</tr>
 							</thead>
 						</table>
@@ -55,7 +58,7 @@
 </body>
 <!--操作-->
 <script type="text/html" id="oprListBar">
-		<a class="layui-btn layui-btn-xs" lay-event="shenhe">通过</a> 
+		<a class="layui-btn layui-btn-xs" lay-event="shenhe">复核</a> 
 		<a class="layui-btn layui-btn-xs" lay-event="noshenhe">不通过</a>
 	</script>
 <script>
@@ -97,13 +100,11 @@
 		table.on('tool(test)', function(obj) {
 			var layEvent = obj.event, data = obj.data;
 			if (layEvent === 'shenhe') { //审核操作
-				$.get("shenheMManufacture", {
-					manufacture_id : data.manufacture_id
+				$.get("getMManufactureDetailInfo", {
+					manufacture_id : data.manufacture_id,product_id:data.product_id
 				}, function(data) {
 					if (data == "成功") {
-						layer.msg("操作成功！");
-						table.reload("test");
-						layer.close(index);
+						window.location.href='scpgdfuhe.html';
 					} else {
 						layer.alert("操作失败~ ");
 					}

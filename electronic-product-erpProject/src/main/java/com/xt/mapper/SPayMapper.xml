@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.xt.mapper.SPayMapper">
+  <!-- 分页查询出库 -->
+  	<select id="spaylist" resultType="SPay">
+  		select * from s_pay where 1=1
+  			<if test="s.pay_Id != null and s.pay_Id != '' ">
+  				and pay_Id like CONCAt('%',#{s.pay_Id},'%')
+  			</if>
+  			<if test="s.check_Tag == null or s.check_Tag == '' ">
+  				and (check_Tag = '审核通过' or check_Tag = '审核不通过')
+  			</if>
+  			<if test="s.check_Tag != null and s.check_Tag != '' ">
+  				and check_Tag = #{s.check_Tag}
+  			</if>
+  			<if test="s.store_Tag != null and s.store_Tag != '' ">
+  				and store_Tag = #{s.store_Tag}
+  			</if>
+  			<if test="page.startRow != null and page.pageSize != null">
+		    	limit #{page.startRow},#{page.pageSize}
+			</if>
+  	</select>
+  	<select id="countSPay" resultType="int">
+  		select count(1) from s_pay
+  		<where>
+  			<if test="s.pay_Id != null and s.pay_Id != '' ">
+  				pay_id like CONCAt('%',#{s.pay_Id},'%')
+  			</if>
+  			<if test="s.check_Tag != null and s.check_Tag != '' ">
+  				and check_Tag = #{s.check_Tag}
+  			</if>
+  			<if test="s.store_Tag != null and s.store_Tag != '' ">
+  				and store_Tag = #{s.store_Tag}
+  			</if>
+  		</where>
+  	</select>
+  	<!-- 添加出库单 -->
+  	<insert id="addSPay">
+  		insert into s_pay values(null,#{pay_Id},#{storer},#{reason},#{reasonexact},#{amount_Sum},#{cost_Price_Sum},#{paid_Amount_Sum},
+  		#{remark},#{register},#{register_Time},#{checker},#{check_Time},#{check_Tag},#{attemper},#{attemper_Time},#{store_Tag})
+  	</insert>
+  	<!-- 修改出库单 -->
+  	<update id="updateSPay">
+  		update s_pay 
+  		<set>
+  			<if test="amount_Sum != null and amount_Sum !=''">
+  				amount_Sum=#{amount_Sum},
+  			</if>
+  			<if test="cost_Price_Sum != null and cost_Price_Sum !=''">
+  				cost_Price_Sum=#{cost_Price_Sum},
+  			</if>
+  			<if test="paid_Amount_Sum != null and paid_Amount_Sum !=''">
+  				paid_Amount_Sum=#{paid_Amount_Sum},
+  			</if>
+  			<if test="checker != null and checker !=''">
+  				checker=#{checker},
+  			</if>
+  			<if test="check_Time != null">
+  				check_Time=#{check_Time},
+  			</if>
+  			<if test="check_Tag != null and check_Tag !=''">
+  				check_Tag=#{check_Tag},
+  			</if>
+  			<if test="attemper != null and attemper !=''">
+  				attemper=#{attemper},
+  			</if>
+  			<if test="attemper_Time != null">
+  				attemper_Time=#{attemper_Time},
+  			</if>
+  			<if test="store_Tag != null and store_Tag !=''">
+  				store_Tag=#{store_Tag},
+  			</if>
+  		</set>
+  		where id = #{id}
+  	</update>
+  	<!-- 出库单明细 -->
+  	<select id="spayDeilslist" resultType="SPayDetails">
+  		select * from s_pay_details where parent_Id=#{s.parent_Id}
+  		<if test="s.product_Name != null and s.product_Name != null">
+		    	and product_Name = #{s.product_Name}
+		</if>
+  		<if test="page.startRow != null and page.pageSize != null">
+		    	limit #{page.startRow},#{page.pageSize}
+		</if>
+  	</select>
+  	<select id="countSPayDeils" resultType="int">
+  		select count(1) from s_pay_details  where parent_Id=#{s.parent_Id}
+  	</select>
+  	<!-- 添加出库单明细 -->
+  	<insert id="spayDeilsadd">
+  		insert into s_pay_details values(null,#{parent_Id},#{product_Id},#{product_Name},#{product_Describe},#{amount},#{amount_Unit},#{cost_Price}
+  		,#{subtotal},#{paid_Amount},#{pay_Tag})
+  	</insert>
+  	<!-- 修改出库单明细 -->
+  	<update id="spayDeilsUpdate">
+  		update s_pay_details
+  		<set>
+  			<if test="amount != null and amount !=''">
+  				amount=#{amount},
+  			</if>
+  			<if test="subtotal !=null and subtotal != '' ">
+  				subtotal=#{subtotal},
+  			</if>
+  			<if test="paid_Amount != null and paid_Amount !=''">
+  				paid_Amount=#{paid_Amount},
+  			</if>
+  			<if test="pay_Tag != null and pay_Tag !=''">
+  				pay_Tag=#{pay_Tag},
+  			</if>
+  		</set>
+  		where id=#{id}
+  	</update>
+  	
+  	<!-- 库存查询 -->
+  	<select id="scelllist" resultType="SCell">
+  		select * from s_cell where check_tag = '审核通过'
+  		<if test="s.product_name != null and s.product_name != null">
+		    	and product_name like CONCAt('%',#{s.product_name},'%')
+		</if>
+  		<if test="page.startRow != null and page.pageSize != null">
+		    	limit #{page.startRow},#{page.pageSize}
+		</if>
+  	</select>
+  	<select id="countscell" resultType="int">
+  		select count(1) from s_cell  where check_tag = '审核通过'
+  		<if test="product_name != null and product_name != null">
+		    	and Product_name like CONCAt('%',#{product_name},'%')
+		</if>
+  	</select>
+  	
+  	<!-- 查询产品 -->
+  	<select id="DfileIdc" resultType="D_file">
+  		select * from D_file  where PRODUCT_ID = #{product_id}
+  	</select>
+  </mapper>

@@ -6,7 +6,7 @@
 </script>
     <head>
         <meta charset="UTF-8">
-        <title>生产工序查询-lwt</title>
+        <title>生产工序物料查询-lwt</title>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -43,10 +43,9 @@
                             </form>
                         </div>
                         <div class="layui-card-body ">
-                            <table class="layui-table" lay-data="{url:'mdeataslAll?bh=通过',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
+                            <table class="layui-table" lay-data="{url:'mdesignAlllist?design=已设计',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                        <th lay-data="{type:'checkbox'}">ID</th>
                                         <th lay-data="{field:'design_Id', width:200, sort: true}">ID</th>
                                         <th lay-data="{field:'product_Name', width:100, sort: true, edit: 'text'}">产品名称</th>
                                         <th lay-data="{field:'procedure_Describe', width:120}">设计要求</th>
@@ -54,8 +53,9 @@
                                         <!-- <th lay-data="{field:'module_Cost_Price_Sum', edit: 'text',width:100, minWidth: 100,templet: '#titleTpl'}">状态</th> -->
                                         <th lay-data="{field:'module_Cost_Price_Sum', width:100}">物料总成本</th>
                                         <th lay-data="{field:'designer', width:70}">设计人</th>
+                                        <th lay-data="{field:'design_Module_Tag', width:120}">是否设计完成</th>
                                         <th lay-data="{field:'register_Time', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.u_create)}}">创建时间</th>
-                                       <th lay-data="{width:270, templet:'#oprListBar',fixed:'right'}">操作</th>
+                                       <th lay-data="{width:150, templet:'#oprListBar',fixed:'right'}">操作</th>
                                         </tr>
                                 </thead>
                             </table>

@@ -58,6 +58,26 @@ public class MDesignProcedureController {
 	}
 	
 	/**
+	 * 审核标志   S001-0: 等待审核     S001-1: 审核通过    S001-2: 审核不通过 check_Tag
+	 * 分页查询产品
+	 * @param page
+	 * @param limit
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping("/mdesignAlllist")
+	@ResponseBody
+	public String mdesignAlllist(@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int limit,String name,String design){
+		MDesignProcedure md = new MDesignProcedure();
+		md.setDesign_Module_Tag(design);
+		md.setProduct_Name(name);
+		PageDemo<MDesignProcedure> pd = serivce.getAllMdesignlist(page, limit, md);
+		String str = JSONArray.toJSONString(pd);
+		return str;
+	}
+	
+	/**
 	 * 查询物料状态
 	 * @param page
 	 * @param limit
@@ -156,6 +176,12 @@ public class MDesignProcedureController {
 		List<MDesignProcedureDetails> list = JSON.parseArray(mdprod,MDesignProcedureDetails.class);
 		MDesignProcedure mds = new MDesignProcedure();
 		for (MDesignProcedureDetails md : list) {
+			if(md.getDesign_Module_Tag().equals("未设计")) {
+				return "还有未设计的，请先设计了";
+			}
+			if(md.getModule_Subtotal()==null) {
+				md.setModule_Subtotal(0);
+			}
 			mds.setModule_Cost_Price_Sum(mds.getModule_Cost_Price_Sum()+(int)md.getModule_Subtotal());
 		}
 		mds.setDesign_Module_Tag("未审核");//物料审核
@@ -177,6 +203,9 @@ public class MDesignProcedureController {
 		List<MDesignProcedureDetails> list = JSON.parseArray(mdprod,MDesignProcedureDetails.class);
 		MDesignProcedure mds = new MDesignProcedure();
 		for (MDesignProcedureDetails md : list) {
+			if(md.getModule_Subtotal()==null) {
+				md.setModule_Subtotal(0);
+			}
 			mds.setModule_Cost_Price_Sum(mds.getModule_Cost_Price_Sum()+(int)md.getModule_Subtotal());
 		}
 		mds.setDesign_Module_Tag("未审核");//物料审核
@@ -237,7 +266,7 @@ public class MDesignProcedureController {
 		md.setCheck_Tag("等待审核");//审核状态
 		md.setChange_Tag("未更改");//变更转态
 		md.setDesign_Module_Change_Tag("未变更");
-		md.setDesign_Module_Tag("未变更");
+		md.setDesign_Module_Tag("未设计");
 		md.setCost_Price_Sum(sum);
 		String name =(String) session.getAttribute("username");
 		md.setRegister(name);//登记人

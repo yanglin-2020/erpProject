@@ -6,7 +6,7 @@
 </script>
     <head>
         <meta charset="UTF-8">
-        <title>生产工序物料-lwt</title>
+        <title>出库申请审核查询详情-lwt</title>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -31,8 +31,6 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                         <div class="layui-card-body ">
-                        </div>
                         <div class="layui-card-body ">
                            <table class="layui-table"id="demo"  lay-filter="test"></table>
 					</div>
@@ -42,15 +40,6 @@
         </div>
     </body>
     
-    <!--操作-->
-<!-- 	 -->
-	 <!--操作-->
-    <script type="text/html" id="toolbarDemo">
-        <div class="layui-btn-group demoTable">
-  <button class="layui-btn" lay-event="fmdes" data-type="fmdes">确认</button>
-</div>
-    </script>
-        <!--操作-->
     <script>layui.use('laydate',
         function() {
             var laydate = layui.laydate;
@@ -70,50 +59,69 @@
         function() {
     	var form = layui.form;
             var table = layui.table;
-            var id= parent.ids;
-            var product_id=parent.product_id;
+            var sale_id=parent.names;
             table.render({
                 elem: '#demo'
                 ,height: 312
                 ,toolbar: '#toolbarDemo'
-                ,url: 'MdesignmoduleAll?id='+product_id //数据接口
+                ,url: 'SpayDatelisAll?id='+sale_id //数据接口
                 ,page: true //开启分页
                 ,cols: [[ //表头
-                	{field:'product_name', width:100, title:"物品名称"},
-                	{field:'product_id', width:110, title:"物料编号"},
-                	{field:'product_describe', width:120, title:"描述"},
-                	{field:'amount', width:120, title:"设计数量",event: "subtotal"},
-                	{field:'residual_amount', width:150, title:"可用数量"},
-                	{field:'amount_unit', width:80, title:"单位"},
-                	{field:'cost_price', width:80, title:"单价"},
-                	{field:'shuliang', width:120, title:"本工序数量",edit: 'text'},
+                	{field:'parent_Id', width:100, title:"出库编号"},
+                	{field:'product_Name', width:100, title:"产品名称"},
+                	{field:'amount', width:80, title:"出库数量"},
+                	{field:'cost_Price', width:100, title:"单价"},
+                	{field:'subtotal', width:150, title:"小计"}
                 ]]
               });
             $ = layui.jquery;
             var form = layui.form,
             layer = layui.layer;
-            
+            table.on('tool(test)', function(obj){
+                var layEvent = obj.event,
+                    data = obj.data;
+                if(layEvent === 'updateMDesign'){ //添加
+                	title = "查看物料";
+         	        parent.ids = data.id;
+         	        parent.layer.open({
+         			type: 2,
+         			shadeClose: false,
+         			title: "物料详情页面",
+         			content: 'MDesignProcedurmodule-shenhe-list-details.html',
+         			skin: 'layui-layer-rim',
+         			 area: ['80%', '80%'],
+         			 end: function () {//点睛之笔，此端代码便是精髓之处，layui监听到弹窗3的销毁之后回调了一个end函数，通过这个end函数我们就能刷新弹窗2的数据
+         				table.reload("test");//就比如这refreshTable()是弹窗2里面的用于拼接数据列表的函数
+         		}
+         		});
+                	
+                } 
+            });
           //查看
+            function fmdes(){
+          	    title = "添加物料";
+          	         window.names = sale_id
+                parent.layer.open({
+          			type: 2,
+          			shadeClose: false,
+          			title: "产品详情页面",
+          			content: 'MProcedure-list.html',
+          			skin: 'layui-layer-rim',
+          			 area: ['80%', '80%'],
+          			 end: function () {//点睛之笔，此端代码便是精髓之处，layui监听到弹窗3的销毁之后回调了一个end函数，通过这个end函数我们就能刷新弹窗2的数据
+          				table.reload("test");//就比如这refreshTable()是弹窗2里面的用于拼接数据列表的函数
+          		}
+          		});
+
+            }
             
             
             var $ = layui.$, active = {
           		  fmdes: function(){ //获取选中数据
-          			  console.log(JSON.stringify(table.cache));
-          			console.log(JSON.stringify(table.cache.demo));
-          			$.post("addDModuleDetailslist",{dm:JSON.stringify(table.cache.demo),id:id},function(res){
-               		 if(res=="1"){
-               			setTimeout(function() {
-             				top.layer.msg("操作成功！");
-             				layer.closeAll("iframe");
-             				//刷新父页面
-             				parent.layer.close(parent.layer.index);
-             			}, 1000);
-               		 }else{
-               			layer.msg("操作失败！请联系管理员-2646550407");
-               			
-               		 }
-               	 })
-					return false;
+		          			top.layer.msg("操作成功！");
+		            	    layer.closeAll("iframe");
+									//刷新父页面
+							parent.location.reload();
             	    }
             	    ,getCheckLength: function(){ //获取选中数目
             	      var checkStatus = table.checkStatus('idTest')
@@ -151,10 +159,8 @@
               var value = obj.value //得到修改后的值
               ,data = obj.data //得到所在行所有键值
               ,field = obj.field; //得到字段
-              if(data.shuliang>data.residual_amount){
-            	  layer.msg('您的可用数量不足');
-            	  return false;
-              }
+              
+              
               data.cost_Price=data.labour_Hour_Amount*data.subtotal;
               obj.update(obj.data)
               console.log(obj)

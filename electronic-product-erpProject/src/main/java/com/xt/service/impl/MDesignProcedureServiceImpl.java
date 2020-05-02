@@ -58,4 +58,17 @@ public class MDesignProcedureServiceImpl implements MDesignProcedureService {
 		return mapper.updatelwtdesign_procedure_tag(product_Id);
 	}
 
+	@Override
+	public PageDemo<MDesignProcedure> getAllMdesignlist(int nowPage, int pageSize, MDesignProcedure md) {
+		PageDemo<MDesignProcedure> pd = new PageDemo<MDesignProcedure>();
+		int rowCount = mapper.MdesCountlist(md);
+		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+		List<MDesignProcedure> list = mapper.listfindlist(page, md);
+		pd.setCode(0);
+		pd.setCount(rowCount);
+		pd.setMsg("");
+		pd.setData(list);
+		return pd;
+	}
+
 }

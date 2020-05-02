@@ -6,7 +6,7 @@
 </script>
     <head>
         <meta charset="UTF-8">
-        <title>生产工序物料-lwt</title>
+        <title>出库申请登记-lwt</title>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -32,6 +32,12 @@
                 <div class="layui-col-md12">
                     <div class="layui-card">
                          <div class="layui-card-body ">
+                          <span>出库编号：</span><span id="order" ></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>出库人：</span><input type="text" name="dengji"/><br/><br/>
+                          	 出库理由：<select name="liyou"><option value="生产领料">生产领料</option>
+                          	 <option value="赠送">赠送</option>
+                          	 <option value="内部借领">内部借领</option>
+                          	 <option value="其他借领">其他借领</option></select>
                         </div>
                         <div class="layui-card-body ">
                            <table class="layui-table"id="demo"  lay-filter="test"></table>
@@ -46,8 +52,8 @@
 <!-- 	 -->
 	 <!--操作-->
     <script type="text/html" id="toolbarDemo">
-        <div class="layui-btn-group demoTable">
-  <button class="layui-btn" lay-event="fmdes" data-type="fmdes">确认</button>
+        <div class="layui-btn-container layui-btn-group demoTable">
+    <button class="layui-btn layui-btn-sm" data-type="fmdes">提交</button>
 </div>
     </script>
         <!--操作-->
@@ -69,56 +75,60 @@
     <script th:inline="none">layui.use('table',
         function() {
     	var form = layui.form;
-            var table = layui.table;
-            var id= parent.ids;
-            var product_id=parent.product_id;
+    	 var table = layui.table;
+         var sale_id=parent.id;
             table.render({
                 elem: '#demo'
                 ,height: 312
                 ,toolbar: '#toolbarDemo'
-                ,url: 'MdesignmoduleAll?id='+product_id //数据接口
+                ,url: 'SpayDatelisAll?id='+sale_id //数据接口
                 ,page: true //开启分页
                 ,cols: [[ //表头
-                	{field:'product_name', width:100, title:"物品名称"},
-                	{field:'product_id', width:110, title:"物料编号"},
-                	{field:'product_describe', width:120, title:"描述"},
-                	{field:'amount', width:120, title:"设计数量",event: "subtotal"},
-                	{field:'residual_amount', width:150, title:"可用数量"},
-                	{field:'amount_unit', width:80, title:"单位"},
-                	{field:'cost_price', width:80, title:"单价"},
-                	{field:'shuliang', width:120, title:"本工序数量",edit: 'text'},
+                	{field:'id', width:80, title:"序号"},
+                	{field:'product_Id', width:120, title:"产品编号"},
+                	{field:'product_Name', width:100, title:"产品名称"},
+                	{field:'amount', width:80, title:"数量",edit: 'text'},
+                	{field:'cost_Price', width:80, title:"单价"},
+                	{field:'subtotal', width:80, title:"小计"}
                 ]]
               });
             $ = layui.jquery;
             var form = layui.form,
             layer = layui.layer;
             
+         $("#order").text(sale_id);
           //查看
             
             
             var $ = layui.$, active = {
-          		  fmdes: function(){ //获取选中数据
-          			  console.log(JSON.stringify(table.cache));
-          			console.log(JSON.stringify(table.cache.demo));
-          			$.post("addDModuleDetailslist",{dm:JSON.stringify(table.cache.demo),id:id},function(res){
+          		  fmdes: function(){ 
+          			  var liyou = $("select[name=liyou]").val();
+          			  var dengji = $("input[name=dengji]").val();
+          			  if(dengji==null||dengji==''){
+          				layer.msg("请输入出库人");
+          				  return 
+          			  }
+          			$.post("addSpayshenqing",{dm:JSON.stringify(table.cache.demo),id:sale_id,liyou:liyou,dengji:dengji},function(res){
                		 if(res=="1"){
                			setTimeout(function() {
-             				top.layer.msg("操作成功！");
+             				top.layer.msg("完成操作");
              				layer.closeAll("iframe");
              				//刷新父页面
-             				parent.layer.close(parent.layer.index);
-             			}, 1000);
-               		 }else{
+             				parent.location.reload();
+             			}, 200);
+               		 }else if(res=='0'){
                			layer.msg("操作失败！请联系管理员-2646550407");
                			
+               		 }else{
+               			layer.msg(res);
                		 }
                	 })
 					return false;
             	    }
-            	    ,getCheckLength: function(){ //获取选中数目
-            	      var checkStatus = table.checkStatus('idTest')
-            	      ,data = checkStatus.data;
-            	      layer.msg('选中了：'+ data.length + ' 个');
+            	    ,fanhui: function(){ 
+            	    	layer.closeAll("iframe");
+         				//刷新父页面
+         				parent.layer.close(parent.layer.index);
             	    }
             	    ,isAll: function(){ //验证是否全选
             	      var checkStatus = table.checkStatus('idTest');
@@ -151,11 +161,7 @@
               var value = obj.value //得到修改后的值
               ,data = obj.data //得到所在行所有键值
               ,field = obj.field; //得到字段
-              if(data.shuliang>data.residual_amount){
-            	  layer.msg('您的可用数量不足');
-            	  return false;
-              }
-              data.cost_Price=data.labour_Hour_Amount*data.subtotal;
+              data.subtotal=data.amount*data.cost_Price;
               obj.update(obj.data)
               console.log(obj)
               //layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);

@@ -104,28 +104,6 @@
             $ = layui.jquery;
             var form = layui.form,
             layer = layui.layer;
-          //监听提交
-          /* 
-            form.on('submit(demo1)', function(data){
-          	  console.log(table.cache)
-            	 $.post("addMDesignlist",{mdprod:JSON.stringify(table.cache.demo),id:sale_id,product_Id:data.field.product_id,
-            		 product_Name:data.field.product_name,procedure_Describe:data.field.procedure_Describe,
-            		 designer:data.field.designer},function(res){
-            		 if(res>"0"){
-            			setTimeout(function() {
-          				top.layer.msg("操作成功！");
-          				layer.closeAll("iframe");
-          				//刷新父页面
-          				parent.location.reload();
-          			}, 1000);
-            		 }
-            	 })*/
-            	 //father_reload();
-              /* layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-              }) */
-              /*return false;
-            }); */
             
             table.on('tool(test)', function(obj){
                 var layEvent = obj.event,
@@ -148,23 +126,6 @@
                 	
                 } 
             });
-          //查看
-            function fmdes(){
-          	    title = "添加物料";
-          	         window.names = sale_id
-                parent.layer.open({
-          			type: 2,
-          			shadeClose: false,
-          			title: "产品详情页面",
-          			content: 'MProcedure-list.html',
-          			skin: 'layui-layer-rim',
-          			 area: ['80%', '80%'],
-          			 end: function () {//点睛之笔，此端代码便是精髓之处，layui监听到弹窗3的销毁之后回调了一个end函数，通过这个end函数我们就能刷新弹窗2的数据
-          				table.reload("test");//就比如这refreshTable()是弹窗2里面的用于拼接数据列表的函数
-          		}
-          		});
-
-            }
             
             
             var $ = layui.$, active = {
@@ -175,8 +136,10 @@
 		            	    layer.closeAll("iframe");
 									//刷新父页面
 							parent.location.reload();
-          				  }else{
+          				  }else if(res=="0"){
           					layer.msg("操作失败！请联系管理员-2646550407");
+          				  }else{
+          					layer.msg(res);
           				  }
           			  })
             	    }
