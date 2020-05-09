@@ -6,17 +6,17 @@
   <!-- 分页查询出库 -->
   	<select id="spaylist" resultType="SPay">
   		select * from s_pay where 1=1
-  			<if test="s.pay_Id != null and s.pay_Id != '' ">
-  				and pay_Id like CONCAt('%',#{s.pay_Id},'%')
+  			<if test="s.pay_id != null and s.pay_id != '' ">
+  				and pay_id like CONCAt('%',#{s.pay_id},'%')
   			</if>
-  			<if test="s.check_Tag == null or s.check_Tag == '' ">
-  				and (check_Tag = '审核通过' or check_Tag = '审核不通过')
+  			<if test="s.check_tag == null or s.check_tag == '' ">
+  				and (check_tag = '审核通过' or check_tag = '审核不通过')
   			</if>
-  			<if test="s.check_Tag != null and s.check_Tag != '' ">
-  				and check_Tag = #{s.check_Tag}
+  			<if test="s.check_tag != null and s.check_tag != '' ">
+  				and check_tag = #{s.check_tag}
   			</if>
-  			<if test="s.store_Tag != null and s.store_Tag != '' ">
-  				and store_Tag = #{s.store_Tag}
+  			<if test="s.store_tag != null and s.store_tag != '' ">
+  				and store_tag = #{s.store_tag}
   			</if>
   			<if test="page.startRow != null and page.pageSize != null">
 		    	limit #{page.startRow},#{page.pageSize}
@@ -25,73 +25,73 @@
   	<select id="countSPay" resultType="int">
   		select count(1) from s_pay
   		<where>
-  			<if test="s.pay_Id != null and s.pay_Id != '' ">
-  				pay_id like CONCAt('%',#{s.pay_Id},'%')
+  			<if test="s.pay_id != null and s.pay_id != '' ">
+  				pay_id like CONCAt('%',#{s.pay_id},'%')
   			</if>
-  			<if test="s.check_Tag != null and s.check_Tag != '' ">
-  				and check_Tag = #{s.check_Tag}
+  			<if test="s.check_tag != null and s.check_tag != '' ">
+  				and check_tag = #{s.check_tag}
   			</if>
-  			<if test="s.store_Tag != null and s.store_Tag != '' ">
-  				and store_Tag = #{s.store_Tag}
+  			<if test="s.store_tag != null and s.store_tag != '' ">
+  				and store_tag = #{s.store_tag}
   			</if>
   		</where>
   	</select>
   	<!-- 添加出库单 -->
   	<insert id="addSPay">
-  		insert into s_pay values(null,#{pay_Id},#{storer},#{reason},#{reasonexact},#{amount_Sum},#{cost_Price_Sum},#{paid_Amount_Sum},
-  		#{remark},#{register},#{register_Time},#{checker},#{check_Time},#{check_Tag},#{attemper},#{attemper_Time},#{store_Tag})
+  		insert into s_pay values(null,#{pay_id},#{storer},#{reason},#{reasonexact},#{amount_sum},#{cost_price_sum},#{paid_amount_sum},
+  		#{remark},#{register},#{register_time},#{checker},#{check_time},#{check_tag},#{attemper},#{attemper_time},#{store_tag},'未完成')
   	</insert>
   	<!-- 修改出库单 -->
   	<update id="updateSPay">
   		update s_pay 
   		<set>
-  			<if test="amount_Sum != null and amount_Sum !=''">
-  				amount_Sum=#{amount_Sum},
+  			<if test="amount_sum != null and amount_sum !=''">
+  				amount_sum=#{amount_sum},
   			</if>
-  			<if test="cost_Price_Sum != null and cost_Price_Sum !=''">
-  				cost_Price_Sum=#{cost_Price_Sum},
+  			<if test="cost_price_sum != null and cost_price_sum !=''">
+  				cost_price_sum=#{cost_price_sum},
   			</if>
-  			<if test="paid_Amount_Sum != null and paid_Amount_Sum !=''">
-  				paid_Amount_Sum=#{paid_Amount_Sum},
+  			<if test="paid_amount_sum != null and paid_amount_sum !=''">
+  				paid_amount_sum=#{paid_amount_sum},
   			</if>
   			<if test="checker != null and checker !=''">
   				checker=#{checker},
   			</if>
-  			<if test="check_Time != null">
-  				check_Time=#{check_Time},
+  			<if test="check_time != null">
+  				check_time=#{check_time},
   			</if>
-  			<if test="check_Tag != null and check_Tag !=''">
-  				check_Tag=#{check_Tag},
+  			<if test="check_tag != null and check_tag !=''">
+  				check_tag=#{check_tag},
   			</if>
   			<if test="attemper != null and attemper !=''">
   				attemper=#{attemper},
   			</if>
-  			<if test="attemper_Time != null">
-  				attemper_Time=#{attemper_Time},
+  			<if test="attemper_time != null">
+  				attemper_time=#{attemper_time},
   			</if>
-  			<if test="store_Tag != null and store_Tag !=''">
-  				store_Tag=#{store_Tag},
+  			<if test="store_tag != null and store_tag !=''">
+  				store_tag=#{store_tag},
   			</if>
   		</set>
   		where id = #{id}
   	</update>
   	<!-- 出库单明细 -->
   	<select id="spayDeilslist" resultType="SPayDetails">
-  		select * from s_pay_details where parent_Id=#{s.parent_Id}
-  		<if test="s.product_Name != null and s.product_Name != null">
-		    	and product_Name = #{s.product_Name}
+  		select * from s_pay_details where parent_id=#{s.parent_id}
+  		<if test="s.product_name != null and s.product_name != null">
+		    	and product_name = #{s.product_name}
 		</if>
   		<if test="page.startRow != null and page.pageSize != null">
 		    	limit #{page.startRow},#{page.pageSize}
 		</if>
   	</select>
   	<select id="countSPayDeils" resultType="int">
-  		select count(1) from s_pay_details  where parent_Id=#{s.parent_Id}
+  		select count(1) from s_pay_details  where parent_id=#{s.parent_id}
   	</select>
   	<!-- 添加出库单明细 -->
   	<insert id="spayDeilsadd">
-  		insert into s_pay_details values(null,#{parent_Id},#{product_Id},#{product_Name},#{product_Describe},#{amount},#{amount_Unit},#{cost_Price}
-  		,#{subtotal},#{paid_Amount},#{pay_Tag})
+  		insert into s_pay_details values(null,#{parent_id},#{product_id},#{product_name},#{product_describe},#{amount},#{amount_unit},#{cost_price}
+  		,#{subtotal},#{paid_amount},'已登记')
   	</insert>
   	<!-- 修改出库单明细 -->
   	<update id="spayDeilsUpdate">
@@ -103,11 +103,11 @@
   			<if test="subtotal !=null and subtotal != '' ">
   				subtotal=#{subtotal},
   			</if>
-  			<if test="paid_Amount != null and paid_Amount !=''">
-  				paid_Amount=#{paid_Amount},
+  			<if test="paid_amount != null and paid_amount !=''">
+  				paid_amount=#{paid_amount},
   			</if>
-  			<if test="pay_Tag != null and pay_Tag !=''">
-  				pay_Tag=#{pay_Tag},
+  			<if test="pay_tag != null and pay_tag !=''">
+  				pay_tag=#{pay_tag},
   			</if>
   		</set>
   		where id=#{id}

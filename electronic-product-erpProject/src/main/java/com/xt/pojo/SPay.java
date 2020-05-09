@@ -5,15 +5,13 @@ import java.io.Serializable;
 /**
  * 出库实体类
  *
- * @author lwt
- * @since 2020-04-17 10:35:18
+ * @author long
  */
 public class SPay implements Serializable {
-    private static final long serialVersionUID = 223316791023593913L;
     //序号
     private Integer id;
     //出库单编号
-    private String pay_Id;
+    private String pay_id;
     //出库人
     private String storer;
     //出库理由   C002-1: 生产领料   C002-2: 赠送   C002-3: 内部借领   C002-4: 其他借领
@@ -21,49 +19,49 @@ public class SPay implements Serializable {
     //出库详细理由
     private String reasonexact;
     //总件数
-    private int amount_Sum;
+    private Object amount_sum;
     //总金额
-    private Object cost_Price_Sum;
+    private Object cost_price_sum;
     //确认出库总件数
-    private int paid_Amount_Sum;
+    private Object paid_amount_sum;
     //备注
     private String remark;
     //登记人
     private String register;
     //登记时间
-    private String register_Time;
+    private Object register_time;
     //复核人
     private String checker;
-    //复核时间
-    private String check_Time;
+    public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	//复核时间
+    private Object check_time;
     //审核标志    S001-0: 等待审核    S001-1: 审核通过   S001-2: 审核不通过
-    private String check_Tag;
+    private String check_tag;
     //调度人
     private String attemper;
     //调度时间
-    private String attemper_Time;
+    private Object attemper_time;
     //库存标志    K002-1: 已登记   K002-2: 已调度
-    private String store_Tag;
-	@Override
-	public String toString() {
-		return "SPay [id=" + id + ", pay_Id=" + pay_Id + ", storer=" + storer + ", reason=" + reason + ", reasonexact="
-				+ reasonexact + ", amount_Sum=" + amount_Sum + ", cost_Price_Sum=" + cost_Price_Sum
-				+ ", paid_Amount_Sum=" + paid_Amount_Sum + ", remark=" + remark + ", register=" + register
-				+ ", register_Time=" + register_Time + ", checker=" + checker + ", check_Time=" + check_Time
-				+ ", check_Tag=" + check_Tag + ", attemper=" + attemper + ", attemper_Time=" + attemper_Time
-				+ ", store_Tag=" + store_Tag + "]";
-	}
+    private String store_tag;
+    
+    private String status;//完成状态
+    
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getPay_Id() {
-		return pay_Id;
+	public String getPay_id() {
+		return pay_id;
 	}
-	public void setPay_Id(String pay_Id) {
-		this.pay_Id = pay_Id;
+	public void setPay_id(String pay_id) {
+		this.pay_id = pay_id;
 	}
 	public String getStorer() {
 		return storer;
@@ -83,23 +81,23 @@ public class SPay implements Serializable {
 	public void setReasonexact(String reasonexact) {
 		this.reasonexact = reasonexact;
 	}
-	public int getAmount_Sum() {
-		return amount_Sum;
+	public Object getAmount_sum() {
+		return amount_sum;
 	}
-	public void setAmount_Sum(int amount_Sum) {
-		this.amount_Sum = amount_Sum;
+	public void setAmount_sum(Object amount_sum) {
+		this.amount_sum = amount_sum;
 	}
-	public Object getCost_Price_Sum() {
-		return cost_Price_Sum;
+	public Object getCost_price_sum() {
+		return cost_price_sum;
 	}
-	public void setCost_Price_Sum(Object cost_Price_Sum) {
-		this.cost_Price_Sum = cost_Price_Sum;
+	public void setCost_price_sum(Object cost_price_sum) {
+		this.cost_price_sum = cost_price_sum;
 	}
-	public int getPaid_Amount_Sum() {
-		return paid_Amount_Sum;
+	public Object getPaid_amount_sum() {
+		return paid_amount_sum;
 	}
-	public void setPaid_Amount_Sum(int paid_Amount_Sum) {
-		this.paid_Amount_Sum = paid_Amount_Sum;
+	public void setPaid_amount_sum(Object paid_amount_sum) {
+		this.paid_amount_sum = paid_amount_sum;
 	}
 	public String getRemark() {
 		return remark;
@@ -113,11 +111,11 @@ public class SPay implements Serializable {
 	public void setRegister(String register) {
 		this.register = register;
 	}
-	public String getRegister_Time() {
-		return register_Time;
+	public Object getRegister_time() {
+		return register_time;
 	}
-	public void setRegister_Time(String register_Time) {
-		this.register_Time = register_Time;
+	public void setRegister_time(Object register_time) {
+		this.register_time = register_time;
 	}
 	public String getChecker() {
 		return checker;
@@ -125,17 +123,17 @@ public class SPay implements Serializable {
 	public void setChecker(String checker) {
 		this.checker = checker;
 	}
-	public String getCheck_Time() {
-		return check_Time;
+	public Object getCheck_time() {
+		return check_time;
 	}
-	public void setCheck_Time(String check_Time) {
-		this.check_Time = check_Time;
+	public void setCheck_time(Object check_time) {
+		this.check_time = check_time;
 	}
-	public String getCheck_Tag() {
-		return check_Tag;
+	public String getCheck_tag() {
+		return check_tag;
 	}
-	public void setCheck_Tag(String check_Tag) {
-		this.check_Tag = check_Tag;
+	public void setCheck_tag(String check_tag) {
+		this.check_tag = check_tag;
 	}
 	public String getAttemper() {
 		return attemper;
@@ -143,22 +141,18 @@ public class SPay implements Serializable {
 	public void setAttemper(String attemper) {
 		this.attemper = attemper;
 	}
-	public String getAttemper_Time() {
-		return attemper_Time;
+	public Object getAttemper_time() {
+		return attemper_time;
 	}
-	public void setAttemper_Time(String attemper_Time) {
-		this.attemper_Time = attemper_Time;
+	public void setAttemper_time(Object attemper_time) {
+		this.attemper_time = attemper_time;
 	}
-	public String getStore_Tag() {
-		return store_Tag;
+	public String getStore_tag() {
+		return store_tag;
 	}
-	public void setStore_Tag(String store_Tag) {
-		this.store_Tag = store_Tag;
+	public void setStore_tag(String store_tag) {
+		this.store_tag = store_tag;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-
+    
 
 }

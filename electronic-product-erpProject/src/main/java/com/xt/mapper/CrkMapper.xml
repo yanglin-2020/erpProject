@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.mapper.CrkMapper">
+
+	<!--获取出库单总记录数 -->
+	<select id="getSPayCount" resultType="int">
+		select count(1) from
+		s_pay where store_tag='已登记'
+	</select>
+	
+	<!--查询已登记的出库单信息 -->
+	<select id="SelectAllSPay" resultType="SPay">
+		select * from s_pay where
+		store_tag='已登记'  and check_tag='审核通过'
+		limit #{startRow},#{pageSize}
+	</select>
+
+	<!--根据父级序号查询出库单详细信息 -->
+	<select id="findD_fileById" resultType="SPayDetails">
+		select * from
+		s_pay_details where parent_id=#{id} and pay_tag='已登记'
+	</select>
+	
+	<!--插入出库详细表数据，添加已出库件数 -->
+	<update id="chukuDiaodu">
+		update s_pay_details set paid_amount=#{paid_amount},pay_tag='已调度' where parent_id=#{id}
+	</update>
+	
+	
+	<!--根据出库单序号修改已调度 -->
+	<update id="updateStore_tag">
+		update s_pay set store_tag='已调度',attemper=#{attemper},attemper_time=#{attemper_time} where pay_id=#{id}
+	</update>
+	
+	<!--获取入库单总记录数 -->
+	<select id="getSGatherCount" resultType="int">
+		select count(1) from
+		s_gather where store_tag='已登记'and check_tag='审核通过'
+	</select>
+	
+	<!--查询已登记的入库单信息 -->
+	<select id="SelectAllSGather" resultType="SGather">
+		select * from s_gather where store_tag='已登记' and check_tag='审核通过'
+		limit #{startRow},#{pageSize}
+	</select>
+	
+	<!--根据父级序号查询入库单详细信息 -->
+	<select id="findD_fileBySGatherId" resultType="SGatherDetails">
+		select * from
+		s_gather_details where parent_id=#{id} and gather_tag='已登记'
+	</select>
+	
+	<!--根据入库单序号修改已调度 -->
+	<update id="updateSGatherStore_tag">
+		update s_gather set store_tag='已调度',attemper=#{attemper},attemper_time=#{attemper_time} where gather_id=#{id}
+	</update>
+	
+	<!--插入入库详细表数据，添加已入库件数 -->
+	<update id="rukuDiaodu">
+		update s_gather_details set gathered_amount=#{gathered_amount},gather_tag='已调度' where parent_id=#{id}
+	</update>
+	
+</mapper>

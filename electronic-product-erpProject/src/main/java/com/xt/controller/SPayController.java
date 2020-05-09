@@ -43,11 +43,11 @@ public class SPayController {
 	@RequestMapping("/SpayAll")
 	@ResponseBody
 	public String SpayAll(@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10") int limit,String pay_Id,String bh,String change){
+			@RequestParam(defaultValue = "10") int limit,String name,String bh,String change){
 		SPay s = new SPay();
-		s.setPay_Id(pay_Id);//出库编号
-		s.setStore_Tag(change);//库存标记
-		s.setCheck_Tag(bh);//审核状态
+		s.setPay_id(name);//出库编号
+		s.setStore_tag(change);//库存标记
+		s.setCheck_tag(bh);//审核状态
 		PageDemo<SPay> pd = service.getAllUserInfo(page, limit, s);
 		String str = JSONArray.toJSONString(pd);
 		return str;
@@ -66,10 +66,10 @@ public class SPayController {
 	@RequestMapping("/SpayDatelisAll")
 	@ResponseBody
 	public String SpayDatelisAll(@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10") int limit,String name,String id){
+			@RequestParam(defaultValue = "10") int limit,String name,int id){
 		SPayDetails s = new SPayDetails();
-		s.setParent_Id(id);
-		s.setProduct_Name(name);
+		s.setParent_id(id);
+		s.setProduct_name(name);
 		PageDemo<SPayDetails> pd = service.spayDeilslist(page, limit, s);
 		String str = JSONArray.toJSONString(pd);
 		return str;
@@ -105,11 +105,11 @@ public class SPayController {
 		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String name =(String) session.getAttribute("username");
 		md.setId(Integer.parseInt(id));
-		md.setCheck_Tag(bh); //审核状态
+		md.setCheck_tag(bh); //审核状态
 		md.setRemark(reason);//备注
-		md.setStore_Tag(store);//库存标志
+		md.setStore_tag(store);//库存标志
 		md.setChecker(name);//审核人
-		md.setCheck_Time(formate.format(new Date()));//审核时间
+		md.setCheck_time(formate.format(new Date()));//审核时间
 		int count = service.updateSPay(md);
 		String str = JSONArray.toJSONString(count);
 		return str;
@@ -138,14 +138,14 @@ public class SPayController {
 		int pd = 0;
 		for (SCell md : list) {
 			D_file d = service.DfileIdc(md.getProduct_id());
-			sd.setParent_Id(id);
+			sd.setParent_id(Integer.parseInt(id));
 			sd.setAmount(0);
-			sd.setSubtotal("0");
-			sd.setProduct_Id(md.getProduct_id());
-			sd.setProduct_Name(md.getProduct_name());
+			sd.setSubtotal(0);
+			sd.setProduct_id(md.getProduct_id());
+			sd.setProduct_name(md.getProduct_name());
 			System.out.println(d.getReal_cost_price());
-			sd.setAmount_Unit(d.getAmount_unit());
-			sd.setCost_Price(""+d.getCost_price());
+			sd.setAmount_unit(d.getAmount_unit());
+			sd.setCost_price(""+d.getCost_price());
 			
 			pd = service.spayDeilsadd(sd);
 		}
@@ -168,67 +168,26 @@ public class SPayController {
 				return "请输入出库数量";
 			}
 		}
-		int num = 0;
+		double num = 0;
 		int count = 0;
 		for (SPayDetails md : list) {
 			count+=md.getAmount();
-			num+=Integer.parseInt(md.getSubtotal());
-			System.out.println(md.getSubtotal());
+			num+=md.getSubtotal();
 			service.spayDeilsUpdate(md);
 		}
 		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String name =(String) session.getAttribute("username");
-		mds.setCost_Price_Sum(num);
-		mds.setAmount_Sum(count); 
-		mds.setCheck_Tag("等待审核");
-		mds.setStore_Tag("未登记");
+		mds.setCost_price_sum(num);
+		mds.setAmount_sum(count); 
+		mds.setCheck_tag("等待审核");
+		mds.setStore_tag("已登记");
 		mds.setStorer(dengji);
-		mds.setPay_Id(id);
+		mds.setPay_id(id);
 		mds.setReason(liyou);
 		mds.setRegister(name);//登记人
-		mds.setRegister_Time(formate.format(new Date()));//登记时间
+		mds.setRegister_time(formate.format(new Date()));//登记时间
 		int pd = service.addSPay(mds);
 		String str = JSONArray.toJSONString(pd);
 		return str;
 	}
-	
-	/**
-	 * 添加出库登记
-	 * @param mdprod
-	 * @return
-	 */
-	@RequestMapping("/addSpayguanli")
-	@ResponseBody
-	public String addSpayguanli(String dm,String id){
-		List<SPayDetails> list = JSON.parseArray(dm,SPayDetails.class);
-		SPay mds = new SPay();
-		for (SPayDetails md : list) {
-			if(md.getShul()==0) {
-				return "请输入出库数量";
-			}
-			if(md.getPaid_Amount()!=0) {
-				if((md.getShul()+md.getPaid_Amount())>md.getAmount()) {
-					return "出库数量过多";
-				}
-			}
-			if(md.getShul()>md.getAmount()) {
-				return "出库数量比应出库数多，请重新输入";
-			}
-		}
-		int num = 0;
-		for (SPayDetails md : list) {
-			num+=md.getPaid_Amount();
-			md.setPay_Tag("已登记");
-			md.setPaid_Amount(md.getShul());
-			service.spayDeilsUpdate(md);
-		}
-		mds.setPaid_Amount_Sum(num);
-		mds.setCheck_Tag("等待审核");
-		mds.setStore_Tag("已登记");
-		mds.setId(Integer.parseInt(id));
-		int pd = service.updateSPay(mds);
-		String str = JSONArray.toJSONString(pd);
-		return str;
-	}
-	
 }

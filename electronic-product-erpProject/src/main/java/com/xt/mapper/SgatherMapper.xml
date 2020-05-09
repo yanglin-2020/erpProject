@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.mapper.SgatherMapper">
+
+	<!-- 查询入库申请条数 -->
+	<select id="getSGatherCount" resultType="int">
+		select count(1) from s_Gather where check_tag='等待审核'
+	</select>
+
+	<!--查询入库申请 -->
+	<select id="getAllSgatherInfo" resultType="SGather">
+		select * from s_Gather where check_tag='等待审核'
+		
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+
+
+	<select id="getMManufactureCount" resultType="int">
+		select count(1) from d_file d,m_manufacture m
+		where d.type='物料' or
+		d.product_id=m.product_id and
+		m.manufacture_procedure_tag='已完工'
+		<if test="df.product_name!=null and df.product_name!=''">
+			and d.product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
+	</select>
+	<select id="getAllMManufactureInfo" resultType="d_file">
+		select * from d_file d,m_manufacture m
+		where d.type='物料' or
+		d.product_id=m.product_id and
+		m.manufacture_procedure_tag='已完工'
+		<if test="df.product_name!=null and df.product_name!=''">
+			and d.product_name like CONCAT('%',#{df.product_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+
+	<!--以下yl写的 -->
+	<!--添加入库详细 -->
+	<insert id="addSgatherDetail">
+		insert into
+		s_gather_details(parent_id,product_id,product_name,product_describe,amount,amount_unit,cost_price,subtotal)
+		values(#{parent_id},#{product_id},#{product_name},#{product_describe},#{amount},#{amount_unit},#{cost_price},#{subtotal})
+	</insert>
+	<!--根据入库单号查询详情  -->
+	<select id="queryRukuDetail" resultType="SGatherDetails">
+		select * from s_gather_details where parent_id=#{id}
+	</select>
+	<!--根据入库单号查询总数量  -->
+	<select id="queryRuKuCount" resultType="String">
+		select sum(amount) from s_gather_details where parent_id=#{id}
+	</select>
+	<!--根据入库单号查询总金额  -->
+	<select id="queryRuKuMoney" resultType="String">
+		select sum(subtotal) from s_gather_details where parent_id=#{id}
+	</select>
+	<!--生产入库申请单号用的  -->
+	<select id="getId" resultType="String">
+		select (id+1) from s_gather_details order by id desc limit 1
+	</select>
+	<!--删除入库详细的数据  -->
+	<delete id="delRuCudetail">
+		delete from s_gather_details where parent_id=#{gather_id} and product_id=#{product_id}
+	</delete>
+	<!--查询入库详细的所有数据  -->
+	<select id="queryAllRuKuDetail" resultType="SGatherDetails">
+		select * from s_gather_details
+	</select>
+	<!--修改入库详细的数量  -->
+	<update id="updateRuKuDetailNum">
+		update s_gather_details set amount=amount+#{amount},subtotal=subtotal+#{subtotal} 
+		where parent_id=#{gather_id} and product_id=#{product_id}
+	</update>
+	<!--保存入库申请  -->
+	<insert id="saveRuKu">
+		insert into 
+		s_gather(gather_id,reason,rukuperson,amount_sum,cost_price_sum,remark,register,register_time)
+		values(#{gather_id},#{reason},#{rukuperson},#{amount_sum},#{cost_price_sum},#{remark},#{register},#{register_time})
+	</insert>
+	<!--审核通过  -->
+	<update id="RuKufuheSuccess">
+		update s_gather set checker=#{checker},check_tag='审核通过' , check_time=#{check_time}
+		where gather_id=#{gather_id}
+	</update>
+	<!--审核不通过  -->
+	<update id="RuKufuheNoSuccess">
+		update s_gather set checker=#{checker},check_time=#{check_time},check_tag='审核不通过'
+		where gather_id=#{gather_id}
+	</update>
+	<!--分页查询入库申请单信息  -->
+	<select id="getRuKuCount" resultType="int">
+		select count(1) from s_gather where check_tag='审核通过' 
+		<if test="sg.gather_id!=null and sg.gather_id!=''">
+			and gather_id like CONCAT('%',#{sg.gather_id},'%')
+		</if>
+	</select>
+	<select id="getRuKuInfo" resultType="SGather">
+		select * from s_gather where check_tag='审核通过' 
+		<if test="sg.gather_id!=null and sg.gather_id!=''">
+			and gather_id like CONCAT('%',#{sg.gather_id},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+</mapper>

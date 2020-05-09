@@ -32,27 +32,18 @@
                 <div class="layui-col-md12">
                     <div class="layui-card">
                          <div class="layui-card-body ">
-                            <form class="layui-form layui-col-space5">
-                               <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="euUserName" placeholder="请输入产品名" autocomplete="off" class="layui-input">
-                                </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
-                            </form>
                         </div>
                         <div class="layui-card-body ">
-                            <table class="layui-table" lay-data="{url:'SpayAll?bh=等待审核&change=未登记',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
+                            <table class="layui-table" lay-data="{url:'SpayAll?bh=等待审核&change=已登记',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                       <th lay-data="{field:'pay_Id', width:200, sort: true}">出库单编号</th>
+                                       <th lay-data="{field:'pay_id', width:200, sort: true}">出库单编号</th>
                                         <th lay-data="{field:'storer', width:100, sort: true, edit: 'text'}">出库人</th>
                                         <th lay-data="{field:'reason', width:120}">出库理由</th>
-                                        <th lay-data="{field:'amount_Sum', width:100}">总件数</th>
-                                        <th lay-data="{field:'cost_Price_Sum', width:100}">总金额</th>
+                                        <th lay-data="{field:'amount_sum', width:100}">总件数</th>
+                                        <th lay-data="{field:'cost_price_sum', width:100}">总金额</th>
                                         <th lay-data="{field:'register', width:70}">登记人</th>
-                                        <th lay-data="{field:'register_Time', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.register_Time)}}">登记时间</th>
+                                        <th lay-data="{field:'register_time', width:180,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.register_time)}}">登记时间</th>
                                        <th lay-data="{width:270, templet:'#oprListBar',fixed:'right'}">操作</th>
                                         </tr>
                                 </thead>
@@ -91,7 +82,7 @@
           //查看
             function editUser(find){
         	    title = "查看";
-        	    window.names = find.pay_Id;
+        	    window.names = find.pay_id;
                 var index = layer.open({
     				type: 2,
     				title: "出库详情页面",

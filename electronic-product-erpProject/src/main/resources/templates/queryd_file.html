@@ -34,17 +34,10 @@
                                <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="euUserName" placeholder="请输入产品的名称" autocomplete="off" class="layui-input">
                                 </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
+                                
                                 
                                 <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="product_id" placeholder="请输入产品的编号" autocomplete="off" class="layui-input">
-                                </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn2" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
                                 </div>
                                 
                                 <div class="layui-inline layui-show-xs-block">
@@ -56,10 +49,7 @@
 										</select> 
 									</div>
 								</div>
-								<div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn1" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
+								
                                 
                                   <div class="layui-inline layui-show-xs-block">
 									<div class="layui-input-inline">
@@ -72,9 +62,9 @@
 									</div>
 								</div>
 								<div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn3" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
+								<a class="layui-btn search_btn" data-type="reload"> <i
+									class="layui-icon">&#xe615;</i></a>
+							</div>
                             </form>
                         </div>
                         <div class="layui-card-body ">
@@ -100,6 +90,7 @@
                                          <th lay-data="{field:'register_time', width:160,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.register_time)}}">登记时间</th>
                                          <th lay-data="{field:'checker', width:80}">复核人</th>
                                          <th lay-data="{field:'check_time', width:160,sort: true, edit: 'text',templet: function(d){return layui.util.toDateString(d.check_time)}}">复核时间</th>
+                                         <th lay-data="{field:'reason', width:120}">原因</th>
                                         <th lay-data="{width:120, templet:'#oprListBar',fixed:'right'}">操作</th>
                                         </tr>
                                 </thead>
@@ -226,46 +217,28 @@
                 };
             });
           //条件查询
-            $(".search_btn").on("click",function(){
-                     table.reload("test",{
-                         page: {
-                             curr: 1 //重新从第 1 页开始
-                         },
-                         where: {
-                        	 name: $("input[name=euUserName]").val()  //搜索的关键字
-                         }
-                     });
-    
-             });
-            $(".search_btn1").on("click",function(){
-          	  table.reload("test",{
-          		page:{
-          			curr:1
-          		},
-          		where:{
-          			type: $("[name=type]").val()
-          		}
-          	  });
-            });
-            $(".search_btn2").on("click",function(){
-            	  table.reload("test",{
-            		page:{
-            			curr:1
-            		},
-            		where:{
-            			product_id: $("[name=product_id]").val()
-            		}
-            	  });
-              });
-            $(".search_btn3").on("click",function(){
-          	  table.reload("test",{
-          		page:{
-          			curr:1
-          		},
-          		where:{
-          			check_tag: $("[name=check_tag]").val()
-          		}
-          	  });
-            });
+            
+        
         });</script>
+        
+    <script>
+	layui.use('table', function() {
+		var table = layui.table;
+		//条件查询
+		$(".search_btn").on("click", function() {
+			table.reload("test", {
+				page : {
+					curr : 1
+				//重新从第 1 页开始
+				},
+				where : {
+				 name: $("input[name=euUserName]").val(),  //搜索的关键字
+               	 type: $("[name=type]").val(),
+               	 product_id: $("[name=product_id]").val(),
+               	 check_tag: $("[name=check_tag]").val()
+				}
+			});
+		});
+	});
+	</script>
 </html>

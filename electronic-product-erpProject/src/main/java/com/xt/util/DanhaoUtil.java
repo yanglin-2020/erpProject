@@ -52,4 +52,11 @@ public class DanhaoUtil {
 		}
 		return ip;
 	}
+	//入库申请单号
+	public static String getRuKuDanHao() {
+		SimpleDateFormat formate = new SimpleDateFormat("yyyyMMdd");
+		Date date = new Date();
+		String danhao = "rk" + formate.format(date);
+		return danhao;
+	}
 }

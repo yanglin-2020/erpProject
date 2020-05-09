@@ -9,10 +9,12 @@ public class ShengchanUtil {
 		SimpleDateFormat formate = new SimpleDateFormat("yyyyMMdd");
 		return formate.format(date);
 	}
+
 	public static String formatDateToCommon1(Date date) {
 		SimpleDateFormat formate = new SimpleDateFormat("yyyyMMddHHmmss");
 		return formate.format(date);
 	}
+
 	// 产品编号
 	public static String getProductDanHao() {
 		// 获取当前时间
@@ -30,5 +32,4 @@ public class ShengchanUtil {
 		String danhao = "sc" + ShengchanUtil.formatDateToCommon1(d);
 		return danhao;
 	}
-
 }

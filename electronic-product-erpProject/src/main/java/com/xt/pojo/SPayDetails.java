@@ -5,120 +5,96 @@ import java.io.Serializable;
 /**
  * 出库明细实体类
  *
- * @author lwt
- * @since 2020-04-17 10:35:18
+ * @author long
  */
 public class SPayDetails implements Serializable {
-    private static final long serialVersionUID = -35134247554177231L;
     //序号
     private Integer id;
     //父级序号
-    private String parent_Id;
+    private Integer parent_id;
     //产品编号
-    private String product_Id;
+    private String product_id;
     //产品名称
-    private String product_Name;
+    private String product_name;
     //描述
-    private String product_Describe;
+    private String product_describe;
     //数量
-    private int amount;
+    private Integer amount;
     //单位
-    private String amount_Unit;
+    private String amount_unit;
     //单价
-    private String cost_Price;
+    private Object cost_price;
     //小计
-    private String subtotal;
+    private double subtotal;
     //确认出库件数
-    private int paid_Amount;
+    private Object paid_amount;
     //出库标志   K002-1: 已登记   K002-2: 已调度
-    private String pay_Tag;
-    
-    private int shul;
-    
-    
-	public int getAmount() {
-		return amount;
-	}
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-	public int getShul() {
-		return shul;
-	}
-	public void setShul(int shul) {
-		this.shul = shul;
-	}
+    private String pay_tag;
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getParent_Id() {
-		return parent_Id;
+	public Integer getParent_id() {
+		return parent_id;
 	}
-	public void setParent_Id(String parent_Id) {
-		this.parent_Id = parent_Id;
+	public void setParent_id(Integer parent_id) {
+		this.parent_id = parent_id;
 	}
-	public String getProduct_Id() {
-		return product_Id;
+	public String getProduct_id() {
+		return product_id;
 	}
-	public void setProduct_Id(String product_Id) {
-		this.product_Id = product_Id;
+	public void setProduct_id(String product_id) {
+		this.product_id = product_id;
 	}
-	public String getProduct_Name() {
-		return product_Name;
+	public String getProduct_name() {
+		return product_name;
 	}
-	public void setProduct_Name(String product_Name) {
-		this.product_Name = product_Name;
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
 	}
-	public String getProduct_Describe() {
-		return product_Describe;
+	public String getProduct_describe() {
+		return product_describe;
 	}
-	public void setProduct_Describe(String product_Describe) {
-		this.product_Describe = product_Describe;
+	public void setProduct_describe(String product_describe) {
+		this.product_describe = product_describe;
 	}
-	public String getAmount_Unit() {
-		return amount_Unit;
+	public Integer getAmount() {
+		return amount;
 	}
-	public void setAmount_Unit(String amount_Unit) {
-		this.amount_Unit = amount_Unit;
+	public void setAmount(Integer amount) {
+		this.amount = amount;
 	}
-	public String getCost_Price() {
-		return cost_Price;
+	public String getAmount_unit() {
+		return amount_unit;
 	}
-	public void setCost_Price(String cost_Price) {
-		this.cost_Price = cost_Price;
+	public void setAmount_unit(String amount_unit) {
+		this.amount_unit = amount_unit;
 	}
-	public String getSubtotal() {
+	public Object getCost_price() {
+		return cost_price;
+	}
+	public void setCost_price(Object cost_price) {
+		this.cost_price = cost_price;
+	}
+	public double getSubtotal() {
 		return subtotal;
 	}
-	public void setSubtotal(String subtotal) {
+	public void setSubtotal(double subtotal) {
 		this.subtotal = subtotal;
 	}
-	public int getPaid_Amount() {
-		return paid_Amount;
+	public Object getPaid_amount() {
+		return paid_amount;
 	}
-	public void setPaid_Amount(int paid_Amount) {
-		this.paid_Amount = paid_Amount;
+	public void setPaid_amount(Object paid_amount) {
+		this.paid_amount = paid_amount;
 	}
-	public String getPay_Tag() {
-		return pay_Tag;
+	public String getPay_tag() {
+		return pay_tag;
 	}
-	public void setPay_Tag(String pay_Tag) {
-		this.pay_Tag = pay_Tag;
+	public void setPay_tag(String pay_tag) {
+		this.pay_tag = pay_tag;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	@Override
-	public String toString() {
-		return "SPayDetails [id=" + id + ", parent_Id=" + parent_Id + ", product_Id=" + product_Id + ", product_Name="
-				+ product_Name + ", product_Describe=" + product_Describe + ", amount=" + amount + ", amount_Unit="
-				+ amount_Unit + ", cost_Price=" + cost_Price + ", subtotal=" + subtotal + ", paid_Amount=" + paid_Amount
-				+ ", pay_Tag=" + pay_Tag + "]";
-	}
-
-
     
 }

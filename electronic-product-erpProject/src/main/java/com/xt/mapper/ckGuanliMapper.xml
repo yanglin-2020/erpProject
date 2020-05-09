@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.mapper.ckGuanliMapper">
+
+	<!--获取已调度出库单总记录数 -->
+	<select id="getSPayCount" resultType="int">
+		select count(1) from
+		s_pay
+		where store_tag='已调度'
+	</select>
+
+	<!--获取已调度出库单的分页查询 -->
+	<select id="SelectSPay" resultType="SPay">
+		select * from
+		s_pay
+		where
+		store_tag='已调度' limit #{startRow},#{pageSize}
+	</select>
+
+	<!--根据父级序号查询出库单详细信息 -->
+	<select id="findD_fileById" resultType="SPayDetails">
+		select * from
+		s_pay_details
+		where parent_id=#{id}
+	</select>
+	<!-- 修改出库表 -->
+	<update id="updateSpay">
+		update s_pay
+		<set>
+			<if test="register != null and register !=''">
+				register=#{register},
+			</if>
+			<if test="register_time != null and register_time !=''">
+				register_time=#{register_time},
+			</if>
+			<if test="store_tag != null and store_tag !=''">
+				store_tag=#{store_tag},
+			</if>
+			<if test="checker != null and checker !=''">
+				checker=#{checker},
+			</if>
+			<if test="check_time != null and check_time !=''">
+				check_time=#{check_time},
+			</if>
+			<if test="check_tag != null and check_tag !=''">
+				check_tag=#{check_tag},
+			</if>
+			<if test="status != null and status !=''">
+				status=#{status},
+			</if>
+		</set>
+		where pay_id = #{id}
+	</update>
+	<!-- 修改出库详细表 -->
+	<update id="updateStoreByParent_id">
+		update s_pay_details
+		set pay_tag = '已出库'
+		where
+		parent_id = #{id}
+	</update>
+
+	<!--获取已出库出库单总记录数 -->
+	<select id="getSPayDengjiCount" resultType="int">
+		select count(1)
+		from
+		s_pay
+		where store_tag='已出库'
+	</select>
+
+	<!--获取已出库出库单的分页查询 -->
+	<select id="SelectDengjiSPay" resultType="SPay">
+		select * from
+		s_pay
+		where store_tag='已出库' and check_tag='审核通过' and status='未完成' limit
+		#{startRow},#{pageSize}
+	</select>
+
+	<!-- 商品出库 -->
+	<update id="updateKucun">
+		update s_cell
+		set amount = amount-#{paid_amount}
+		where
+		product_id = #{product_id}
+	</update>
+
+	<!--获取出库单总记录数 -->
+	<select id="getSPayAllCount" resultType="int">
+		select count(1) from
+		s_pay where status='已完成'
+		<if test="s.pay_id != null and s.pay_id !=''">
+			and pay_id=#{s.pay_id}
+		</if>
+	</select>
+
+	<!--获取出库单的分页查询 -->
+	<select id="SelectAllSPay" resultType="SPay">
+		select * from
+		s_pay where status='已完成'
+		<if test="s.pay_id != null and s.pay_id !=''">
+			and pay_id=#{s.pay_id}
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+</mapper>
