@@ -18,10 +18,7 @@
     <body>
         <div class="x-nav">
             <span class="layui-breadcrumb">
-                <a href="">首页</a>
-                <a href="">演示</a>
-                <a>
-                    <cite>导航元素</cite></a>
+                    <cite id="procedure_Name">导航元素</cite>
             </span>
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
                 <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
@@ -72,6 +69,7 @@
             var table = layui.table;
             var id= parent.ids;
             var product_id=parent.product_id;
+            var procedure_Name=parent.procedure_Name;
             table.render({
                 elem: '#demo'
                 ,height: 312
@@ -94,7 +92,7 @@
             layer = layui.layer;
             
           //查看
-            
+            $("#procedure_Name").html(procedure_Name);
             
             var $ = layui.$, active = {
           		  fmdes: function(){ //获取选中数据
@@ -103,7 +101,7 @@
           			$.post("addDModuleDetailslist",{dm:JSON.stringify(table.cache.demo),id:id},function(res){
                		 if(res=="1"){
                			setTimeout(function() {
-             				top.layer.msg("操作成功！");
+             				top.layer.msg("请刷新一下页面！");
              				layer.closeAll("iframe");
              				//刷新父页面
              				parent.layer.close(parent.layer.index);

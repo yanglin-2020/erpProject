@@ -220,12 +220,12 @@ td {
 	text-indent: 5px;
 }
 
-.layoutitem-add {
+#layoutitem-add {
 	float: right;
 	padding-right: 15px;
 }
 
-.layoutitem-add a {
+#layoutitem-add button {
 	width: 70px;
 	height: 24px;
 	line-height: 24px;
@@ -235,7 +235,9 @@ td {
 }
 
 .add {
-	background: #ff0303;
+	width: 70px;
+	height: 24px;
+	background: #009688;
 	color: #fff;
 	border-radius: 3px;
 	text-align: center;
@@ -432,6 +434,10 @@ body {
 							</div>
 						</div>
 					</div>
+					<div id="layoutitem-add">
+						<button class="add" onclick="exit()">退出</button>
+					</div>
+
 				</td>
 			</tr>
 		</tbody>
@@ -443,26 +449,11 @@ body {
 <script type="text/javascript" src="js/jquery.tablescroll.js"></script>
 
 <script type="text/javascript">
-	/* function shenhe(obj) {
-		var id = $("#id").val();//出库单序号
-		$.get("ruku_shenhe", {
-			"id" : id,
-			"checker" : $("#checker").val(),
-			"check_time" : $("#check_time").val(),
-			"check_tag" : obj,
-		}, function(data) {
-			if (data > 0) {
-				layer.msg("操作成功！");
-				layer.closeAll("iframe");
-				//刷新父页面
-				table.reload("test");
-				layer.close(index);
-			} else {
-				layer.alert("操作失败!");
-			}
-
-		});
-	} */
+	function exit() {
+		layer.closeAll("iframe");
+		//刷新父页面
+		parent.location.reload();
+	}
 
 	$(document).ready(function($) {
 		$('#thetable').tableScroll({

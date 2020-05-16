@@ -112,4 +112,14 @@ public class SGatherDetails implements Serializable {
 		this.cost_price = cost_price;
 		this.subtotal = subtotal;
 	}
+	public SGatherDetails(String parent_id, String product_id, String product_name, String product_describe,
+			Object amount, Object subtotal) {
+		super();
+		this.parent_id = parent_id;
+		this.product_id = product_id;
+		this.product_name = product_name;
+		this.product_describe = product_describe;
+		this.amount = amount;
+		this.subtotal = subtotal;
+	}
 }

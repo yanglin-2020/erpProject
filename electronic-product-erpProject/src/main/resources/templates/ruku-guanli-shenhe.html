@@ -432,8 +432,8 @@ body {
 							</div>
 						</div>
 						<div class="layoutitem-add">
-							<a onclick="shenhe('审核通过')" class="add">审核通过</a> <a
-								onclick="shenhe('审核不通过')" class="bc">审核不通过</a>
+							<a onclick="shenhe()" class="add">审核通过</a> <a
+								onclick="shenhe()" class="bc">审核不通过</a>
 						</div>
 					</div>
 				</td>
@@ -447,20 +447,18 @@ body {
 <script type="text/javascript" src="js/jquery.tablescroll.js"></script>
 
 <script type="text/javascript">
-	function shenhe(obj) {
+	function shenhe() {
 		var id = $("#gather_id").val();//入库单序号
 		$.get("ruku_shenhe", {
 			"gather_id" : id,
 			"checker" : $("#checker").val(),
 			"check_time" : $("#check_time").val(),
-			"check_tag" : obj,
 		}, function(data) {
 			if (data > 0) {
-				layer.alert("操作成功！");
+				top.layer.msg("操作成功！");
 				layer.closeAll("iframe");
 				//刷新父页面
-				table.reload("test");
-				layer.close(index);
+				parent.location.reload();
 			} else {
 				layer.alert("操作失败!");
 			}

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.xt.pojo.GongGao;
 import com.xt.pojo.Permissions;
+import com.xt.pojo.SCell;
 import com.xt.pojo.SysLogs;
 import com.xt.pojo.Users;
 import com.xt.util.PageUtil;
@@ -53,4 +55,21 @@ public interface UsersMapper {
 	int updateSelfCount(String u_name);
 	//查询前五用户的访问量
 	public List<Users> getUsersInfoCount();
+	
+	//分页查询最新公告信息
+	int getGongGaoCount(@Param("gg") GongGao gg);
+	public List<GongGao> getGongGaoInfo(@Param("page") PageUtil page,@Param("gg") GongGao gg);
+	//分页查询库存预警信息
+	int getyjCount(@Param("s") SCell s);
+	public List<SCell> getyjInfo(@Param("page") PageUtil page,@Param("s") SCell s);
+	//分页查询所有公告信息
+	int getGongGaoAllCount(@Param("gg") GongGao gg);
+	public List<GongGao> getGongGaoAllInfo(@Param("page") PageUtil page,@Param("gg") GongGao gg);
+	//发布公告
+	int addGongGao(GongGao gg);
+	//修改公告
+	int updateGongGao(GongGao gg);
+	//删除一个公告
+	int deleteGongGao(String id);
+	
 }

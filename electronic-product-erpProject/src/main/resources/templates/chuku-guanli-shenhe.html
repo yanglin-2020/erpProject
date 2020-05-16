@@ -433,7 +433,7 @@ body {
 						</div>
 						<div class="layoutitem-add">
 							<a onclick="shenhe('审核通过')" class="add">审核通过</a> <a
-								onclick="shenhe('审核不通过')" class="bc">审核不通过</a>
+								onclick="shenhe('审核不通过')" class="tc">审核不通过</a>
 						</div>
 					</div>
 				</td>
@@ -456,11 +456,10 @@ body {
 			"check_tag" : obj,
 		}, function(data) {
 			if (data > 0) {
-				layer.msg("操作成功！");
+				top.layer.msg("操作成功！");
 				layer.closeAll("iframe");
 				//刷新父页面
-				table.reload("test");
-				layer.close(index);
+				parent.location.reload();
 			} else {
 				layer.alert("操作失败!");
 			}

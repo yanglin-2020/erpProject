@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<script type="text/javascript">
+</script>
+    <head>
+        <meta charset="UTF-8">
+        <title>供应商审核  CQK</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <style type="text/css">
+        	.huifu{
+        		display: inline;
+        	}
+        </style>
+    </head>
+    
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+             <a><cite>供应商复核</cite></a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                    <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="name" placeholder="请输入供应商的名称" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <a class="layui-btn search_btn2" data-type="reload">
+                                        <i class="layui-icon">&#xe615;</i></a>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table" lay-data="{url:'querysupplier',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
+                                <thead>
+                                    <tr>
+                                        <th lay-data="{field:'supplier_ID', width:110, sort: true}">供货商编号</th>
+                                        <th lay-data="{field:'name', width:160}">供货商名称</th>
+                                        <th lay-data="{field:'address', width:200}">所在地</th>
+                                        <th lay-data="{field:'phone', width:120}">联系电话</th>
+                                        <th lay-data="{field:'khyh', width:120}">开户银行</th>
+                                         <th lay-data="{field:'constactPerson', width:80}">联系人</th>
+                                         <th lay-data="{field:'register', width:70}">登记人</th>
+                                         <th lay-data="{field:'register_time', width:150}">登记时间</th>
+                                         <th lay-data="{field:'remark', width:200}">备注</th>
+                                         <th lay-data="{width:200, templet:'#oprListBar',fixed:'right'}">操作</th>
+                                        </tr>
+                                </thead>
+                            </table>
+					</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <!--操作-->
+	<script type="text/html" id="oprListBar">
+ 		<i class="layui-icon layui-btn layui-btn-warning" lay-event="updateinfo">复核</i>
+		<i class="layui-icon layui-btn layui-btn-danger" lay-event="nofuhe">审核不通过</i>
+	</script>
+    <script type="text/html" id="toolbarDemo">
+        <div class = "layui-btn-container" > 
+            <button class = "layui-btn layui-btn-sm" lay-event = "" >供应商待审核数据如下</button>
+        </div > 
+    </script>
+    <script>layui.use('table',
+        function() {
+            var table = layui.table;
+
+          //编辑操作
+            function editUser(edit){
+        	    title = "审核供应商信息";
+                var index = layui.layer.open({
+                    title : title,
+                    type : 2,
+                    content : "supplierreexamine.html",
+                    area: ['1024px', '500px'],
+                    name: 'MsgWindow',
+                   /*  maxmin: true, */
+                    success : function(layero, index){
+                    	//获取子窗体对象
+                    	var body = layui.layer.getChildFrame('body', index);
+                        if(edit){
+                        	body.find("[name=supplier_ID]").val(edit.supplier_ID);
+                        	body.find("[name=name]").val(edit.name);
+                        	body.find("[name=constactPerson]").val(edit.constactPerson);
+                        	body.find("[name=phone]").val(edit.phone);
+                        	body.find("[name=khyh]").val(edit.khyh);
+                        	body.find("[name=constactPerson]").val(edit.constactPerson);
+                        	body.find("[name=register]").val(edit.register);
+                        	body.find("[name=register_time]").val(edit.register_time);
+                        	body.find("[name=remark]").val(edit.remark);
+                        	body.find(".xg").click(function(){
+                        		window.location.replace(location.href);
+                        	});
+                        	body.find(".fh").click(function(){
+                        		window.location.replace(location.href);
+                        	});
+                        	form.render();
+                        	table.reload("test",{
+                                 page: {
+                                     curr: 1 //重新从第 1 页开始
+                                 }
+            				 });
+                        }
+                    }
+                });
+            }
+          //列表操作
+            table.on('tool(test)', function(obj){
+                var layEvent = obj.event,
+                    data = obj.data;
+                if(layEvent === 'updateinfo'){ //修改产品档案信息
+                	editUser(data);
+                } else if(layEvent === 'nofuhe'){ //审核不通过
+                	layer.prompt({
+                 	 formType: 2,
+              		 value: '',
+              		 title: '请输入审核意见'
+              		}, function(value, index, elem){
+              		 	layer.close(index);
+              		 	$.get("noauditsupplier",{
+              		 		supplier_ID:data.supplier_ID,reason: value
+              		 	},function(data){
+              		 		if(data>0){
+              		 			layer.msg("操作成功");
+	              		 		 table.reload("test",{
+	                                 page: {
+	                                     curr: 1 //重新从第 1 页开始
+	                                 }
+	            				 });
+              		 		}
+              		 	})
+              		});
+                } 
+            });
+            $(".search_btn1").on("click",function(){
+              var checktag=$("[name=check_tag]").val();
+          	  table.reload("test",{
+          		page:{
+          			curr:1
+          		},
+          		where:{
+          			check_tag: checktag
+          		}
+          	  });
+            });
+            $(".search_btn2").on("click",function(){
+            	  table.reload("test",{
+            		page:{
+            			curr:1
+            		},
+            		where:{
+            			name: $("[name=name]").val()
+            		}
+            	  });
+              });
+        });</script>
+</html>

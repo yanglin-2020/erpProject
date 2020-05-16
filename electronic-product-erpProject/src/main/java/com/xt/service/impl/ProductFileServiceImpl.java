@@ -13,8 +13,8 @@ import com.xt.mapper.ProductFileMapper;
 import com.xt.pojo.DModule;
 import com.xt.pojo.DModuleDetails;
 import com.xt.pojo.D_file;
+import com.xt.pojo.Goods;
 import com.xt.pojo.KuCun;
-import com.xt.pojo.Users;
 import com.xt.service.ProductFileService;
 import com.xt.util.PageDemo;
 import com.xt.util.PageUtil;
@@ -311,5 +311,10 @@ public class ProductFileServiceImpl implements ProductFileService{
 		pd.setMsg("");
 		pd.setData(list);
 		return pd;
+	}
+
+	@Override
+	public int addGoodsInfoByD_File(Goods g) {
+		return mapper.addGoodsInfoByD_File(g);
 	}
 }

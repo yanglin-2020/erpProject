@@ -1,6 +1,8 @@
 package com.xt.pojo;
 
-public class Roles {
+import java.io.Serializable;
+
+public class Roles implements Serializable{
 	private int id;
 	private String name;
 	private String descinfo;

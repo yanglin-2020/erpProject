@@ -1,9 +1,12 @@
 package com.xt.pojo;
+
+import java.io.Serializable;
+
 /**
  * 产品档案
  * @author yl
  */
-public class D_file {
+public class D_file implements Serializable{
 	private int id;//
 	private String product_id;//产品编号
 	private String product_name;//产品名称

@@ -1,170 +1,147 @@
 <!doctype html>
 <html class="x-admin-sm">
 <html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-    <head>
-        <meta charset="UTF-8">
-        <title>电子产品ERP管理系统</title>
-        <meta name="renderer" content="webkit|ie-comp|ie-stand">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-        <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <link rel="stylesheet" href="./css/font.css">
-        <link rel="stylesheet" href="./css/xadmin.css">
-        <link rel="stylesheet" href="./css/theme3360.min.css"><!--更换模板主题  -->
-        <script src="./lib/layui/layui.js" charset="utf-8"></script>
-        <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon"/>
-        <script type="text/javascript" src="./js/xadmin.js"></script>
-        <script>
-            // 是否开启刷新记忆tab功能
-            var is_remember = false;
-        </script>
-        
-    </head>
-    <body class="index">
-        <!-- 顶部开始 -->
-        <div class="container">
-            <div class="logo">
-                <a href="https://baike.so.com/doc/5339230-5574671.html">ERP管理系统</a></div>
-            <div class="left_open">
-                <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
-            </div>
-            <ul class="layui-nav left fast-add" lay-filter="">
-                <li class="layui-nav-item">
-                    <a href="javascript:;">功能模板</a>
-                    <dl class="layui-nav-child">
-                        <!-- 二级菜单 -->
-                        <dd><a shiro:hasPermission="产品设计"th:href="@{/gongneng(gongnengid=63)}">产品设计</a></dd>
-                        <dd><a shiro:hasPermission="生产管理" th:href="@{/gongneng(gongnengid=64)}">生产管理</a></dd>
-                        <dd><a shiro:hasPermission="库存管理" th:href="@{/gongneng(gongnengid=65)}">库存管理</a></dd>
-                        <dd><a shiro:hasPermission="系统管理" th:href="@{/gongneng(gongnengid=66)}">系统管理</a></dd>
-                        <dd><a th:href="@{/gongneng(gongnengid=0)}">退出</a></dd>
-                    </dl>
-                </li>
-            </ul>
-            <ul class="layui-nav right" lay-filter="">
-                <li class="layui-nav-item">
-                <a href="javascript:;">
-                    [[${session.username}]]
-                    <dl class="layui-nav-child">
-                        <!-- 二级菜单 -->
-                        <dd>
-                            <a onclick="xadmin.open('个人信息','userInfo.html','800','620')">个人信息</a></dd>
-                        <dd>
-                            <a href="/updatepwd.html">修改密码</a></dd>
-                        <dd>
-                            <a href="/tiaozhuan">退出</a>
-                        </dd>
-                    </dl>
-                </a>
-                </li>
-                <li class="layui-nav-item to-index">
-                   <img th:src="${session.u_image}" class="layui-nav-img"></li>
-            </ul>
-        </div>
-        <!-- 顶部结束 -->
-        <!-- 中部开始 -->
-        <!-- 左侧菜单开始 -->
-        <div class="left-nav">
-            <div id="side-nav">
-                <ul id="nav">
-                    <li th:each="parentMenus:${Menuslist}">
-                        <a href="javascript:;">
-                            <i class="iconfont left-nav-li" th:lay-tips="${parentMenus.name}">&#xe6cb;</i>
-                            <cite><span th:text="${parentMenus.name}"></span></cite>
-                            <i class="iconfont nav_right">&#xe696;</i></a>
-                        <ul class="sub-menu">
-                            <li th:each="sonMenu:${parentMenus.sonMenus}">
-                                <a th:onclick=xadmin.add_tab([[${sonMenu.name}]],[[${sonMenu.linkUrl}]])>
-                                    <i class="iconfont">&#xe718;</i>
-                                    <cite><span th:text="${sonMenu.name}"></span></cite></a>
-                            </li>
-                        </ul>
-                    </li>
-                     <li>
-                        <a href="javascript:;">
-                            <i class="iconfont left-nav-li" lay-tips="图标字体">&#xe6b4;</i>
-                            <cite>图标字体</cite>
-                            <i class="iconfont nav_right">&#xe697;</i></a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a onclick="xadmin.add_tab('图标对应字体','unicode.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>图标对应字体</cite></a>
-                            </li>
-                        </ul>
-                    </li>
-                     <li>
-                        <a href="javascript:;">
-                            <i class="iconfont left-nav-li" lay-tips="第三方组件">&#xe6b4;</i>
-                            <cite>layui第三方组件</cite>
-                            <i class="iconfont nav_right">&#xe697;</i></a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a onclick="xadmin.add_tab('滑块验证','https://fly.layui.com/extend/sliderVerify/')" target="">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>滑块验证</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('富文本编辑器','https://fly.layui.com/extend/layedit/')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>富文本编辑器</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('eleTree 树组件','https://fly.layui.com/extend/eleTree/')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>eleTree 树组件</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('图片截取','https://fly.layui.com/extend/croppers/')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>图片截取</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('formSelects 4.x 多选框','https://fly.layui.com/extend/formSelects/')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>formSelects 4.x 多选框</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('Magnifier 放大镜','https://fly.layui.com/extend/Magnifier/')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>Magnifier 放大镜</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('notice 通知控件','https://fly.layui.com/extend/notice/')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>notice 通知控件</cite></a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- <div class="x-slide_left"></div> -->
-        <!-- 左侧菜单结束 -->
-        <!-- 右侧主体开始 -->
-        <div class="page-content">
-            <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
-                <ul class="layui-tab-title">
-                    <li class="home">
-                        <i class="layui-icon">&#xe68e;</i>我的桌面</li></ul>
-                <div class="layui-unselect layui-form-select layui-form-selected" id="tab_right">
-                    <dl>
-                        <dd data-type="this">关闭当前</dd>
-                        <dd data-type="other">关闭其它</dd>
-                        <dd data-type="all">关闭全部</dd></dl>
-                </div>
-                <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show">
-                        <iframe src='./welcome1.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
-                    </div>
-                </div>
-                <div id="tab_show"></div>
-            </div>
-        </div>
-        <div class="page-content-bg"></div>
-        <style id="theme_style"></style>
-        <!-- 右侧主体结束 -->
-        <!-- 中部结束 -->
-    </body>
+<head>
+<meta charset="UTF-8">
+<title>电子产品ERP管理系统</title>
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./css/xadmin.css">
+<link rel="stylesheet" href="./css/theme3360.min.css">
+<!--更换模板主题  -->
+<!-- <link rel="stylesheet" href="./css/theme1.css"> -->
+<!--更换模板主题  -->
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<link rel="shortcut icon" href="./images/favicon.ico"
+	type="image/x-icon" />
+<script type="text/javascript" src="./js/xadmin.js"></script>
+<script>
+	// 是否开启刷新记忆tab功能
+	var is_remember = false;
+</script>
+
+</head>
+<body class="index">
+	<!-- 顶部开始 -->
+	<div class="container">
+		<div class="logo">
+			<a href="https://baike.so.com/doc/5339230-5574671.html">ERP管理系统</a>
+		</div>
+		<div class="left_open">
+			<a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
+		</div>
+		<ul class="layui-nav left fast-add" lay-filter="">
+			<li class="layui-nav-item"><a href="javascript:;">功能板块</a>
+				<dl class="layui-nav-child">
+					<!-- 二级菜单 -->
+					<dd>
+						<a shiro:hasPermission="产品设计"
+							th:href="@{/gongneng(gongnengid=63)}">产品设计</a>
+					</dd>
+					<dd>
+						<a shiro:hasPermission="生产管理"
+							th:href="@{/gongneng(gongnengid=64)}">生产管理</a>
+					</dd>
+					<dd>
+						<a shiro:hasPermission="库存管理"
+							th:href="@{/gongneng(gongnengid=65)}">库存管理</a>
+					</dd>
+					<dd>
+						<a shiro:hasPermission="采购管理"
+							th:href="@{/gongneng(gongnengid=66)}">采购管理</a>
+					</dd>
+					<dd>
+						<a shiro:hasPermission="系统管理"
+							th:href="@{/gongneng(gongnengid=67)}">系统管理</a>
+					</dd>
+					<dd>
+						<a th:href="@{/gongneng(gongnengid=0)}">退出</a>
+					</dd>
+				</dl></li>
+		</ul>
+		<ul class="layui-nav right" lay-filter="">
+			<li class="layui-nav-item"><a href="javascript:;">
+					[[${session.username}]]
+					<dl class="layui-nav-child">
+						<!-- 二级菜单 -->
+						<dd>
+							<a onclick="xadmin.open('个人信息','userInfo.html','830','640')">个人信息</a>
+						</dd>
+						<dd>
+							<a href="/updatepwd.html">修改密码</a>
+						</dd>
+						<dd>
+							<a href="/tiaozhuan">退出</a>
+						</dd>
+					</dl>
+			</a></li>
+			<li class="layui-nav-item to-index"><img
+				th:src="${session.u_image}" class="layui-nav-img"></li>
+		</ul>
+	</div>
+
+	<!-- 顶部结束 -->
+	<!-- 中部开始 -->
+	<!-- 左侧菜单开始 -->
+	<div class="left-nav">
+		<div id="side-nav">
+			<ul id="nav">
+				<li>
+				<div align="center">
+					<div style="width:100px; height:100px; border-radius:50%; overflow:hidden;" >
+						<img th:src="${session.u_image}" style="height: 100px;">
+					</div>
+					 <h3><b>你好！<span th:text="${session.username}"></span>, 欢迎登录</b></h3>
+				</div>
+				</li>
+				<li th:each="parentMenus:${Menuslist}"><a href="javascript:;">
+						<i class="iconfont left-nav-li" th:lay-tips="${parentMenus.name}">&#xe6cb;</i>
+						<cite><span th:text="${parentMenus.name}"></span></cite> <i
+						class="iconfont nav_right">&#xe696;</i>
+				</a>
+					<ul class="sub-menu">
+						<li th:each="sonMenu:${parentMenus.sonMenus}"><a
+							th:onclick=xadmin.add_tab([[${sonMenu.name}]],[[${sonMenu.linkUrl}]])>
+								<i class="iconfont">&#xe718;</i> <cite><span
+									th:text="${sonMenu.name}"></span></cite>
+						</a></li>
+					</ul></li>
+			</ul>
+		</div>
+	</div>
+	<!-- <div class="x-slide_left"></div> -->
+	<!-- 左侧菜单结束 -->
+	<!-- 右侧主体开始 -->
+	<div class="page-content">
+		<div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+			<ul class="layui-tab-title">
+				<li class="home"><i class="layui-icon">&#xe68e;</i>我的桌面</li>
+			</ul>
+			<div class="layui-unselect layui-form-select layui-form-selected"
+				id="tab_right">
+				<dl>
+					<dd data-type="this">关闭当前</dd>
+					<dd data-type="other">关闭其它</dd>
+					<dd data-type="all">关闭全部</dd>
+				</dl>
+			</div>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<iframe src='./welcome1.html' frameborder="0" scrolling="yes"
+						class="x-iframe"></iframe>
+				</div>
+			</div>
+			<div id="tab_show"></div>
+		</div>
+	</div>
+	<div class="page-content-bg"></div>
+	<style id="theme_style"></style>
+	<!-- 右侧主体结束 -->
+	<!-- 中部结束 -->
+</body>
 
 </html>

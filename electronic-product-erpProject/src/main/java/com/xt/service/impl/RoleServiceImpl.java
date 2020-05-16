@@ -3,6 +3,7 @@ package com.xt.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.xt.mapper.RoleMapper;
@@ -13,33 +14,59 @@ import com.xt.pojo.User_Role;
 import com.xt.service.RoleService;
 import com.xt.util.PageDemo;
 import com.xt.util.PageUtil;
+
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 	@Autowired
 	RoleMapper rm;
-	
+	@Autowired
+	RedisTemplate<String, Object> rt;
+
 	@Override
 	public PageDemo<Roles> getAllRolesInfo(int nowPage, int pageSize, Roles r) {
 		PageDemo<Roles> pd = new PageDemo<Roles>();
-		//获取总记录数
-		int rowCount =rm.getRoleCount(r);
-		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
-		List<Roles> list = rm.getAllRolesInfo(page, r);
-		pd.setCode(0);
-		pd.setCount(rowCount);
-		pd.setMsg("");
-		pd.setData(list);
-		return pd;
+		boolean haskey1 = rt.opsForHash().hasKey("getAllRolesInfo", r);
+		boolean haskey2 = rt.opsForHash().hasKey("getRoleCount", r);
+		if (haskey1 && haskey2) {
+			// 缓存存在，从redis拿
+			List<Roles> list = (List<Roles>) (Object) rt.opsForHash().get("getAllRolesInfo", r);
+			int rowCount = (int) rt.opsForHash().get("getRoleCount", r);
+			pd.setCode(0);
+			pd.setCount(rowCount);
+			pd.setMsg("");
+			pd.setData(list);
+			return pd;
+		} else {
+			// 获取总记录数
+			int rowCount = rm.getRoleCount(r);
+			PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
+			List<Roles> list = rm.getAllRolesInfo(page, r);
+			pd.setCode(0);
+			pd.setCount(rowCount);
+			pd.setMsg("");
+			pd.setData(list);
+			rt.opsForHash().put("getAllRolesInfo", r, list);
+			rt.opsForHash().put("getRoleCount", r, rowCount);
+			return pd;
+		}
 	}
 
 	@Override
 	public int addRole(Roles r) {
-		return rm.addRole(r);
+		int row = rm.addRole(r);
+		if(row>0) {
+			rt.delete("getAllRolesInfo");
+		}
+		return row;
 	}
 
 	@Override
 	public int addPermission_role(Permission_Role pr) {
-		return rm.addPermission_role(pr);
+		int row = rm.addPermission_role(pr);
+		if(row>0) {
+			rt.delete("getAllRolesInfo");
+		}
+		return row;
 	}
 
 	@Override
@@ -49,17 +76,29 @@ public class RoleServiceImpl implements RoleService{
 
 	@Override
 	public int updateRoleInfo(Roles r) {
-		return rm.updateRoleInfo(r);
+		int row = rm.updateRoleInfo(r);
+		if(row>0) {
+			rt.delete("getAllRolesInfo");
+		}
+		return row;
 	}
 
 	@Override
 	public int deletePermission_role(int id) {
-		return rm.deletePermission_role(id);
+		int row = rm.deletePermission_role(id);
+		if(row>0) {
+			rt.delete("getAllRolesInfo");
+		}
+		return row;
 	}
 
 	@Override
 	public int deleteRoleInfo(int id) {
-		return rm.deleteRoleInfo(id);
+		int row = rm.deleteRoleInfo(id);
+		if(row>0) {
+			rt.delete("getAllRolesInfo");
+		}
+		return row;
 	}
 
 	@Override
@@ -79,7 +118,11 @@ public class RoleServiceImpl implements RoleService{
 
 	@Override
 	public int addUserRole(User_Role ur) {
-		return rm.addUserRole(ur);
+		int row = rm.addUserRole(ur);
+		if(row>0) {
+			rt.delete("getAllRolesInfo");
+		}
+		return row;
 	}
 
 	@Override
@@ -89,6 +132,10 @@ public class RoleServiceImpl implements RoleService{
 
 	@Override
 	public int delUserRole(int id) {
-		return rm.delUserRole(id);
+		int row = rm.delUserRole(id);
+		if(row>0) {
+			rt.delete("getAllRolesInfo");
+		}
+		return row;
 	}
 }

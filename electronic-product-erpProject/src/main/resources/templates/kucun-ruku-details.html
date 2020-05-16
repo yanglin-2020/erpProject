@@ -235,7 +235,9 @@ td {
 }
 
 .add {
-	background: #ff0303;
+	width: 70px;
+	height: 24px;
+	background: #009688;
 	color: #fff;
 	border-radius: 3px;
 	text-align: center;
@@ -389,7 +391,7 @@ body {
 														<td th:text="${s.product_name}"></td>
 														<td th:text="${s.product_id}"></td>
 														<td th:text="${s.cost_price}"></td>
-														<td th:text="${s.amount}"></td>
+														<td id="amount" th:text="${s.amount}"></td>
 														<td><button class="add" onclick="diaodu(this)">调度</button></td>
 													</tr>
 												</tbody>
@@ -431,7 +433,9 @@ body {
 								</ul>
 							</div>
 						</div>
-
+						<div class="layoutitem-add">
+							<button class="add" onclick="exit()">保存</button>
+						</div>
 					</div>
 				</td>
 			</tr>
@@ -444,7 +448,14 @@ body {
 <script type="text/javascript" src="js/jquery.tablescroll.js"></script>
 
 <script type="text/javascript">
+	function exit() {
+		layer.closeAll("iframe");
+		//刷新父页面
+		parent.location.reload();
+	}
+
 	function diaodu(obj) {
+		var amount = $("#amount").text();//应出库件数
 		var spid = $(obj).parent().parent().find("td:eq(0)").text();//商品ID
 		var id = $("#gather_id").val();//入库单序号
 		layer.prompt({
@@ -452,23 +463,28 @@ body {
 			value : '',
 			title : '请输入入库件数'
 		}, function(value, index, elem) {
-			layer.close(index);
-			$.get("ruku_details", {
-				"gathered_amount" : value,
-				"spid" : spid,
-				"id" : id,
-				"attemper" : $("#attemper").val(),
-				"attemper_time" : $("#attemper_time").val(),
-			}, function(data) {
-				if (data > 0) {
-					layer.alert("操作成功！");
-					table.reload("test");
-					layer.close(index);
-				} else {
-					layer.alert("操作失败!");
-				}
+			if (value > amount) {
+				top.layer.msg("应出库件数小于已入库件数！");
+			} else if (value <= amount) {
+				top.layer.msg("应出库件数大于等于已入库件数！");
+				$.get("ruku_details", {
+					"gathered_amount" : value,
+					"spid" : spid,
+					"id" : id,
+					"attemper" : $("#attemper").val(),
+					"attemper_time" : $("#attemper_time").val(),
+				}, function(data) {
+					if (data > 0) {
+						top.layer.msg("操作成功！");
+						layer.closeAll("iframe");
+						//刷新页面
+						location.reload();
+					} else {
+						layer.alert("操作失败!");
+					}
 
-			});
+				});
+			}
 		});
 	}
 

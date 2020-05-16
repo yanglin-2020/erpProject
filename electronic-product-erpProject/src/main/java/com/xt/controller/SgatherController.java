@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
+import com.xt.pojo.Buygoods_detail;
 import com.xt.pojo.D_file;
 import com.xt.pojo.MManufacture;
 import com.xt.pojo.Permissions;
@@ -42,7 +43,7 @@ public class SgatherController {
 	// 打开入库申请单
 	@RequestMapping("/rukusq")
 	public String Openrukusq(HttpSession session) {
-		String rukuDanHao = DanhaoUtil.getRuKuDanHao() + service.getId();// 入库单编号
+		String rukuDanHao = DanhaoUtil.getRuKuDanHao() + service.getId();// 入库单编号 
 		session.removeAttribute("gather_id");
 		session.setAttribute("gather_id", rukuDanHao);
 		session.removeAttribute("SumCount");
@@ -82,9 +83,8 @@ public class SgatherController {
 		String nowPage = request.getParameter("page");
 		String pageSize = request.getParameter("limit");
 		String name = request.getParameter("name");
-		D_file df = new D_file();
-		df.setProduct_name(name);
-		PageDemo<D_file> pd = service.getMaterialInfo_ywg(Integer.parseInt(nowPage), Integer.parseInt(pageSize), df);
+		Buygoods_detail df = new Buygoods_detail();
+		PageDemo<Buygoods_detail> pd = service.getMaterialInfo_ywg(Integer.parseInt(nowPage), Integer.parseInt(pageSize), df);
 		PrintWriter out = response.getWriter();
 		String str = JSONArray.toJSONString(pd);
 		out.print(str);
@@ -113,6 +113,7 @@ public class SgatherController {
 			if (product_id.equals(sg.getProduct_id()) && gather_id.equals(sg.getParent_id())) {
 				service.updateRuKuDetailNum(gather_id, product_id,
 						Integer.parseInt(num) * Double.parseDouble(cost_price), Integer.parseInt(num));
+				service.updateBuyGoods_Detail_Status2(product_id);
 				out.print("1");
 				out.flush();
 				out.close();
@@ -120,6 +121,7 @@ public class SgatherController {
 			}
 		}
 		service.addSgatherDetail(sd);
+		service.updateBuyGoods_Detail_Status2(product_id);
 		out.print("1");
 		out.flush();
 		out.close();
@@ -176,7 +178,7 @@ public class SgatherController {
 		String remark = request.getParameter("remark");// 备注
 		String username = (String) session.getAttribute("username");// 登记人
 		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 登记时间
-		SGather sg = new SGather(gather_id, reason, SumCount, SumMoney, remark, rukuperson, username,
+		SGather sg = new SGather(gather_id, reason, Double.parseDouble(SumCount), Double.parseDouble(SumMoney), remark, rukuperson, username,
 				formate.format(new Date()));
 		int row = service.saveRuKu(sg);
 		return row > 0 ? "1" : "0";
@@ -261,5 +263,14 @@ public class SgatherController {
 		out.print(str);
 		out.flush();
 		out.close();
+	}
+	//查询入库详情
+	@RequestMapping("/querydetail")
+	@ResponseBody
+	public String querydetail(HttpServletRequest request,HttpSession session) {
+		String gather_id = request.getParameter("gather_id");//拿到入库单号
+		List<SGatherDetails> list = service.querydetail(gather_id);
+		session.setAttribute("querydetailList", list);
+		return "1";
 	}
 }

@@ -67,10 +67,10 @@
   	<insert id="addmdesignDetails">
   		insert into m_design_procedure_details values(null,#{parent_Id},#{details_Number},#{procedure_Id},
   		#{procedure_Name},#{labour_Hour_Amount},#{procedure_Describe},#{amount_Unit},
-  		#{cost_Price},#{subtotal},#{module_Subtotal},#{register},#{register_Time},#{design_Module_Tag},#{design_Module_Change_Tag})
+  		#{cost_Price},#{subtotal},#{module_Subtotal},#{register},#{register_Time},#{design_Module_Tag},#{design_Module_Change_Tag},'登记','未交接')
   	</insert>
   	<update id="upd_moule">
-  		update d_module_details set residual_amount = #{residual_amount} where details_number=#{id}
+  		update d_module_details set residual_amount = #{residual_amount} where details_number=#{details_number}
   	</update>
   	<!-- 修改产品设计详情 -->
   	<update id="updatemdesignDetails">

@@ -129,4 +129,49 @@
 	<select id="getUsersInfoCount" resultType="Users">
 		select * from users order by selfcount desc limit 5
 	</select>
+	<!--分页查询最新公告信息  -->
+	<select id="getGongGaoCount" resultType="int">
+		select count(1) from gonggao 
+	</select>
+	
+	<select id="getGongGaoInfo" resultType="GongGao">
+		select * from gonggao ORDER BY id desc
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!--分页查询库存预警信息  -->
+	<select id="getyjCount" resultType="int">
+		select count(1) from s_cell where amount &gt; max_amount || amount &lt; min_amount
+	</select>
+	<select id="getyjInfo" resultType="sCell">
+		select * from s_cell where amount &gt; max_amount || amount &lt; min_amount
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<!--分页查询所有公告信息  -->
+	<select id="getGongGaoAllCount" resultType="int">
+		select count(1) from gonggao where 1=1
+		<if test="gg.title!=null and gg.title!=''">
+			and title like CONCAT('%',#{gg.title},'%')
+		</if>
+	</select>
+	
+	<select id="getGongGaoAllInfo" resultType="GongGao">
+		select * from gonggao where 1=1
+		<if test="gg.title!=null and gg.title!=''">
+			and title like CONCAT('%',#{gg.title},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	<!--发布公告  -->
+	<insert id="addGongGao">
+		insert into gonggao(title,content,time,name) values(#{title},#{content},#{time},#{name})
+	</insert>
+	<!--修改公告  -->
+	<update id="updateGongGao">
+		update gonggao set title=#{title},content=#{content},time=#{time},name=#{name} where id=#{id}
+	</update>
+	<!--删除一个公告  -->
+	<delete id="deleteGongGao">
+		delete from gonggao where id=#{id}
+	</delete>
 </mapper>

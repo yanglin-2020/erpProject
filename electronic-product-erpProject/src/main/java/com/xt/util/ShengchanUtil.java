@@ -32,4 +32,11 @@ public class ShengchanUtil {
 		String danhao = "sc" + ShengchanUtil.formatDateToCommon1(d);
 		return danhao;
 	}
+	
+	//供货商编号生成方法
+	public static String getSupplierId() {
+		String SupplierId="s"+RadomUtil.generateNumber();
+		return SupplierId;
+		
+	}
 }

@@ -49,14 +49,14 @@
 							lay-filter="test">
 							<thead>
 								<tr>
-									<th lay-data="{field:'id', width:100, sort: true, edit: 'text'}">序号</th>
-									<th lay-data="{field:'gather_id', width:150, sort: true, edit: 'text'}">入库单编号</th>
+									<th lay-data="{field:'id', width:70, sort: true, edit: 'text'}">序号</th>
+									<th lay-data="{field:'gather_id', width:120, sort: true, edit: 'text'}">入库单编号</th>
 									<th lay-data="{field:'reason', width:130, sort: true, edit: 'text'}">入库理由</th>
 									<th lay-data="{field:'register_time', width:160,templet: function(d){return layui.util.toDateString(d.register_time)}}">登记时间</th>
 									<th lay-data="{field:'amount_sum', width:100, minWidth: 100, edit: 'text'}">总件数</th>
 									<th lay-data="{field:'cost_price_sum', width:100, minWidth: 100, edit: 'text'}">总金额(元)</th>
-									<th lay-data="{field:'rukuperson', width:100, minWidth: 100, edit: 'text'}">入库人</th>
-									<th lay-data="{field:'checker', width:100, minWidth: 100, edit: 'text'}">复核人</th>
+									<th lay-data="{field:'rukuperson', width:70, minWidth: 100, edit: 'text'}">入库人</th>
+									<th lay-data="{field:'checker', width:70, minWidth: 100, edit: 'text'}">复核人</th>
 									<th lay-data="{field:'check_time', width:160,templet: function(d){return layui.util.toDateString(d.check_time)},edit: 'text'}">复核时间</th>
 									<th lay-data="{width:130, templet:'#oprListBar',fixed:'right'}">详细</th>
 								</tr>

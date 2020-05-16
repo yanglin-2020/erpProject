@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>入库详细-yl</title>
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<style>
+* {
+	margin: 5px
+}
+</style>
+<body>
+	<div id="app">
+		<label class="form-inline"> 
+			<h4>入库详细查询</h4>
+		</label>
+		<table class="table table-bordered table-hover table-striped">
+			<thead>
+				<tr>
+					<th>产品编号</th>
+					<th>产品名称</th>
+					<th>描述</th>
+					<th>数量</th>
+					<th>单位</th>
+					<th>单价</th>
+					<th>小计</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="m:${session.querydetailList}">
+					<td th:text="${m.product_id}"></td>
+					<td th:text="${m.product_name}"></td>
+					<td th:text="${m.product_describe}"></td>
+					<td th:text="${m.amount}"></td>
+					<td th:text="${m.amount_unit}"></td>
+					<td th:text="${m.cost_price}"></td>
+					<td th:text="${m.subtotal}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!doctype html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<title>生产派工设计单详细复核——yl</title>
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./css/xadmin.css">
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/xadmin.js"></script>
+<style>
+html, body, div, span, ul, li, h1, h2, h3, h4, p, a, img, input, form {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	list-style: none;
+	outline: 0;
+}
+
+div, td, ul, li, dl, dt, dd, h2, h3, h4 {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+div {
+	display: block;
+}
+
+body {
+	font-size: 12px;
+	font-family: "微软雅黑", "宋体", Arial;
+	color: #666;
+}
+
+li {
+	display: list-item;
+	text-align: -webkit-match-praent;
+}
+
+img {
+	vertical-align: middle;
+}
+
+em {
+	font-style: normal;
+	color: #fff;
+}
+
+input, textarea, select, button {
+	font-family: inherit;
+	font-size: 100%;
+	outline: 0;
+}
+
+a img {
+	border: 0
+}
+
+body {
+	color: #333;
+	font: 12px "微软雅黑";
+}
+
+ul, ol, li {
+	list-style-type: none;
+	vertical-align: 0
+}
+
+a {
+	outline-style: none;
+	color: #535353;
+	text-decoration: none;
+	cursor: pointer
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.clear {
+	height: 0;
+	overflow: hidden;
+	clear: both
+}
+
+i, s {
+	text-decoration: none;
+	font-style: normal;
+}
+
+.formoverlay {
+	cursor: default;
+	width: 1419px;
+	height: 949px;
+	z-index: 5;
+	opacity: 0.5;
+	background: #999;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.formborder {
+	border: 1px solid #476f9a;
+}
+
+.formcap {
+	color: #fff;
+	background: #476f9a;
+}
+
+td {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+.form-cap-label {
+	padding: 3px 0 0 4px;
+	height: 30px;
+	cursor: default;
+}
+
+.form-cap-txt {
+	font-size: 14px;
+	text-indent: 5px;
+	letter-spacing: 1px;
+}
+
+.formcap-btn {
+	padding-right: 5px;
+}
+
+.formcap-btn a img {
+	width: 15px;
+	height: 15px;
+}
+
+.layoutitem {
+	width: 840px;
+	border: 1px solid #ddd;
+	margin: 15px auto;
+}
+
+.layout-tit {
+	height: 30px;
+	background: #eee;
+	line-height: 30px;
+	padding-left: 8px;
+}
+
+.layout-xx {
+	padding: 30px;
+}
+
+.layout-xx li {
+	height: auto;
+	line-height: 40px;
+	margin-bottom: 5px;
+	display: block;
+	overflow: hidden;
+}
+
+.item-input {
+	float: left;
+	overflow: hidden;
+	display: inline-block;
+	width: 50%;
+}
+
+.item-label {
+	width: 68px;
+	line-height: 40px;
+	display: inline-block;
+	text-align: right;
+}
+
+.layoutitemcon {
+	width: 235px;
+	background: #fff;
+	height: 24px;
+	line-height: 24px;
+	border: 1px solid #c9c9c9;
+	text-indent: 5px;
+	margin-left: 8px;
+}
+
+.layout-sele {
+	width: 110px;
+	background: #fff;
+	height: 24px;
+	line-height: 24px;
+	border: 1px solid #c9c9c9;
+	text-align: center;
+	margin-left: 8px;
+}
+
+.layout-input {
+	width: 200px;
+	border: 1px solid #c9c9c9;
+	height: 24px;
+	line-height: 24px;
+	margin-left: 8px;
+	text-indent: 5px;
+}
+
+.item-input1 {
+	overflow: hidden;
+	display: inline-block;
+	width: 100%;
+	float: left;
+}
+
+.layout-bz {
+	width: 687px;
+	height: 50px;
+	line-height: 24px;
+	border: 1px solid #c9c9c9;
+	background: #fff;
+	margin-left: 8px;
+	text-indent: 5px;
+}
+
+.lab {
+	text-indent: 5px;
+}
+
+.layoutitem-add {
+	float: right;
+	padding-right: 15px;
+}
+
+.layoutitem-add a {
+	width: 70px;
+	height: 24px;
+	line-height: 24px;
+	margin: 12px 8px;
+	display: inline-block;
+	padding: 2px 3px;
+}
+
+.layoutitem-add button {
+	width: 70px;
+	height: 30px;
+	line-height: 24px;
+	margin: 12px 8px;
+	display: inline-block;
+	padding: 2px 3px;
+}
+
+.add {
+	width: 70px;
+	height: 24px;
+	background: blue;
+	color: #fff;
+	text-align: center;
+}
+
+.bc {
+	background: #f94913;
+	border-radius: 3px;
+	text-align: center;
+	color: #fff;
+}
+
+.tc {
+	background: #333;
+	border-radius: 3px;
+	text-align: center;
+	color: #fff;
+}
+</style>
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+a, img {
+	border: 0;
+}
+
+body {
+	font: 12px/180% Arial, Helvetica, sans-serif, "新宋体";
+}
+
+.demo {
+	width: 1000px;
+	margin: 20px auto 0 auto;
+}
+
+/* tablescroll */
+.tablescroll {
+	font: 12px normal Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial,
+		sans-serif;
+	background-color: #fff;
+}
+
+.tablescroll td, .tablescroll_wrapper, .tablescroll_head,
+	.tablescroll_foot {
+	border: 1px solid #ccc;
+}
+
+.tablescroll td {
+	padding: 5px;
+}
+
+.tablescroll_wrapper {
+	border-left: 0;
+}
+
+.tablescroll_head {
+	font-size: 12px;
+	font-weight: bold;
+	background-color: #eee;
+	border-left: 0;
+	border-top: 0;
+	margin-bottom: 3px;
+}
+
+.tablescroll thead td {
+	border-right: 0;
+	border-bottom: 0;
+}
+
+.tablescroll tbody td {
+	border-right: 0;
+	border-bottom: 0;
+}
+
+.tablescroll tbody tr.first td {
+	border-top: 0;
+}
+
+.tablescroll_foot {
+	font-weight: bold;
+	background-color: #eee;
+	border-left: 0;
+	border-top: 0;
+	margin-top: 3px;
+}
+
+.tablescroll tfoot td {
+	border-right: 0;
+	border-bottom: 0;
+}
+</style>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./css/xadmin.css">
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/xadmin.js"></script>
+</head>
+
+<body>
+	<div class="formoverlay"></div>
+	<div class="x-nav">
+		<span class="layui-breadcrumb"> </span> <a
+			class="layui-btn layui-btn-small"
+			style="line-height: 1.6em; margin-top: 3px; float: right"
+			onclick="location.reload()" title="刷新"> <i
+			class="layui-icon layui-icon-refresh" style="line-height: 30px"></i>
+		</a>
+	</div>
+		<table cellpadding="0" cellspacing="0" border="0px" class="formborder"
+			style="z-index: 99; position: absolute; left: 220px; top: 80px; width: 880px; display: block;">
+			<tbody>
+
+				<tr>
+					<td align="left" valign="top"
+						style="width: 880px; height: 400px; background: #fff;">
+						<div class="formcontentsize" style="width: auto; height: auto;">
+							<div class="layoutitem">
+								<div class="layout-tit">
+									<h3 align="center">生产登记单</h3>
+								</div>
+								<div class="layout-xx">
+									<ul>
+										<li>
+											<div class="item-input">
+												<label class="item-label">设计单编号:</label>&nbsp;&nbsp; <b>[[${scdanhao}]]</b>
+											</div>
+											<div class="item-input">
+												<label class="item-label">工序名称:</label>&nbsp;&nbsp; <b>[[${procedurename}]]</b>
+											</div>
+										</li>
+
+										<li>
+											<div class="demo">
+												<table id="thetable" cellspacing="0" cellpadding="0"
+													style="width: 2000px;">
+													<thead>
+														<tr>
+															<td>序号</td>
+															<td>物料编号</td>
+															<td>物料名称</td>
+															<td>设计数量</td>
+															<td>单位</td>
+															<td>单价</td>
+															<td>小计</td>
+															<td>本次数量</td>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="sc:${lookProcedureModule}">
+															<td th:text="${sc.id}"></td>
+															<td th:text="${sc.product_Id}"></td>
+															<td th:text="${sc.product_Name}"></td>
+															<td th:text="${sc.amount}"></td>
+															<td th:text="${sc.amount_Unit}"></td>
+															<td th:text="${sc.cost_Price}"></td>
+															<td th:text="${sc.subtotal}"></td>
+															<td th:text="${sc.amount}"></td>
+														</tr>
+													</tbody>
+
+												</table>
+											</div>
+
+										</li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+						<div class="layoutitem-add">
+							 <a href="/getManufactureByid2" class="layui-icon layui-btn layui-btn-normal">返回</a>
+							 <a href="/updateGongXuStatus2" class = "layui-icon layui-btn layui-btn-normal">复核通过</a>
+						</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+</body>
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.tablescroll.js"></script>
+<script type="text/javascript">
+	$(document).ready(function($) {
+		$('#thetable').tableScroll({
+			width : 760,
+			height : 150
+		});
+	});
+	function diaodu(obj) {
+		var num = $(obj).parent().parent().find("td:eq(3)").text();//需要的数量
+			layer.prompt({
+				formType : 2,
+				value : '',
+				title : '本次数量'
+			}, function(value, index, elem) {
+				
+				if(num==value){
+					$(obj).text(value);
+					window.location.close();
+				}else{
+					layer.msg("不符合设计要求~");
+				}
+				
+			});
+		}
+</script>
+
+</html>

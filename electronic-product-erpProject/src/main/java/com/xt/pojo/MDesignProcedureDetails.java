@@ -41,6 +41,21 @@ public class MDesignProcedureDetails implements Serializable {
     private String design_Module_Tag;
     //当前工序物料变更标志    D003-0: 未变更     D003-0: 已变更
     private String design_Module_Change_Tag;
+    private String status;//状态
+    private String status2;//状态2
+    
+	public String getStatus2() {
+		return status2;
+	}
+	public void setStatus2(String status2) {
+		this.status2 = status2;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Integer getId() {
 		return id;
 	}

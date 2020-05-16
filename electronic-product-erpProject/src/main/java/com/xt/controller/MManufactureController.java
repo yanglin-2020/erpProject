@@ -141,8 +141,8 @@ public class MManufactureController {
 		String procedureSumMoney = (String)session.getAttribute("procedureSumMoney");//工序总成本
 		String marterialSumMoney = (String)session.getAttribute("marterialSumMoney");//物料总成本
 		String register =(String)session.getAttribute("username");//登记人
-		MManufacture mm = new MManufacture(manufacture_id, product_id, product_name, amount, product_describe, 
-				marterialSumMoney, procedureSumMoney, designer, register, sctime, remark);
+		MManufacture mm = new MManufacture(manufacture_id, product_id, product_name, Integer.parseInt(amount), product_describe, 
+				Double.parseDouble(marterialSumMoney),Double.parseDouble(procedureSumMoney) , designer, register, sctime, remark);
 		service.saveScpgd(mm);
 		//保存完后，修改mapply的字段
 		service.updateMapply_manufacture_tag(product_id);

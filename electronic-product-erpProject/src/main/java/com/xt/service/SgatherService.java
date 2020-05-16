@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.xt.pojo.Buygoods_detail;
 import com.xt.pojo.D_file;
 import com.xt.pojo.MManufacture;
 import com.xt.pojo.SGather;
@@ -17,7 +18,7 @@ public interface SgatherService {
 	//分页查询获取入库全部数据
 	PageDemo<SGather> selectSgather(int nowPage, int pageSize,SGather sgather);
 	//分页查询MManufacture已完成的数据
-	public PageDemo<D_file> getMaterialInfo_ywg(int nowPage,int pageSize,D_file df);
+	public PageDemo<Buygoods_detail> getMaterialInfo_ywg(int nowPage,int pageSize,Buygoods_detail df);
 	//添加详情入库
 	int addSgatherDetail(SGatherDetails sd);
 	//根据入库单号查询详情
@@ -43,4 +44,8 @@ public interface SgatherService {
 	public int RuKufuheNoSuccess(@Param("gather_id") String gather_id,@Param("checker") String checker,@Param("checker") String check_time);
 	//分页查询入库申请单信息
 	public PageDemo<SGather> getRuKuInfo(int nowPage,int pageSize,SGather sg);
+	//查询入库详情
+	List<SGatherDetails> querydetail(String gather_id);
+	//修改采购详细表status2
+	int updateBuyGoods_Detail_Status2(String id);
 }

@@ -255,10 +255,10 @@ public class MDesignProcedureController {
 	public String addMDesignlist(@ModelAttribute MDesignProcedure md,String mdprod,HttpSession session){
 		md.setDesign_Id("A"+OrderNo.NextOrderNo());//设计编号
 		List<MDesignProcedureDetails> mds = JSON.parseArray(mdprod,MDesignProcedureDetails.class);
-		Integer sum = 0;
+		Double sum = 0.0;
 		for (MDesignProcedureDetails mDesignProcedureDetails : mds) {
 			mdserivce.updatemdesignDetails(mDesignProcedureDetails);
-			sum+=(Integer)mDesignProcedureDetails.getCost_Price();
+			sum+=Double.parseDouble(mDesignProcedureDetails.getCost_Price().toString());
 			System.out.println(mDesignProcedureDetails);
 		}
 		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

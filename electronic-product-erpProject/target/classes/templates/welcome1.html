@@ -84,11 +84,13 @@
 		<div class="layui-col-md8">
 			<div class="layui-card">
 				<div class="layui-card-header">
-					<div class="ok-card-title">用户排行榜</div>
+					<div class="ok-card-title">首页公告</div>
 				</div>
 				<div class="ok-card-body map-body">
-					<div style="height: 100%;" id="userSourceMap"></div>
+					<!-- <div style="height: 100%;" id="gonggaolist"></div> -->
+					<table id="gonggaolist" lay-filter="gonggaolist"></table>
 				</div>
+				
 			</div>
 		</div>
 
@@ -118,6 +120,7 @@
 		<div class="layui-col-md6">
 			<div class="layui-card">
 				<div class="ok-card-body ">
+					<div class="ok-card-title">登录记录</div>
 					<table id="userData" lay-filter="userdata"></table>
 				</div>
 			</div>
@@ -125,7 +128,8 @@
 		<div class="layui-col-md6">
 			<div class="layui-card">
 				<div class="ok-card-body ">
-					<div class="map-china" id="userLocationMap"></div>
+				<div class="ok-card-title">库存预警</div>
+				<table id="kucunyjlist" lay-filter="kucunyjlist"></table>
 				</div>
 			</div>
 		</div>

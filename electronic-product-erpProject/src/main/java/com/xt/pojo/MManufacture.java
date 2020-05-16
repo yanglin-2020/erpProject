@@ -9,7 +9,6 @@ import java.io.Serializable;
  * @since 2020-04-17 10:35:17
  */
 public class MManufacture implements Serializable {
-    private static final long serialVersionUID = -27490427353250496L;
     //序号
     private Integer id;
     //派工单编号
@@ -19,7 +18,7 @@ public class MManufacture implements Serializable {
     //产品名称
     private String product_name;
     //投产数量
-    private Object amount;
+    private int amount;
     //合格数量
     private Object tested_amount;
     //生产计划序号组
@@ -27,11 +26,11 @@ public class MManufacture implements Serializable {
     //产品描述
     private String product_describe;
     //设计物料总成本
-    private Object module_cost_price_sum;
+    private double module_cost_price_sum;
     //实际物料总成本
     private Object real_module_cost_price_sum;
     //设计工时总成本
-    private Object labour_cost_price_sum;
+    private double labour_cost_price_sum;
     //实际工时总成本
     private Object real_labour_cost_price_sum;
     //工单制定人
@@ -50,12 +49,32 @@ public class MManufacture implements Serializable {
     private String check_tag;
     //生产过程标志    S002-0: 待登记    S002-1: 未审核   S002-2: 已完工
     private String manufacture_procedure_tag;
+    //状态
+    private String status;
+    //状态
+    private String status2;
+    
+	public String getStatus2() {
+		return status2;
+	}
+	public void setStatus2(String status2) {
+		this.status2 = status2;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public MManufacture() {
 		super();
 	}
 	
-	public MManufacture(String manufacture_id, String product_id, String product_name, Object amount,
-			String product_describe, Object module_cost_price_sum, Object labour_cost_price_sum, String designer,
+	public MManufacture(String manufacture_id, String product_id, String product_name, int amount,
+			String product_describe, double module_cost_price_sum, double labour_cost_price_sum, String designer,
 			String register, Object register_time, String remark) {
 		super();
 		this.manufacture_id = manufacture_id;
@@ -95,10 +114,10 @@ public class MManufacture implements Serializable {
 	public void setProduct_name(String product_name) {
 		this.product_name = product_name;
 	}
-	public Object getAmount() {
+	public int getAmount() {
 		return amount;
 	}
-	public void setAmount(Object amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 	public Object getTested_amount() {
@@ -119,10 +138,10 @@ public class MManufacture implements Serializable {
 	public void setProduct_describe(String product_describe) {
 		this.product_describe = product_describe;
 	}
-	public Object getModule_cost_price_sum() {
+	public double getModule_cost_price_sum() {
 		return module_cost_price_sum;
 	}
-	public void setModule_cost_price_sum(Object module_cost_price_sum) {
+	public void setModule_cost_price_sum(double module_cost_price_sum) {
 		this.module_cost_price_sum = module_cost_price_sum;
 	}
 	public Object getReal_module_cost_price_sum() {
@@ -131,10 +150,10 @@ public class MManufacture implements Serializable {
 	public void setReal_module_cost_price_sum(Object real_module_cost_price_sum) {
 		this.real_module_cost_price_sum = real_module_cost_price_sum;
 	}
-	public Object getLabour_cost_price_sum() {
+	public double getLabour_cost_price_sum() {
 		return labour_cost_price_sum;
 	}
-	public void setLabour_cost_price_sum(Object labour_cost_price_sum) {
+	public void setLabour_cost_price_sum(double labour_cost_price_sum) {
 		this.labour_cost_price_sum = labour_cost_price_sum;
 	}
 	public Object getReal_labour_cost_price_sum() {
@@ -191,4 +210,5 @@ public class MManufacture implements Serializable {
 	public void setManufacture_procedure_tag(String manufacture_procedure_tag) {
 		this.manufacture_procedure_tag = manufacture_procedure_tag;
 	}
+	
 }

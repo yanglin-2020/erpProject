@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.xt.pojo.DModule;
 import com.xt.pojo.DModuleDetails;
 import com.xt.pojo.D_file;
+import com.xt.pojo.Goods;
 import com.xt.pojo.KuCun;
 import com.xt.util.PageDemo;
 
@@ -90,4 +91,6 @@ public interface ProductFileService {
 	
 	//杨林写的库存动态查询
 	public PageDemo<KuCun> getKuCunInfo(int nowPage, int pageSize,KuCun kc);
+	//添加信息到goods表去
+	int addGoodsInfoByD_File(Goods g);
 }

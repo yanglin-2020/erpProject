@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.xt.mapper.ProductionRegisterMapper">
+ 	<!-- 获取生产总表已审核的数据数量 -->
+ 	<select id="getManufactureCount" resultType="int">
+ 		select count(1) from m_manufacture where 1=1
+ 		<if test="m.product_id!=null and m.product_id!=''">
+ 			and product_id=#{m.product_id}
+ 		</if>
+ 		<if test="m.manufacture_id!=null and m.manufacture_id!=''">
+ 			and manufacture_id=#{m.manufacture_id}
+ 		</if>
+ 		<if test="m.product_name!=null and m.product_name!=''">
+ 			and product_name like CONCAT('%',#{m.product_name},'%')
+ 		</if>
+ 		<if test="m.check_tag!=null and m.check_tag!=''">
+ 			and check_tag=#{m.check_tag}
+ 		</if>
+ 		<if test="m.manufacture_procedure_tag!=null and m.check_tag!=''">
+ 			and manufacture_procedure_tag=#{m.manufacture_procedure_tag}
+ 		</if>
+ 		<if test="m.status!=null and m.status!=''">
+ 			and status =#{m.status}
+ 		</if>
+ 	</select>
+ 	
+ 	<!-- 获取生产总表已审核的数据 -->
+ 	<select id="getManufacture" resultType="MManufacture">
+ 		select * from m_manufacture where 1=1
+ 		<if test="m.product_id!=null and m.product_id!=''">
+ 			and product_id=#{m.product_id}
+ 		</if>
+ 		<if test="m.manufacture_id!=null and m.manufacture_id!=''">
+ 			and manufacture_id=#{m.manufacture_id}
+ 		</if>
+ 		<if test="m.check_tag!=null and m.check_tag!=''">
+ 			and check_tag=#{m.check_tag}
+ 		</if>
+ 		<if test="m.manufacture_procedure_tag!=null and m.check_tag!=''">
+ 			and manufacture_procedure_tag=#{m.manufacture_procedure_tag}
+ 		</if>
+ 		<if test="m.product_name!=null and m.product_name!=''">
+ 			and product_name like CONCAT('%',#{m.product_name},'%')
+ 		</if>
+ 		<if test="m.status!=null and m.status!=''">
+ 			and status =#{m.status}
+ 		</if>
+ 		limit #{page.startRow},#{page.pageSize}
+ 	</select>
+ 	
+ 	<!-- 根据派工单编号查询生产总表 -->
+ 	<select id="getManufactureByid" resultType="MManufacture">
+ 		select * from m_manufacture where 1=1
+ 		<if test="m.manufacture_id!=null and m.manufacture_id!=''">
+ 			and manufacture_id=#{m.manufacture_id}
+ 		</if>
+ 	</select>
+ 	
+ 	<!--修改工序状态  -->
+ 	<update id="updateGongXuStatus">
+ 		update m_design_procedure_details set status='等待复核' 
+ 		where parent_id=#{id} and procedure_name=#{procedurename}
+ 	</update>
+ 	<!--修改生产总表的status状态  -->
+ 	<update id="updatesczbStatus">
+ 		update m_manufacture set status ='等待审核' where manufacture_id=#{id}
+ 	</update>
+ 	
+ 	<!--修改工序状态  -->
+ 	<update id="updateGongXuStatus2">
+ 		update m_design_procedure_details set status='完成' 
+ 		where parent_id=#{id} and procedure_name=#{procedurename}
+ 	</update>
+ 	<!--修改生产总表的status状态  -->
+ 	<update id="updatesczbStatus2">
+ 		update m_manufacture set status ='审核通过' where manufacture_id=#{id}
+ 	</update>
+ 	
+ 		<!--修改工序状态  -->
+ 	<update id="updateGongXuStatus3">
+ 		update m_design_procedure_details set status2='已交接' 
+ 		where parent_id=#{id} and procedure_name=#{procedurename}
+ 	</update>
+ 	<!--修改生产总表的status状态  -->
+ 	<update id="updatesczbStatus3">
+ 		update m_manufacture set status ='等待审核',status2='已交接' where manufacture_id=#{id}
+ 	</update>
+ 	
+ 		<!--修改工序状态  -->
+ 	<update id="updateGongXuStatus4">
+ 		update m_design_procedure_details set status2='复核通过' 
+ 		where parent_id=#{id} and procedure_name=#{procedurename}
+ 	</update>
+ 	<!--修改生产总表的status状态  -->
+ 	<update id="updatesczbStatus4">
+ 		update m_manufacture set status ='审核通过',status2='复核通过' where manufacture_id=#{id}
+ 	</update>
+ 	
+ 	<!--修改生产总表的字段，表示这个产品已经完工  -->
+ 	<update id="updatesczbIswg">
+ 		update m_manufacture set checker=#{checker},check_time=#{check_time},remark=#{remark},manufacture_procedure_tag='已完工'
+		where manufacture_id=#{manufacture_id}
+ 	</update>
+ 	
+ 	<select id="getManufactureCountfuhe" resultType="int">
+ 		select count(1) from m_manufacture where check_tag='审核通过' and manufacture_procedure_tag='未完工' and  status ='等待审核'
+ 		<if test="m.product_name!=null and m.product_name!=''">
+ 			and product_name like CONCAT('%',#{m.product_name},'%')
+ 		</if>
+ 	</select>
+ 	<select id="getManufacturefuhe" resultType="MManufacture">
+ 		select * from m_manufacture where check_tag='审核通过' and manufacture_procedure_tag='未完工' and  status ='等待审核'
+ 		<if test="m.product_name!=null and m.product_name!=''">
+ 			and product_name like CONCAT('%',#{m.product_name},'%')
+ 		</if>
+ 		limit #{page.startRow},#{page.pageSize}
+ 	</select>
+ 	<!--查询生产总表的已经完工的产品  -->
+ 	<select id="queryManufactureInfo" resultType="MManufacture">
+ 		select * from m_manufacture where manufacture_id=#{id}
+ 	</select>
+ 	<!--添加入库单  -->
+ 	<insert id="insertmmRukuDan">
+		insert into s_gather(gather_id,amount_sum,cost_price_sum,remark,register,register_time,rukuperson,check_tag,store_tag)
+		values(#{gather_id},#{amount_sum},#{cost_price_sum},#{remark},#{register},#{register_time},#{rukuperson},'审核通过','已登记')
+ 	</insert>
+ 	<!--添加入库详细  -->
+ 	<insert id="insertmmDetailRuKuDan">
+ 		insert into s_gather_details(parent_id,product_id,product_name,product_describe,amount,subtotal,gather_tag)
+		values(#{parent_id},#{product_id},#{product_name},#{product_describe},#{amount},#{subtotal},'已登记')
+ 	</insert>
+ </mapper>

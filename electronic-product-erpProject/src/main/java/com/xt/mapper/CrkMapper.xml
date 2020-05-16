@@ -25,7 +25,7 @@
 	
 	<!--插入出库详细表数据，添加已出库件数 -->
 	<update id="chukuDiaodu">
-		update s_pay_details set paid_amount=#{paid_amount},pay_tag='已调度' where parent_id=#{id}
+		update s_pay_details set paid_amount=#{paid_amount},pay_tag='已调度' where id=#{id}
 	</update>
 	
 	
@@ -59,7 +59,7 @@
 	
 	<!--插入入库详细表数据，添加已入库件数 -->
 	<update id="rukuDiaodu">
-		update s_gather_details set gathered_amount=#{gathered_amount},gather_tag='已调度' where parent_id=#{id}
+		update s_gather_details set gathered_amount=#{gathered_amount},gather_tag='已调度' where id=#{id}
 	</update>
 	
 </mapper>

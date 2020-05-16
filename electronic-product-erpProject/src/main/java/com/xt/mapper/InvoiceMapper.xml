@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.xt.mapper.InvoiceMapper">
+  
+  
+  <!-- 查询购买商品 -->
+  <select id="listbuy" resultType="Buygoods">
+  select b.*,(select name from supplier where supplier_ID=b.supplier_ID ) as 'supplier_name'
+		from buygoods b
+		    	where  store_tag = '未开'
+  	<if test="page.startRow != null and page.pageSize != ''">
+		    limit #{page.startRow},#{page.pageSize}
+	</if>
+  </select>
+  <select id="Countbuy" resultType="Integer">
+  		select count(1) from buygoods 
+  		where store_tag = '已开'
+  	</select>
+  
+  
+  
+  
+  <!-- 查询发票分页 -->
+  	<select id="listfind" resultType="Invoice">
+  		select * from invoice 
+  		<where>
+  			<if test="md.status == null">
+		    	(status = '审核通过'  or status = '未通过')
+			</if>
+  			<if test="md.status != null and md.status != ''">
+		    	and status = #{md.status}
+			</if>
+  			<if test="md.liyou != null and md.liyou != ''">
+		    	and liyou like CONCAT('%',#{md.liyou},'%')
+			</if>
+  		</where>
+			<if test="page.startRow != null and page.pageSize != ''">
+		    limit #{page.startRow},#{page.pageSize}
+			</if>
+  	</select>
+  	<select id="MdesCount" resultType="Integer">
+  		select count(1) from invoice 
+  		<where>
+  			<if test="status == null">
+		    	(status = '审核通过'  or status = '未通过')
+			</if>
+  			<if test="status != null and status != ''">
+		    	and status = #{status}
+			</if>
+  			<if test="liyou != null and liyou != ''">
+		    	and liyou like CONCAT('%',#{liyou},'%')
+			</if>
+  		</where>
+  	</select>
+  	
+  	<!-- 添加发票记录 -->
+  	<insert id="addInvoce">
+  		insert into invoice value(#{id},#{buy_id},#{supplier_ID},#{supplier_name},#{num},#{liyou},#{register},#{register_time},#{chanr},#{status},#{time},#{yijian})
+  	</insert>
+  	<!-- 修改发票记录 -->
+  	<update id="updateInvoce">
+  		update invoice 
+  		<set>
+  			<if test="chanr != null and chanr != '' ">
+  				chanr = #{chanr},
+  			</if>
+  			<if test="status != null and status != '' ">
+  				status = #{status},
+  			</if>
+  			<if test="yijian != null and yijian != '' ">
+  				yijian = #{yijian},
+  			</if>
+  			<if test="time != null">
+  				time = #{time}
+  			</if>
+  		</set>
+  		where id = #{id}
+  	</update>
+  	
+  	
+  	<!-- 查询发票详情分页 -->
+  	<select id="listInvo" resultType="Invoice_detail">
+  		select * from Invoice_detail 
+  		<where>
+		    	 des_id = #{md.des_id}
+  			<if test="md.product_name != null and md.product_name != ''">
+		    	and product_name like CONCAT('%',#{md.product_name},'%')
+			</if>
+  		</where>
+			<if test="page.startRow != null and page.pageSize != ''">
+		    limit #{page.startRow},#{page.pageSize}
+			</if>
+  	</select>
+  	<select id="InvoCount" resultType="int">
+  		select count(1) from Invoice_detail 
+  		<where>
+		    	des_id = #{des_id}
+  			<if test="product_name != null and product_name != ''">
+		    	and product_name like CONCAT('%',#{product_name},'%')
+			</if>
+  		</where>
+  	</select>
+  	
+  	<!-- 添加发票详情记录 -->
+  	<insert id="addInDeatail">
+  		insert into Invoice_detail value(null,#{des_id},#{product_name},#{cost_price},#{cost_num},#{subtotal},#{cost_time})
+  	</insert>
+  	
+  	<!-- 修改发票详情记录 -->
+  	<update id="updateDeatail">
+  		update Invoice_detail 
+  		<set>
+  			<if test="des_id != null and des_id != '' ">
+  				des_id = #{des_id},
+  			</if>
+  			<if test="product_name != null and product_name != '' ">
+  				product_name = #{product_name},
+  			</if>
+  			<if test="cost_price != null and cost_price != '' ">
+  				cost_price = #{cost_price},
+  			</if>
+  			<if test="cost_num != null and cost_num != '' ">
+  				cost_num = #{cost_num},
+  			</if>
+  			<if test="subtotal != null and subtotal != '' ">
+  				subtotal = #{subtotal}
+  			</if>
+  		</set>
+  		where id = #{id}
+  	</update>
+  	
+  	<delete id="delInDetail">
+  		delete from Invoice_detail where id=#{id}
+  	</delete>
+  	
+  	
+  	
+  	
+  	<!--查询采购详细记录 -->
+	<select id="buydate" resultType="Buygoods_detail">
+		select * from
+		buygoods_detail
+		where buy_id=#{buy_id} and status = '审核通过'
+	</select>
+  	
+  	
+  	<update id="updateBuy">
+  		update buygoods set store_tag = #{store_tag} where buy_id = #{buy_id}
+  	</update>
+ </mapper>

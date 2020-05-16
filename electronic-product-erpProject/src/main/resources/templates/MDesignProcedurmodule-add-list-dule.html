@@ -17,12 +17,6 @@
     </head>
     <body>
         <div class="x-nav">
-            <span class="layui-breadcrumb">
-                <a href="">首页</a>
-                <a href="">演示</a>
-                <a>
-                    <cite>导航元素</cite></a>
-            </span>
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
                 <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
             </a>
@@ -93,11 +87,9 @@
                 ,cols: [[ //表头
                 	{field:'procedure_Id', width:100, title:"工序编号"},
                 	{field:'procedure_Name', width:100, title:"名称"},
-                	{field:'labour_Hour_Amount', width:100, title:"工时数",event: "labour_Hour_Amount",edit: 'text'},
-                	{field:'cost_Price', width:150, title:"单位工时成本", sort: true},
-                	{field:'subtotal', width:150, title:"工时成本小计",event: "subtotal",edit: 'text'},
+                	{field:'module_Subtotal', width:150, title:"物料成本小计"},
                 	{field:'register', width:100, title:"登记人"},
-                	{field:'register_Time', width:140, title:"登记时间",templet: function(d){return layui.util.toDateString(d.register_Time)}},
+                	{field:'register_Time', width:160, title:"登记时间",templet: function(d){return layui.util.toDateString(d.register_Time)}},
                 	{width:100, templet:'#oprListBar',title:"操作",fixed:'right'}
                 ]]
               });
@@ -111,6 +103,7 @@
                 if(layEvent === 'updateMDesign'){ //添加
                 	title = "添加物料";
          	         window.product_id=product_id;
+         	         parent.procedure_Name=data.procedure_Name;
          	        parent.ids = data.id;
          	        parent.layer.open({
          			type: 2,

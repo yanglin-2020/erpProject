@@ -1,6 +1,8 @@
 package com.xt.pojo;
 
-public class Permission_Role {
+import java.io.Serializable;
+
+public class Permission_Role implements Serializable{
 	private int rid;
 	private int pid;
 	public int getRid() {

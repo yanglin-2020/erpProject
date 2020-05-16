@@ -30,6 +30,16 @@ public class DanhaoUtil {
 		String danhao = "d" + DanhaoUtil.formatDateToCommon(d);
 		return danhao;
 	}
+	/**
+	 * 采购编号
+	 * @return
+	 */
+	public static String getCgBianHao() {
+		SimpleDateFormat formate = new SimpleDateFormat("yyyyMMddhhmmss");
+		Date date = new Date();
+		String danhao = "cg" + formate.format(date);
+		return danhao;
+	}
 
 	/**
 	 * 生成库存编号

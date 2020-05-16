@@ -18,10 +18,7 @@
     <body>
         <div class="x-nav">
             <span class="layui-breadcrumb">
-                <a href="">首页</a>
-                <a href="">演示</a>
-                <a>
-                    <cite>导航元素</cite></a>
+                <cite id="procedure_Name">导航元素</cite>
             </span>
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
                 <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
@@ -80,6 +77,7 @@
     	var form = layui.form;
             var table = layui.table;
             var id= parent.ids;
+            var procedure_Name=parent.procedure_Name;
             var product_id=parent.product_id;
             table.render({
                 elem: '#demo'
@@ -103,7 +101,7 @@
             var form = layui.form,
             layer = layui.layer;
           
-            
+            $("#procedure_Name").html(procedure_Name);
             
             var $ = layui.$, active = {
           		  fmdes: function(){ //获取选中数据

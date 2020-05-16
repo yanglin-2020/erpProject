@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.xt.pojo.Buygoods_detail;
 import com.xt.pojo.D_file;
 import com.xt.pojo.MManufacture;
 import com.xt.pojo.SGather;
@@ -20,9 +21,9 @@ public interface SgatherMapper {
 	//查询入库信息条数
 	int getSGatherCount(@Param("sgather")SGather sgather);
 	//查询
-	int getMManufactureCount(@Param("df")D_file df);
+	int getMManufactureCount(@Param("df")Buygoods_detail df);
 	//查询d_file的所有物料以及生产总表已完工的产品
-	List<D_file> getAllMManufactureInfo(@Param("page") PageUtil page,@Param("df")D_file df);
+	List<Buygoods_detail> getAllMManufactureInfo(@Param("page") PageUtil page,@Param("df")Buygoods_detail df);
 	//添加入库详细
 	int addSgatherDetail(SGatherDetails sd);
 	//根据入库单号查询详情
@@ -49,4 +50,8 @@ public interface SgatherMapper {
 	//分页查询入库申请单信息
 	public int getRuKuCount(@Param("sg") SGather sg);
 	List<SGather> getRuKuInfo(@Param("page") PageUtil page,@Param("sg") SGather sg);
+	//查询入库详情
+	List<SGatherDetails> querydetail(String gather_id);
+	//修改采购详细表status2
+	int updateBuyGoods_Detail_Status2(String id);
 }

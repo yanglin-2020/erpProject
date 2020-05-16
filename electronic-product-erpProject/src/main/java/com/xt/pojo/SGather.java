@@ -23,9 +23,9 @@ public class SGather implements Serializable {
     //入库详细理由
     private String reasonexact;
     //总件数
-    private String amount_sum;
+    private double amount_sum;
     //总金额
-    private String cost_price_sum;
+    private double cost_price_sum;
     //确认入库总件数
     private int gathered_amount_sum;
     //备注
@@ -35,7 +35,7 @@ public class SGather implements Serializable {
     //登记人
     private String register;
     //登记时间
-    private String register_time;
+    private Object register_time;
     //复核人
     private String checker;
     //复核时间
@@ -94,16 +94,16 @@ public class SGather implements Serializable {
 	public void setReasonexact(String reasonexact) {
 		this.reasonexact = reasonexact;
 	}
-	public Object getAmount_sum() {
+	public double getAmount_sum() {
 		return amount_sum;
 	}
-	public void setAmount_sum(String amount_sum) {
+	public void setAmount_sum(double amount_sum) {
 		this.amount_sum = amount_sum;
 	}
-	public Object getCost_price_sum() {
+	public double getCost_price_sum() {
 		return cost_price_sum;
 	}
-	public void setCost_price_sum(String cost_price_sum) {
+	public void setCost_price_sum(double cost_price_sum) {
 		this.cost_price_sum = cost_price_sum;
 	}
 	public Object getGathered_amount_sum() {
@@ -169,11 +169,22 @@ public class SGather implements Serializable {
 	public SGather() {
 		super();
 	}
-	public SGather(String gather_id, String reason, String amount_sum, String cost_price_sum, String remark,
+	public SGather(String gather_id, String reason, double amount_sum, double cost_price_sum, String remark,
 			String rukuperson, String register, String register_time) {
 		super();
 		this.gather_id = gather_id;
 		this.reason = reason;
+		this.amount_sum = amount_sum;
+		this.cost_price_sum = cost_price_sum;
+		this.remark = remark;
+		this.rukuperson = rukuperson;
+		this.register = register;
+		this.register_time = register_time;
+	}
+	public SGather(String gather_id, double amount_sum, double cost_price_sum, String remark, String rukuperson,
+			String register, Object register_time) {
+		super();
+		this.gather_id = gather_id;
 		this.amount_sum = amount_sum;
 		this.cost_price_sum = cost_price_sum;
 		this.remark = remark;

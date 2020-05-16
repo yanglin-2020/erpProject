@@ -35,12 +35,12 @@
                             <table class="layui-table" lay-data="{url:'getMaterialInfo_ywg',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
                                 <thead>
                                     <tr>
-                                        <th lay-data="{field:'product_id', width:120, sort: true}">产品编号</th>
-                                        <th lay-data="{field:'product_name', width:120}">产品名称</th>
+                                        <th lay-data="{field:'goods_id', width:120, sort: true}">产品编号</th>
+                                        <th lay-data="{field:'goods_name', width:120}">产品名称</th>
+                                         <th lay-data="{field:'goods_num', width:80}">数量</th>
                                         <th lay-data="{field:'type', width:80}">用途</th>
-                                        <th lay-data="{field:'product_describe', width:160}">产品描述</th>
-                                         <th lay-data="{field:'personal_unit', width:70}">单位</th>
-                                         <th lay-data="{field:'cost_price', width:120}">成本单价</th>
+                                         <th lay-data="{field:'goods_unit', width:70}">单位</th>
+                                         <th lay-data="{field:'goods_price', width:120}">成本单价</th>
                                         <th lay-data="{width:120, templet:'#oprListBar',fixed:'right'}">操作</th>
                                         </tr>
                                 </thead>
@@ -78,21 +78,27 @@
     					title : '请输入数量'
     				}, function(value, index, elem) {
     					layer.close(index);
-    					$.get("addSgatherDetail", {
-    						num:value, product_id:data.product_id,
-                        	product_name:data.product_name,
-                        	product_describe:data.product_describe,
-                        	personal_unit:data.personal_unit,
-                        	cost_price:data.cost_price
-    					}, function(data) {
-    						if (data == "1") {
-    							layer.msg("操作成功！");
-    							table.reload("test");
-    							layer.close(index);
-    						} else {
-    							layer.alert("操作失败!");
-    						}
-    					});
+    					
+    					if(value>data.goods_num){
+    						layer.msg("数量超出！");
+    						return;
+    					}else{
+    						$.get("addSgatherDetail", {
+        						num:value, product_id:data.goods_id,
+                            	product_name:data.goods_name,
+                            	product_describe:data.goods_price,
+                            	personal_unit:data.goods_unit,
+                            	cost_price:data.goods_price
+        					}, function(data) {
+        						if (data == "1") {
+        							layer.msg("操作成功！");
+        							table.reload("test");
+        							layer.close(index);
+        						} else {
+        							layer.alert("操作失败!");
+        						}
+        					});
+    					}
     				});
                 }
             });

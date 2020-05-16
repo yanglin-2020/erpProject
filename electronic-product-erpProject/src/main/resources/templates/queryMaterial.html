@@ -34,18 +34,12 @@
                                <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="euUserName" placeholder="请输入产品的名称" autocomplete="off" class="layui-input">
                                 </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
+                               
                                 
                                 <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="product_id" placeholder="请输入产品的编号" autocomplete="off" class="layui-input">
                                 </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn2" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
+                                
                                 <div class="layui-inline layui-show-xs-block">
 									<div class="layui-input-inline">
 										<select name="check_tag" id="check_tag" lay-verify="tid">
@@ -57,7 +51,7 @@
 									</div>
 								</div>
 								<div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn3" data-type="reload">
+                                    <a class="layui-btn search_btn" data-type="reload">
                                         <i class="layui-icon">&#xe615;</i></a>
                                 </div>
                             </form>
@@ -86,9 +80,9 @@
   						{{#  if(d.check_tag == "审核通过"){ }}
     						 <span class="layui-btn layui-btn-normal layui-btn-mini">审核通过</span>
   						{{#  } else if(d.check_tag == "等待审核") { }}
-    						<span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-danger">等待审核</span>
+    						<span class="layui-btn layui-btn-warm layui-btn-mini ">等待审核</span>
  						{{#  } else{ }}
-							<span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-danger">审核驳回</span>
+							<span class="layui-btn  layui-btn-mini layui-btn-danger">审核驳回</span>
   						{{#  }  }}
 						</script>
 					</div>
@@ -162,40 +156,15 @@
                              curr: 1 //重新从第 1 页开始
                          },
                          where: {
-                        	 name: $("input[name=euUserName]").val()  //搜索的关键字
+                        	 name: $("input[name=euUserName]").val(),//搜索的关键字
+                        	 type: $("[name=type]").val(),
+                        	 product_id: $("[name=product_id]").val(),
+                             check_tag: $("[name=check_tag]").val()
                          }
                      });
     
              });
-            $(".search_btn1").on("click",function(){
-          	  table.reload("test",{
-          		page:{
-          			curr:1
-          		},
-          		where:{
-          			type: $("[name=type]").val()
-          		}
-          	  });
-            });
-            $(".search_btn2").on("click",function(){
-            	  table.reload("test",{
-            		page:{
-            			curr:1
-            		},
-            		where:{
-            			product_id: $("[name=product_id]").val()
-            		}
-            	  });
-              });
-            $(".search_btn3").on("click",function(){
-            	  table.reload("test",{
-            		page:{
-            			curr:1
-            		},
-            		where:{
-            			check_tag: $("[name=check_tag]").val()
-            		}
-            	  });
-              });
+           
+            
         });</script>
 </html>

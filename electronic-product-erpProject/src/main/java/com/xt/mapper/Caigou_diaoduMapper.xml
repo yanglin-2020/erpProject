@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.mapper.Caigou_diaoduMapper">
+
+	<!--获取采购总记录数 -->
+	<select id="getBuygoodsCount" resultType="int">
+		select count(1) from
+		buygoods
+		where 1=1
+		<if test="status != null and status !=''">
+			and status=#{status}
+		</if>
+		<if test="buy_id != null and buy_id !=''">
+			and buy_id=#{buy_id}
+		</if>
+	</select>
+
+	<!--获取采购的分页查询 -->
+	<select id="getAllBuygoodsInfo" resultType="Buygoods">
+		select b.*,(select name from supplier where supplier_ID=b.supplier_ID ) as 'supplier_name'
+		from buygoods b
+		where 1=1
+		<if test="b.buy_id != null and b.buy_id !=''">
+			and buy_id=#{b.buy_id}
+		</if>
+		<if test="b.status != null and b.status !=''">
+			and status=#{b.status}
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+
+	<!--查询采购详细记录 -->
+	<select id="getBuygoodsdetails" resultType="Buygoods_detail">
+		select * from
+		buygoods_detail
+		where buy_id=#{buy_id}
+	</select>
+
+	<!--查询所有供应商 -->
+	<select id="gysSelect" resultType="Supplier">
+		select * from Supplier
+	</select>
+
+	<!--根据供应商ID查询商品总数 -->
+	<select id="getGoodsCount" resultType="int">
+		select count(1) from
+		goods
+		where supplier_ID=#{supplier_ID}
+	</select>
+
+	<!--根据供应商ID查询商品信息 -->
+	<select id="selectGoodsBySupplier_ID" resultType="Goods">
+		select * from
+		goods
+		where supplier_ID=#{g.supplier_ID}
+		<if test="g.goods_name != null and g.goods_name !=''">
+			and goods_name like CONCAT('%',#{g.goods_name},'%')
+		</if>
+		limit #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<!-- 添加采购详细 -->
+	<insert id="addBuygoods_details">
+		insert into
+		buygoods_detail(goods_id,goods_name,goods_num,goods_price,goods_unit,type,buy_id)
+		values(#{goods_id},#{goods_name},#{goods_num},#{goods_price},#{goods_unit},#{type},#{buy_id})
+	</insert>
+	
+	<!--查询总数量 -->
+	<select id="selectBuy_sum" resultType="string">
+		select sum(goods_num) from buygoods_detail
+		where buy_id=#{buy_id}
+	</select>
+	
+	<!--查询总金额 -->
+	<select id="selectBuy_price" resultType="string">
+		select sum(goods_num*goods_price) from buygoods_detail where buy_id=#{buy_id}
+	</select>
+	
+	<!-- 添加采购表 -->
+	<insert id="addBuygoods">
+		insert into
+		buygoods(buy_id,supplier_ID,user_name,time,buy_sum,buy_price)
+		values(#{buy_id},#{supplier_ID},#{user_name},#{time},#{buy_sum},#{buy_price})
+	</insert>
+	
+	<!-- 修改采购表 -->
+	<update id="shenheBuygoods">
+		update buygoods
+		<set>
+			<if test="checker != null and checker !=''">
+				checker=#{checker},
+			</if>
+			<if test="check_time != null and check_time !=''">
+				check_time=#{check_time},
+			</if>
+			<if test="status != null and status !=''">
+				status=#{status},
+			</if>
+		</set>
+		where buy_id = #{buy_id}
+	</update>
+	
+	<!-- 修改采购详细表 -->
+	<update id="shenheBuygoods_details">
+		update buygoods_detail
+		<set>
+			<if test="status != null and status !=''">
+				status=#{status}
+			</if>
+		</set>
+		where buy_id = #{buy_id}
+	</update>
+	
+	<!-- 删除采购详细表 -->
+	<delete id="delBuygoods_detail">
+		delete from buygoods_detail where buy_id=#{buy_id} and goods_id=#{goods_id}
+	</delete>
+	
+	<!--查询采购详细，根据采购编号和商品ID -->
+	<select id="findBuygoods_detail" resultType="int">
+		select count(1) from buygoods_detail
+		where buy_id=#{buy_id} and goods_id=#{goods_id}
+	</select>
+	
+	<!-- 如果采购编号和商品ID都相同，则添加商品数量 -->
+	<update id="updateBuygoods_detail">
+		update buygoods_detail
+		<set>
+			<if test="goods_num != null and goods_num !=''">
+				goods_num=goods_num+#{goods_num}
+			</if>
+		</set>
+		where buy_id = #{buy_id} and goods_id=#{goods_id}
+	</update>
+</mapper>

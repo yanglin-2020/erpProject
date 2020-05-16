@@ -47,14 +47,15 @@
                                   <th lay-data="{field:'gather_id', width:125}">入库单编号</th>
                                   <th lay-data="{field:'rukuperson', width:80}">入库人</th>
                                   <th lay-data="{field:'reason', width:80}">入库理由</th>
-                                  <th lay-data="{field:'amount_sum', width:120}">总件数</th>
+                                  <th lay-data="{field:'amount_sum', width:80}">总件数</th>
                                   <th lay-data="{field:'cost_price_sum', width:100}">总金额</th>
                                   <th lay-data="{field:'check_tag', width:80}">审核标志</th>
                                   <th lay-data="{field:'remark', width:100}">备注</th>
-                                  <th lay-data="{field:'register', width:100}">登记人</th>
+                                  <th lay-data="{field:'register', width:80}">登记人</th>
                                   <th lay-data="{field:'register_time', width:160,templet: function(d){return layui.util.toDateString(d.register_time)}}">登记时间</th>
-                                  <th lay-data="{field:'checker', width:100}">审核人</th>
+                                  <th lay-data="{field:'checker', width:80}">审核人</th>
                                   <th lay-data="{field:'cheack_time', width:160,templet: function(d){return layui.util.toDateString(d.cheack_time)}}">审核时间</th>
+                                  <th lay-data="{width:90, templet:'#oprListBar',fixed:'right'}">操作</th>
                                </tr>
                                 </thead>
                             </table>
@@ -66,8 +67,7 @@
     </body>
     <!--操作-->
 	<script type="text/html" id="oprListBar">
- 		<i class="layui-icon layui-btn layui-btn-warning" lay-event="updateinfo">&#xe642;</i>
-		<i class="layui-icon layui-btn layui-btn-danger" lay-event="del">&#xe640;</i>
+		<i class="layui-icon layui-btn " lay-event="querydetail">查看</i>
 	</script>
     <script type="text/html" id="toolbarDemo">
         <div class = "layui-btn-container" > 
@@ -118,20 +118,16 @@
                     data = obj.data;
                 if(layEvent === 'updateinfo'){ //修改产品档案信息
                 	editUser(data);
-                } else if(layEvent === 'del'){ //删除
-                    layer.confirm('确定删除该产品？',{icon:3, title:'提示信息'},function(index){
-                         $.get("updateDelProduct",{
-                        	 product_id : data.product_id 
+                } else if(layEvent === 'querydetail'){ //删除
+                         $.get("querydetail",{
+                        	 gather_id : data.gather_id 
                          },function(data){
-                        	 if(data=="成功"){
-                        		 layer.msg("删除成功！");
-                                table.reload("test");
-                                 layer.close(index);
+                        	 if(data=="1"){
+                              xadmin.open('入库详细','rukudetail.html',900,460);
                         	 }else{
                         		 layer.alert("操作失败~ ");
                         	 }
                          });
-                    });
                 } 
             });
             //头工具栏事件

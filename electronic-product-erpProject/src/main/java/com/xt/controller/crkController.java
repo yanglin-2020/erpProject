@@ -85,7 +85,7 @@ public class crkController {
 	@ResponseBody
 	public int chuku_details(String paid_amount, String spid, String id,String attemper,String attemper_time) {
 		// 根据商品ID修改出库详细表
-		int result = service.chukuDiaodu(paid_amount, id);
+		int result = service.chukuDiaodu(paid_amount, spid);
 		// 查询所有出库详细记录，若都已调度完成，则修改根据出库单序号修改已调度
 		List<SPayDetails> list = service.findD_fileById(id);// 根据父级序号查询已登记还未调度的商品信息
 		if (list.size() == 0) {
@@ -95,7 +95,7 @@ public class crkController {
 	}
 
 	/**
-	 * 查询已申请的入库单信息
+	 * 查询已登记的入库单信息
 	 * 
 	 * @return
 	 * @throws IOException
@@ -141,8 +141,8 @@ public class crkController {
 	@RequestMapping("/ruku_details")
 	@ResponseBody
 	public int ruku_details(String gathered_amount, String spid, String id,String attemper,String attemper_time) {
-		// 根据商品ID修改出库详细表
-		int result = service.rukuDiaodu(gathered_amount, id);
+		// 根据商品ID修改入库详细表
+		int result = service.rukuDiaodu(gathered_amount, spid);
 		// 查询所有入库详细记录，若都已调度完成，则修改根据入库单序号修改已调度
 		List<SGatherDetails> list = service.findD_fileBySGatherId(id);// 根据父级序号查询已登记还未调度的商品信息
 		if (list.size() == 0) {

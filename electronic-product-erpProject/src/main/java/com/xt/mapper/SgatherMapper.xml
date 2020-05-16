@@ -12,28 +12,15 @@
 	<!--查询入库申请 -->
 	<select id="getAllSgatherInfo" resultType="SGather">
 		select * from s_Gather where check_tag='等待审核'
-		
 		limit #{page.startRow},#{page.pageSize}
 	</select>
 
 
 	<select id="getMManufactureCount" resultType="int">
-		select count(1) from d_file d,m_manufacture m
-		where d.type='物料' or
-		d.product_id=m.product_id and
-		m.manufacture_procedure_tag='已完工'
-		<if test="df.product_name!=null and df.product_name!=''">
-			and d.product_name like CONCAT('%',#{df.product_name},'%')
-		</if>
+		select count(1) from buygoods_detail where status='审核通过'  and status2='未完成'
 	</select>
-	<select id="getAllMManufactureInfo" resultType="d_file">
-		select * from d_file d,m_manufacture m
-		where d.type='物料' or
-		d.product_id=m.product_id and
-		m.manufacture_procedure_tag='已完工'
-		<if test="df.product_name!=null and df.product_name!=''">
-			and d.product_name like CONCAT('%',#{df.product_name},'%')
-		</if>
+	<select id="getAllMManufactureInfo" resultType="buygoods_detail">
+		select * from buygoods_detail where status='审核通过'  and status2='未完成'
 		limit #{page.startRow},#{page.pageSize}
 	</select>
 
@@ -103,4 +90,13 @@
 		</if>
 		limit #{page.startRow},#{page.pageSize}
 	</select>
+	<!--查询入库详情  -->
+	<select id="querydetail" resultType="SGatherDetails">
+		select * from s_gather_details where parent_id=#{gather_id}
+	</select>
+	
+	<!--修改采购详细表status2  -->
+	<update id="updateBuyGoods_Detail_Status2">
+		update buygoods_detail set status2='已完成' where goods_id=#{id}
+	</update>
 </mapper>

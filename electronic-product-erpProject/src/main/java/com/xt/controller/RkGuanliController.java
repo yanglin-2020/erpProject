@@ -134,7 +134,7 @@ public class RkGuanliController {
 		s.setStatus("已完成");
 		int result = service.shenhe(s);
 		//审核通过的话，就根据入库单序号查询商品id和确认入库数量并修改库存数量
-		if(s.getCheck_tag().equals("审核通过") && result>0) {
+		if(result>0) {
 			List<SGatherDetails> list = service.findD_fileById(s.getGather_id());
 			for (SGatherDetails ss : list) {
 				result = service.addKucun(ss);//循环修改库存数量

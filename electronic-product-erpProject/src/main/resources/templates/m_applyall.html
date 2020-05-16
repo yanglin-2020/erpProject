@@ -38,17 +38,9 @@
                                <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="apply_id" placeholder="请输入生产计划编号" autocomplete="off" class="layui-input">
                                 </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
                                 
                                 <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="product_name" placeholder="请输入产品的名称" autocomplete="off" class="layui-input">
-                                </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn2" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
                                 </div>
                                 
                                 <div class="layui-inline layui-show-xs-block">
@@ -62,7 +54,7 @@
 									</div>
 								</div>
 								<div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn1" data-type="reload">
+                                    <a class="layui-btn search_btn" data-type="reload">
                                         <i class="layui-icon">&#xe615;</i></a>
                                 </div>
                             </form>
@@ -80,8 +72,8 @@
                                          <th lay-data="{field:'designer', width:70}">设计师</th>
                                          <th lay-data="{field:'register', width:70}">登记人</th>
                                          <th lay-data="{field:'checker', width:80}">复核人</th>
-                                         <th lay-data="{field:'check_tag', width:100}">审核标志</th>
-                                         <th lay-data="{field:'register_time', width:150,templet: function(m){return layui.util.toDateString(m.register_time)}}">登记时间</th>
+                                         <th lay-data="{field:'check_tag', width:100,templet: '#titleTpl'}">审核标志</th>
+                                         <th lay-data="{field:'register_time', width:150,templet: function(d){return layui.util.toDateString(d.register_time)}}">登记时间</th>
                                          <th lay-data="{field:'check_time', width:150}">审核时间</th>
                                          <th lay-data="{field:'remark', width:150}">备注</th>
                                          <th lay-data="{field:'check_suggestion', width:150}">审核意见</th>
@@ -95,6 +87,15 @@
             </div>
         </div>
     </body>
+    <script type="text/html" id="titleTpl">
+  		{{#  if(d.check_tag == "审核通过"){ }}
+    		 <span class="layui-btn layui-btn-normal layui-btn-mini">审核通过</span>
+  		{{#  } else if(d.check_tag == "等待审核") { }}
+    		<span class="layui-btn layui-btn-warm layui-btn-mini">等待审核</span>
+ 		{{#  } else if(d.check_tag == "审核不通过") { }}
+    		<span class="layui-btn layui-btn-danger layui-btn-mini">审核不通过</span>
+ 		{{#  }  }}
+	</script>
     <!--操作-->
 	<script type="text/html" id="oprListBar">
  		<i class="layui-icon layui-btn layui-btn-warning" lay-event="updateinfo">&#xe642;</i>
@@ -177,31 +178,13 @@
                              curr: 1 //重新从第 1 页开始
                          },
                          where: {
-                        	 apply_id: $("input[name=apply_id]").val()  //搜索的关键字
+                        	 apply_id: $("input[name=apply_id]").val(),  //搜索的关键字
+                        	 check_tag: $("[name=check_tag]").val(),
+                        	 product_name: $("[name=product_name]").val()
+                        	 
                          }
                      });
     
              });
-            $(".search_btn1").on("click",function(){
-              var checktag=$("[name=check_tag]").val();
-          	  table.reload("test",{
-          		page:{
-          			curr:1
-          		},
-          		where:{
-          			check_tag: checktag
-          		}
-          	  });
-            });
-            $(".search_btn2").on("click",function(){
-            	  table.reload("test",{
-            		page:{
-            			curr:1
-            		},
-            		where:{
-            			product_name: $("[name=product_name]").val()
-            		}
-            	  });
-              });
         });</script>
 </html>

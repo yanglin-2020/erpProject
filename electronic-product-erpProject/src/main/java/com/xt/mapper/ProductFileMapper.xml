@@ -334,4 +334,9 @@
 		</if>
 		limit #{page.startRow},#{page.pageSize}
 	</select>
+	<!--添加信息到goods表去  -->
+	<insert id="addGoodsInfoByD_File">
+		insert into goods(goods_id,goods_name,goods_num,goods_desc,goods_unit,goods_price,supplier_ID)
+		values(#{goods_id},#{goods_name},#{goods_num},#{goods_desc},#{goods_unit},#{goods_price},#{supplier_ID})
+	</insert>
 </mapper>

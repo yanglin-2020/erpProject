@@ -35,24 +35,11 @@
                                     <input type="text" name="store_id" placeholder="请输入库存编号" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn1" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
-                                
-                                <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="product_id" placeholder="请输入产品的编号" autocomplete="off" class="layui-input">
-                                </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn2" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
                                 </div>
                                 
                                  <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="product_name" placeholder="请输入产品的名称" autocomplete="off" class="layui-input">
-                                </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn3" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
                                 </div>
                                 
                                 <div class="layui-inline layui-show-xs-block">
@@ -64,10 +51,6 @@
 										</select> 
 									</div>
 								</div>
-								<div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn4" data-type="reload">
-                                        <i class="layui-icon">&#xe615;</i></a>
-                                </div>
                                 
                                 <div class="layui-inline layui-show-xs-block">
 									<div class="layui-input-inline">
@@ -80,7 +63,7 @@
 									</div>
 								</div>
 								<div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn search_btn5" data-type="reload">
+                                    <a class="layui-btn search_btn1" data-type="reload">
                                         <i class="layui-icon">&#xe615;</i></a>
                                 </div>
                             </form>
@@ -98,10 +81,17 @@
                                          <th lay-data="{field:'min_amount', width:130}">报警下限数</th>
                                          <th lay-data="{field:'max_amount', width:130}">报警上限数</th>
                                          <th lay-data="{field:'max_capacity_amount', width:130}">最大存储量</th>
-                                         <th lay-data="{field:'amount', width:130}">当前储存量</th>
+                                         <th lay-data="{field:'amount', width:130,templet: '#titleTpl'}">当前储存量</th>
                                         </tr>
                                 </thead>
                             </table>
+                            <script type="text/html" id="titleTpl">
+  						{{#  if(d.amount <d.min_amount||d.amount>d.max_amount){ }}
+								<span style="color:red">{{d.amount}}</span>
+ 						{{#  } else{ }}
+								<span>{{d.amount}}</span>
+  						{{#  }  }}
+						</script>
 					</div>
                     </div>
                 </div>
@@ -184,50 +174,15 @@
                              curr: 1 //重新从第 1 页开始
                          },
                          where: {
-                        	 store_id: $("input[name=store_id]").val()  //搜索的关键字
+                        	 store_id: $("input[name=store_id]").val(),  //搜索的关键字
+                        	 product_class: $("[name=product_class]").val(),
+                        	 type: $("[name=type]").val(),
+                        	 product_name: $("[name=product_name]").val(),
+                        	 product_id: $("[name=product_id]").val()
+                        	 
                          }
                      });
     
              });
-            $(".search_btn2").on("click",function(){
-          	  table.reload("test",{
-          		page:{
-          			curr:1
-          		},
-          		where:{
-          			product_id: $("[name=product_id]").val()
-          		}
-          	  });
-            });
-            $(".search_btn3").on("click",function(){
-            	  table.reload("test",{
-            		page:{
-            			curr:1
-            		},
-            		where:{
-            			product_name: $("[name=product_name]").val()
-            		}
-            	  });
-              });
-            $(".search_btn4").on("click",function(){
-          	  table.reload("test",{
-          		page:{
-          			curr:1
-          		},
-          		where:{
-          			type: $("[name=type]").val()
-          		}
-          	  });
-            });
-            $(".search_btn5").on("click",function(){
-            	  table.reload("test",{
-            		page:{
-            			curr:1
-            		},
-            		where:{
-            			product_class: $("[name=product_class]").val()
-            		}
-            	  });
-              });
         });</script>
 </html>

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.xt.pojo.GongGao;
 import com.xt.pojo.Permissions;
+import com.xt.pojo.SCell;
 import com.xt.pojo.SysLogs;
 import com.xt.pojo.Users;
 import com.xt.util.PageDemo;
@@ -48,4 +50,18 @@ public interface UsersService {
 	int updateSelfCount(String u_name);
 	//查询前五用户的访问量
 	public List<Users> getUsersInfoCount();
+	
+	//分页查询最新公告信息
+	public PageDemo<GongGao> getGongGaoInfo(int nowPage, int pageSize,GongGao gg);
+	//分页查询库存预警信息
+	public PageDemo<SCell> getyjInfo(int nowPage, int pageSize,SCell s);
+	//分页查询所有公告信息
+	public PageDemo<GongGao> getGongGaoAllInfo(int nowPage, int pageSize,GongGao gg);
+	//发布公告
+	int addGongGao(GongGao gg);
+	//修改公告
+	int updateGongGao(GongGao gg);
+	//删除一个公告
+	int deleteGongGao(String id);
+		
 }

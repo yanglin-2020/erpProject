@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 
+	  /**
+	 * 
+	 * @崔庆康 供货商管理
+	 *
+	 */
+   -->
+  <mapper namespace="com.xt.mapper.SupplierMapper">
+  	<!-- 添加供货商 -->
+  	<insert id="addsuplier">
+  		insert into supplier values(#{supplier.supplier_ID},#{supplier.name},#{supplier.address},
+  		#{supplier.phone},#{supplier.khyh},#{supplier.constactPerson},
+  		#{supplier.register},#{supplier.register_time},null,null,
+  		#{supplier.check_tag},null,#{supplier.remark},#{supplier.delstate})
+  	</insert>
+  	
+  	<!-- 查询未复核的供应商数据数量 -->
+  	<select id="querysupplierCount" resultType="int">
+  		select count(1) from supplier where 1=1 and delstate=#{supplier.delstate}
+  		<if test="supplier.name!=null and supplier.name!=''">
+  			and name like CONCAT('%',#{supplier.name},'%')
+  		</if>
+  		<if test="supplier.check_tag!=null and supplier.check_tag!=''">
+  			and check_tag=#{supplier.check_tag}
+  		</if>
+  	</select>
+  	
+  	<!-- 查询未复核的供应商数据 -->
+  	<select id="querysupplier" resultType="Supplier">
+  		select * from supplier where 1=1 and delstate=#{supplier.delstate}
+  		<if test="supplier.name!=null and supplier.name!=''">
+  			and name like CONCAT('%',#{supplier.name},'%')
+  		</if>
+  		<if test="supplier.check_tag!=null and supplier.check_tag!=''">
+  			and check_tag=#{supplier.check_tag}
+  		</if>
+  		limit #{page.startRow},#{page.pageSize}
+  	</select>
+  	
+  	<!-- 审核通过 -->
+  	<update id="auditsupplier">
+  	 update supplier set name=#{supplier.name},phone=#{supplier.phone},khyh=#{supplier.khyh},constactPerson=#{supplier.constactPerson},remark=#{supplier.remark},
+  	 checker=#{supplier.checker},check_time=#{supplier.check_time},check_tag=#{supplier.check_tag},reason=#{supplier.reason} where supplier_ID=#{supplier.supplier_ID}
+  	</update>
+  	
+  	<!-- 审核不通过 -->
+  	<update id="noauditsupplier">
+  		 update supplier set checker=#{supplier.checker},check_time=#{supplier.check_time},check_tag=#{supplier.check_tag},reason=#{supplier.reason} where supplier_ID=#{supplier.supplier_ID}
+  	</update>
+  	
+  	<!-- 修改删除状态 -->
+  	<update id="updatedelsupplier">
+  		update supplier set delstate=#{supplier.delstate} where supplier_ID=#{supplier.supplier_ID}
+  	</update>
+  	
+  	<!-- 修改供货商 -->
+  	<update id="updatesupplier">
+  	 update supplier set name=#{supplier.name},address=#{supplier.address},phone=#{supplier.phone},
+  	 khyh=#{supplier.khyh},constactPerson=#{supplier.constactPerson},checker=#{supplier.checker},
+  	 check_time=#{supplier.check_time},check_tag=#{supplier.check_tag},reason=#{supplier.reason},remark=#{supplier.remark} where supplier_ID=#{supplier.supplier_ID}
+  	</update>
+  	
+  	<!-- 彻底删除数据 -->
+  	<delete id="delSupplier">
+  		delete from supplier where supplier_ID=#{supplier.supplier_ID}
+  	</delete>
+  </mapper>

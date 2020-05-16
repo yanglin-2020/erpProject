@@ -20,8 +20,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  * @Description: 对该类的描述
  */
 public class Config {
-	
-    private static final String BASE_URL = "https://openapi.miaodiyun.com/distributor/sendSMS";
+	private static final String QUERY_PATH = "https://api.miaodiyun.com/20150822/industrySMS/sendSMS";
     private static final String ACCOUNT_SID = "6dcb089ea7e65623a7cf5ed313fe8445";
     private static final String AUTH_TOKEN = "69cfa6d5be4d88ba7ee5eca0fa1ecfac";
     private static final String RESP_DATA_TYPE = "JSON";
@@ -114,7 +113,7 @@ public class Config {
         
 
         String body = sb.toString() + Config.createCommonParam(Config.ACCOUNT_SID, Config.AUTH_TOKEN);
-        String result = Config.post(Config.BASE_URL, body);
+        String result = Config.post(Config.QUERY_PATH, body);
         System.out.println(result);
         return rod;
     }

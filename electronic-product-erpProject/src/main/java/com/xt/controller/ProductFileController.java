@@ -29,6 +29,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.xt.pojo.DModule;
 import com.xt.pojo.DModuleDetails;
 import com.xt.pojo.D_file;
+import com.xt.pojo.Goods;
 import com.xt.pojo.KuCun;
 import com.xt.pojo.Users;
 import com.xt.service.ProductFileService;
@@ -77,9 +78,17 @@ public class ProductFileController {
 					Double.parseDouble(cost_price), product_describe, responsible_person, register);
 			// 调用添加的方法
 			int count = service.addProductInfo(df);
+			
+			//把档案信息添加到goods表去
+			Goods g1 = new Goods(product_id, product_name, personal_value,Double.parseDouble(list_price), personal_unit, product_describe, "s1562");
+			Goods g2 = new Goods(product_id, product_name, "200", Double.parseDouble(list_price)+100, personal_unit, product_describe, "s1563");
+			Goods g3 = new Goods(product_id, product_name, "300", Double.parseDouble(list_price)+200, personal_unit, product_describe, "s1564");
+			service.addGoodsInfoByD_File(g1);
+			service.addGoodsInfoByD_File(g2);
+			service.addGoodsInfoByD_File(g3);
 			if (count > 0) {
 				return "load";
-			} else {
+			} else {;
 				return "productfile";
 			}
 		}

@@ -35,7 +35,6 @@
                                     <input type="text" name="euUserName" placeholder="请输入产品的名称" autocomplete="off" class="layui-input">
                                 </div>
                                 
-                                
                                 <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="product_id" placeholder="请输入产品的编号" autocomplete="off" class="layui-input">
                                 </div>
@@ -99,9 +98,9 @@
   						{{#  if(d.check_tag == "审核通过"){ }}
     						 <span class="layui-btn layui-btn-normal layui-btn-mini">审核通过</span>
   						{{#  } else if(d.check_tag == "等待审核") { }}
-    						<span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-danger">等待审核</span>
+    						<span class="layui-btn layui-btn-warm layui-btn-mini ">等待审核</span>
  						{{#  } else{ }}
-							<span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-danger">审核驳回</span>
+							<span class="layui-btn  layui-btn-mini layui-btn-danger">审核驳回</span>
   						{{#  }  }}
 						</script>
 					</div>
@@ -154,6 +153,9 @@
                         	body.find("[name=register]").val(edit.register);
                         	body.find("[name=responsible_person]").val(edit.responsible_person);
                         	body.find(".save").text("修改");
+                        	body.find(".save").click(function(){
+                        		window.location.replace(location.href);
+                        	});
                         	form.render();
                         }
                     }

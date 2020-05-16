@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xt.mapper.SgatherMapper;
+import com.xt.pojo.Buygoods_detail;
 import com.xt.pojo.D_file;
 import com.xt.pojo.MManufacture;
 import com.xt.pojo.SGather;
@@ -46,14 +47,14 @@ public class SgatherServiceImpl implements SgatherService {
 	 * 查询MManufacture已完工的数据
 	 */
 	@Override
-	public PageDemo<D_file> getMaterialInfo_ywg(int nowPage, int pageSize, D_file df) {
+	public PageDemo<Buygoods_detail> getMaterialInfo_ywg(int nowPage, int pageSize, Buygoods_detail df) {
 		// TODO Auto-generated method stub
-		PageDemo<D_file> pd = new PageDemo<D_file>();
+		PageDemo<Buygoods_detail> pd = new PageDemo<Buygoods_detail>();
 		// 获取用户总记录数(调用mapper的方法)
 		int rowCount = mapper.getMManufactureCount(df);
 		PageUtil page = new PageUtil(pageSize, nowPage, rowCount);
 		// 获取用户的分页查询(调用mapper的方法)
-		List<D_file> list = mapper.getAllMManufactureInfo(page, df);
+		List<Buygoods_detail> list = mapper.getAllMManufactureInfo(page, df);
 		pd.setCode(0);
 		pd.setCount(rowCount);
 		pd.setMsg("");
@@ -130,5 +131,15 @@ public class SgatherServiceImpl implements SgatherService {
 		pd.setMsg("");
 		pd.setData(list);
 		return pd;
+	}
+
+	@Override
+	public List<SGatherDetails> querydetail(String gather_id) {
+		return mapper.querydetail(gather_id);
+	}
+
+	@Override
+	public int updateBuyGoods_Detail_Status2(String id) {
+		return mapper.updateBuyGoods_Detail_Status2(id);
 	}
 }
